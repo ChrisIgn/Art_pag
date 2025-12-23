@@ -1,25 +1,23 @@
-import logo from './logo.svg';
 import './App.css';
+//import Tarjeta from './components/molecules/Tarjeta';
+import { Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import AdminPage from './pages/AdminPage'; // 👈 Importar la página Admin
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        {/* Ruta raíz para el Home Page */}
+        <Route path="/" element={<HomePage />} />
+        
+        {/* Ruta para el Panel de Administración */}
+        <Route path="/admin" element={<AdminPage />} />
+        
+        {/* Opcional: Ruta 404 (para cualquier otra ruta no definida) */}
+        <Route path="*" element={<h1 style={{color: 'white', padding: '100px', textAlign: 'center'}}>404: Página No Encontrada</h1>} />
+      </Routes>
     </div>
   );
 }
-
 export default App;

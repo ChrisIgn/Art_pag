@@ -1,0 +1,212 @@
+/* src/components/organisms/OcPrincipal.css */
+
+/* ========================================================================= */
+/* 1. LAYOUT PRINCIPAL (Contenedor de dos columnas) */
+/* ========================================================================= */
+
+.hero-principal-contenedor {
+  display: flex;
+  flex-direction: row; /* Imagen a la izquierda, Texto a la derecha */
+  align-items: flex-end; 
+  gap: 60px; /* Aumentamos el espacio entre columnas */
+  padding: 60px 80px; /* Aumentamos el padding para el diseño full-screen */
+  padding-bottom: 150px;
+  /* Adaptación al Tema Oscuro */
+  background-color: transparent; /* Permite que el color de fondo del body/html se vea */
+  color: #EAEAEA;
+  position: relative;
+}
+
+/* 1.1 Columna de Imagen (Izquierda) */
+.hero-imagen-wrapper {
+  flex: 1; 
+  max-width: 40%;
+}
+
+.hero-imagen-oc {
+  width: 100%;
+  height: auto;
+  max-height: 800px; 
+  object-fit: cover; 
+  border-radius: 10px;
+}
+
+/* 1.2 Columna de Contenido (Derecha) */
+.hero-contenido-wrapper {
+  flex: 1; 
+  max-width: 60%;
+  text-align: left; 
+}
+
+
+
+
+/* ========================================================================= */
+/* 2. ESTILOS DE DATOS Y TIPOGRAFÍA (Nombre, Clase, Historia, Habilidades) */
+/* ========================================================================= */
+
+/* --- AÑADIR ESTILO PARA EL NOMBRE EN CÓDIGO --- */
+.oc-nombre-codigo {
+    font-size: 1.5em;
+    color: #9BA9B8; /* Color secundario (gris claro) */
+    margin-top: -20px; /* Acércalo al título principal */
+    margin-bottom: 30px; /* Dale espacio para que se separe de la sección "Clase" */
+    font-style: italic; /* Para hacerlo parecer una etiqueta */
+    font-weight: 300;
+    
+    /* Opcional: Centrar si el layout de móvil lo pide */
+    text-align: left; 
+}
+
+.oc-nombre-titulo {
+  font-size: 3.5em; 
+  color: #4A90E2; /* Azul de Acento Brillante */
+  margin-bottom: 25px;
+  text-align: left; 
+}
+
+.oc-seccion-subtitulo {
+  font-size: 1.4em;
+  color: #EAEAEA; /* Blanco/Gris Claro */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Separador sutil */
+  padding-bottom: 5px;
+  margin-top: 35px;
+  margin-bottom: 15px;
+}
+
+.oc-dato-valor {
+  color: #9BA9B8; /* Color secundario */
+  font-weight: normal;
+  font-size: 0.9em;
+}
+
+.oc-descripcion-texto {
+  color: #9BA9B8;
+  line-height: 1.7;
+  margin-bottom: 15px;
+  text-align: justify;
+}
+
+/* Habilidades (Lista) */
+.oc-habilidades-lista {
+  list-style: none; 
+  padding: 0;
+  margin-top: 10px;
+}
+
+.oc-habilidades-lista li {
+  background: #1a2331; /* Fondo sutil para cada habilidad */
+  padding: 8px 15px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  color: #EAEAEA;
+  font-size: 1em;
+  transition: background-color 0.2s;
+}
+
+.oc-habilidades-lista li:hover {
+  background-color: #4A90E2; /* Resaltar en azul al pasar el mouse */
+}
+
+
+/* ========================================================================= */
+/* 3. MEDIA QUERY (Responsive Móvil) */
+/* ========================================================================= */
+
+@media (max-width: 768px) {
+    .hero-principal-contenedor {
+        flex-direction: column; /* Apilar la imagen arriba del texto */
+        gap: 30px;
+        padding: 30px 20px;
+    }
+    
+    .hero-imagen-wrapper, 
+    .hero-contenido-wrapper {
+        /* Ambos ocupan el 100% del ancho del contenedor principal */
+        max-width: 100%; 
+        padding: 0;
+    }
+    
+    .hero-imagen-wrapper {
+        order: -1; /* Opcional: Asegura que la imagen vaya ARRIBA en el orden apilado */
+    }
+
+    .oc-nombre-titulo {
+        text-align: center; /* Centrar el nombre del personaje en móvil */
+        font-size: 2.5em; /* Reducir el tamaño */
+    }
+    
+    .oc-seccion-subtitulo {
+        text-align: center; /* Centrar los subtítulos de sección */
+        margin-top: 20px;
+    }
+    
+    .oc-habilidades-lista {
+        text-align: center; /* Centrar la lista */
+    }
+}
+
+/* ========================================================================= */
+/* ESTILOS Y ANIMACIÓN DE LA FLECHA GUÍA */
+/* ========================================================================= */
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0); /* Posición inicial */
+    }
+    40% {
+        transform: translateY(-10px); /* Sube */
+    }
+    60% {
+        transform: translateY(-5px); /* Baja suavemente */
+    }
+}
+
+.scroll-down-indicator {
+    /* CLAVE: Anclaje al borde inferior */
+    position: absolute; 
+    bottom: 20px; /* El indicador se sitúa 20px desde el nuevo borde inferior */
+    left: 50%;
+    transform: translateX(-50%); /* Centrado horizontal */
+    
+    width: 250px; 
+    text-align: center;
+    cursor: pointer;
+    z-index: 20; 
+    padding-top: 0; 
+}
+/* 3. ESTILO DE LA ETIQUETA */
+.arrow-label {
+    color: #9BA9B8; /* Color gris claro */
+    font-size: 0.9em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 5px; /* Separación de la flecha */
+}
+
+/* 4. Estilo de la Flecha (mantiene bounce) */
+.arrow-icon {
+    display: inline-block;
+    font-size: 3em; 
+    color: #4A90E2; 
+    animation: bounce 2s infinite; 
+    transition: color 0.3s;
+}
+/* --- AJUSTE RESPONSIVE (Móvil) --- */
+
+@media (max-width: 768px) {
+    /* ... (Estilos de layout existentes) ... */
+    
+    .oc-nombre-codigo {
+        /* Centrar el nombre en código en la vista móvil */
+        text-align: center; 
+        margin-bottom: 30px;
+    }
+    
+    .oc-nombre-titulo {
+        text-align: center; 
+        /* ... */
+    }
+    /* ... */
+}

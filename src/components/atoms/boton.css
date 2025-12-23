@@ -1,0 +1,31 @@
+/* src/components/Boton.css */
+
+.boton-base {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+/* Estilos de la variante 'primario' (por defecto) */
+.primario {
+  background-color: #4A90E2;
+  color: white;
+}
+
+.primario:hover {
+  background-color: #6a9ce7;
+}
+
+/* Estilos de la variante 'secundario' */
+.secundario {
+  background-color: #333d4a;
+  color: #EAEAEA;
+}
+
+.secundario:hover {
+  background-color: #5a6268;
+}

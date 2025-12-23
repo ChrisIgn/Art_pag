@@ -1,0 +1,201 @@
+/* src/components/molecules/Modal.css */
+
+/* ========================================================================= */
+/* 1. LAYOUT PRINCIPAL (Backdrop y Contenedor del Modal) */
+/* ========================================================================= */
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85); /* Fondo oscuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  position: relative;
+  
+  /* Dimensiones y Apariencia */
+  max-width: 90vw;
+  max-height: 90vh;
+  padding: 30px; 
+  background-color: rgba(255, 255, 255, 0.05); /* Blanco con solo 5% de opacidad */
+  border-radius: 12px; /* Bordes redondeados */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); /* Sombra mejorada */
+  overflow: hidden; 
+  
+  /* Layout Interno */
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================================================================= */
+/* 2. ESTRUCTURA INTERNA (Imagen y Descripción) */
+/* ========================================================================= */
+
+.modal-body-flex {
+  display: flex;
+  gap: 30px; /* Espacio entre columnas */
+  width: 100%;
+  height: 100%;
+  /* Calcular la altura restante después del padding y los botones */
+  max-height: calc(90vh - 60px); 
+  overflow: hidden; 
+}
+
+/* Columna de Descripción (Izquierda) */
+.modal-descripcion-wrapper {
+  flex: 1; /* Ocupa una fracción */
+  min-width: 300px;
+  max-width: 400px;
+  padding-right: 20px;
+  overflow-y: auto; /* Scroll si el texto es muy largo */
+  
+  /* Fondo blanco sólido para mejor lectura del texto */
+  background-color: #1a2331; 
+  color: #EAEAEA;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+/* Columna de Imagen (Derecha) */
+.modal-imagen-wrapper {
+  flex: 2; /* Ocupa el doble de espacio */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* ========================================================================= */
+/* 3. ELEMENTOS INTERNOS (Tipografía e Imagen) */
+/* ========================================================================= */
+
+.modal-titulo-grande {
+  font-size: 2em; 
+  color: #4A90E2;
+  margin-bottom: 15px;
+}
+
+.modal-descripcion-texto {
+  font-size: 1.1em;
+  color: #9BA9B8;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.modal-imagen-principal {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Mantiene la proporción sin recortar */
+  border-radius: 5px;
+  animation: fadeIn 0.4s ease-out; /* Aplica la animación */
+}
+
+/* ========================================================================= */
+/* 4. BOTONES DE INTERACCIÓN (Cerrar y Navegar) */
+/* ========================================================================= */
+
+/* Botón Cerrar (X) */
+.modal-close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  font-size: 1.5em;
+  cursor: pointer;
+  z-index: 1011;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Botones de Navegación (Flechas) */
+.modal-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(74, 144, 226, 0.6); /* Azul de acento semi-transparente */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 2em;
+  cursor: pointer;
+  z-index: 1010;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  border-radius: 50%; /* Botón redondo */
+}
+
+.modal-nav-button:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-nav-button.prev {
+  left: 20px;
+}
+
+.modal-nav-button.next {
+  right: 20px;
+}
+
+/* ========================================================================= */
+/* 5. ANIMACIONES */
+/* ========================================================================= */
+
+@keyframes fadeIn {
+  from { opacity: 0.2; }
+  to { opacity: 1; }
+}
+
+
+/* ========================================================================= */
+/* MEDIA QUERY: LAYOUT MÓVIL (Pantallas de 768px o menos) */
+/* ========================================================================= */
+@media (max-width: 768px) {
+    
+    /* 1. LAYOUT DEL MODAL: Apilar y Permitir Scroll General */
+    .modal-body-flex {
+        flex-direction: column; /* La imagen y descripción se APILAN */
+        max-height: 85vh; /* Damos altura máxima al contenedor flexible */
+        overflow-y: auto; /* Permitimos scroll en el cuerpo si la descripción es muy larga */
+    }
+
+    /* 2. IMAGEN: Ponerla arriba (opcional) y limitar su altura */
+    .modal-imagen-wrapper {
+        order: -1; /* Mueve la imagen arriba de la descripción */
+        max-height: 40vh; /* Limita la altura de la imagen para que el usuario vea el texto debajo */
+        margin-bottom: 10px;
+    }
+
+    /* 3. DESCRIPCIÓN: Permitir que ocupe todo el ancho */
+    .modal-descripcion-wrapper {
+        min-width: auto; /* Quitar el ancho mínimo forzado */
+        max-width: none; /* Ocupar el 100% del ancho disponible */
+        padding-right: 0;
+    }
+    
+    /* 4. BOTONES DE NAVEGACIÓN: Moverlos más cerca de los bordes del móvil */
+    .modal-nav-button {
+        padding: 8px 12px;
+        font-size: 1.5em;
+    }
+    .modal-nav-button.prev {
+        left: 5px; /* Más cerca del borde */
+    }
+    .modal-nav-button.next {
+        right: 5px; /* Más cerca del borde */
+    }
+}

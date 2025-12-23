@@ -1,10 +1,68 @@
-.App {
-  text-align: center;
+/* src/App.css */
+/* 1. Activar el Scroll Snap en toda la página */
+html {
+  scroll-behavior: smooth; /* Para que el botón de 'Comenzar' baje suave */
+  scroll-snap-type: y mandatory; /* 'Mandatory' fuerza a que siempre aterrice en una sección */
+  overflow-y: scroll;
 }
 
+
+/* 2. Definir las secciones de "Pantalla Completa" */
+.seccion-pantalla-completa {
+  /* Esto obliga a la sección a ocupar al menos toda la pantalla */
+  min-height: 100vh;
+  
+  /* Esto define el punto de alineación (el tope de la sección toca el tope de la ventana) */
+  scroll-snap-align: start;
+  
+  /* (Opcional) Esto evita que te pases de largo la sección muy rápido */
+  scroll-snap-stop: always; 
+  
+  /* Flexbox para centrar el contenido (Opcional, pero se ve mejor) */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+}
+
+/* 3. El contenido fluido (Galerías, etc.) */
+.seccion-contenido-fluido {
+  /* Alineamos el inicio de este bloque grande */
+  scroll-snap-align: start;
+  /* Aquí no forzamos 100vh porque el contenido es variable */
+}
+
+.App {
+  font-family: 'Arial', sans-serif;
+  color: #EAEAEA; /* CAMBIO: Color de texto principal a blanco/gris claro */
+  min-height: 100vh;
+  background-color: #0E1624; /* CAMBIO CLAVE: Fondo Azul Oscuro */
+}
+
+/* El contenido principal debe ser transparente para que se vea el fondo */
+.page-content {
+    max-width: 0 auto; 
+    margin: 0 auto;
+    padding: 20px;
+    background-color: transparent; /* Aseguramos la transparencia */
+}
+
+h1, h2 {
+    color: #4A90E2; /* CAMBIO: Títulos en azul de acento */
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-align: center;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.rojo {
+  background-color: red;
+}
+
+.verde {
+  background-color: green;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -36,3 +94,35 @@
     transform: rotate(360deg);
   }
 }
+
+/* src/App.css (o index.css) */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap');
+
+/* ... (resto de tus estilos) ... */
+
+/* src/App.css */
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.gallery {
+  display:  grid ;
+  grid-template-columns: repeat(3, 1fr); /* Crea 3 columnas de igual tamaño */
+  gap: 10px; /* Espacio entre las imágenes */
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+

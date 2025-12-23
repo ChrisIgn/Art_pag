@@ -1,0 +1,112 @@
+/* src/components/organisms/Header.css */
+
+.new-main-header {
+  /* --- POSICIONAMIENTO --- */
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; 
+  
+  /* --- ESTÉTICA --- */
+  background-color: rgba(14, 22, 36, 0.95); 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 15px 40px;
+
+  /* --- CAMBIOS CLAVE PARA ALINEACIÓN IZQ/DER --- */
+  display: flex; /* Activa Flexbox */
+  justify-content: space-between; /* Empuja el título a la izq y nav a la der */
+  align-items: center; /* Centra verticalmente los elementos */
+  /* Eliminamos text-align: center; ya no es necesario */
+}
+
+/* 1. Estilo del Título Superior */
+.header-title {
+  color: #9BA9B8; 
+  font-size: 2.5em; 
+  
+  /* CAMBIO: Eliminamos margin-bottom porque ya no están apilados */
+  margin-bottom: 0; 
+  
+  font-family: 'Times New Roman', Times, serif; 
+  font-weight: 200; 
+  letter-spacing: 3px; 
+  position: relative; 
+  padding-bottom: 10px; /* Ajustado ligeramente */
+}
+
+/* Ajuste de la línea decorativa del título */
+.header-title::after {
+   content: ''; 
+   position: absolute;
+   
+   /* CAMBIO: Alineación a la izquierda en lugar de centrada */
+   left: 0; 
+   transform: none; /* Quitamos el truco de centrado */
+   bottom: 0; 
+   
+   /* Puedes ajustar el ancho. '100%' ocupará lo que mida el texto, 
+      o puedes dejarlo en px fijos si prefieres */
+   width: 100%;  
+   
+   height: 4px; 
+   background-color: #717880; 
+   border-radius: 2px;
+}
+
+/* (Tu clase header-title2 la dejo igual, asumiendo que es para otra cosa) */
+.header-title2{
+  color: #bd3f3f; 
+  font-size: 2.0em; 
+  margin-bottom: 20px; 
+  font-family: 'Times New Roman', Times, serif; 
+  font-weight: 100; 
+  letter-spacing: 2px; 
+  position: relative; 
+  padding-bottom: 5px; 
+}
+
+/* 2. Estilos de la Navegación */
+.header-nav ul {
+  list-style: none;
+  display: flex;
+  /* CAMBIO: Quitamos justify-content: center, ya no es necesario centrarlo */
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  /* Ajustamos el margen para que se vea bien alineado a la derecha */
+  margin-left: 30px; /* Espacio a la izquierda de cada item */
+  Right: 60px;
+  margin-right: 0;
+  
+  padding-bottom: 10px; 
+  position: relative; 
+}
+
+.nav-item a {
+  color: #EAEAEA; 
+  text-decoration: none;
+  font-size: 1em;
+  font-weight: 500;
+  text-transform: uppercase; 
+  letter-spacing: 0.5px;
+  padding-bottom: 5px; 
+  transition: color 0.3s ease; /* Agregado para suavidad */
+}
+
+.nav-item.active a {
+    color: #4A90E2; /* Cambié esto a tu azul de acento para que resalte sobre fondo oscuro */
+    font-weight: 600; 
+}
+
+.nav-item.active::after {
+  content: ''; 
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0; 
+  height: 2px; 
+  background-color: #4A90E2; 
+}

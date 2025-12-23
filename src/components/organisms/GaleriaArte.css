@@ -1,0 +1,103 @@
+/* 1. Contenedor para el encabezado (Título + Subtítulo) */
+.galeria-header {
+  margin-bottom: 50px;
+  border-bottom: 1px solid rgba(74, 144, 226, 0.2); /* Línea muy sutil */
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.galeria-arte-section {
+  padding: 80px 40px; /* Más espacio para respirar */
+  max-width: 1400px; /* Permitir que sea un poco más ancho */
+  margin: 0 auto;
+  
+  /* Opcional: Un fondo muy sutil para diferenciar la sección */
+  /* background: linear-gradient(to bottom, transparent, rgba(74, 144, 226, 0.05), transparent); */
+}
+
+.galeria-titulo {
+  font-family: 'Times New Roman', serif; /* Toque más artístico */  
+  font-size: 3.5em; /* Un poco más grande */
+  color: #4A90E2;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  
+  /* Efecto de "Eco" sutil con sombra */
+  text-shadow: 0 0 30px rgba(74, 144, 226, 0.2);
+}
+
+/* Línea de acento debajo del título (más corta y brillante) */
+.galeria-titulo::after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(to right, #4A90E2, transparent);
+    margin-top: 10px;
+}
+
+/* Subtítulo decorativo (opcional, si decides agregarlo en el JS) */
+.galeria-subtitulo {
+    font-family: 'Lato', sans-serif;
+    color: #9BA9B8;
+    font-size: 1.2em;
+    max-width: 600px;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+.galeria-grid-contenedor {
+  display: grid;
+  /* Columnas base de 250px */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  /* Filas automáticas de 250px de alto */
+  grid-auto-rows: 250px; 
+  gap: 20px;
+  
+  /* MAGIA: Rellena los huecos vacíos automáticamente */
+  grid-auto-flow: dense; 
+}
+
+/* --- PATRÓN DE MOSAICO AUTOMÁTICO --- */
+
+/* 1. La primera imagen es la "Hero" de la galería (Grande: 2x2) */
+.galeria-grid-contenedor > .obra-arte-contenedor:nth-child(1) {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+/* 2. Cada 4ta imagen será ancha (Panorámica: 2 columnas) */
+.galeria-grid-contenedor > .obra-arte-contenedor:nth-child(4n) {
+    grid-column: span 2;
+}
+
+/* 3. Cada 5ta imagen será alta (Retrato: 2 filas) */
+.galeria-grid-contenedor > .obra-arte-contenedor:nth-child(5n) {
+    grid-row: span 2;
+}
+
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .galeria-arte-section {
+        padding: 40px 20px;
+    }
+    
+    .galeria-titulo {
+        text-align: center;
+        font-size: 2.5em;
+    }
+
+    .galeria-grid-contenedor {
+        /* En móvil volvemos a una cuadrícula simple de 1 columna o 2 pequeñas */
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        grid-auto-rows: 200px; /* Altura fija en móvil */
+        grid-auto-flow: row; /* Desactivar el flujo denso */
+    }
+
+    /* Resetear los spans en móvil para que no se rompa el layout */
+    .galeria-grid-contenedor > .obra-arte-contenedor:nth-child(n) {
+        grid-column: span 1 !important;
+        grid-row: span 1 !important;
+    }
+}

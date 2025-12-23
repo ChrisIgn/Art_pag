@@ -1,0 +1,63 @@
+/* src/components/molecules/Tarjeta.css */
+
+.tarjeta-contenedor {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  /* padding: 20px;  -- Quitamos el padding aquí porque la imagen ya ocupará ese espacio superior */
+  margin: 15px;
+  width: 1400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  overflow: hidden; /* Asegura que la imagen no se desborde si tiene bordes redondeados */
+  display: flex; /* Usar flexbox para organizar contenido */
+  flex-direction: column; /* Apilar elementos verticalmente */
+}
+
+.tarjeta-imagen {
+  width: 1843px; /* La imagen ocupa todo el ancho de la tarjeta */
+  height: 413px; /* Altura fija para que todas las imágenes tengan el mismo tamaño */
+  object-fit: cover; /* Recorta la imagen para que cubra el espacio sin distorsionarse */
+  object-position: center;
+  border-radius: 8px 8px 0 0; /* Bordes redondeados solo en la parte superior */
+  margin-bottom: 15px; /* Espacio entre la imagen y el título */ 
+  
+}
+
+.tarjeta-titulo {
+  color: #333;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  padding: 0 15px; /* Añadir padding al título y contenido */
+}
+
+.tarjeta-contenido {
+  color: #666;
+  margin-bottom: 20px;
+  flex-grow: 1; /* Permite que el contenido ocupe el espacio restante */
+  padding: 0 15px;
+}
+
+/* Estilos para el botón, si es necesario ajustar el padding después de flex-grow */
+.tarjeta-contenedor .boton-base {
+    margin-top: auto; /* Empuja el botón hacia abajo si flex-grow está activo en el contenido */
+    padding: 10px 20px;
+    margin-bottom: 15px; /* Espacio inferior para el botón */
+}
+
+/* Estilo Único para la Tarjeta Destacada */
+.tarjeta-destacada {
+    border: 3px solid #d8b6aa; /* Borde de color de acento */
+    box-shadow: 0 8px 16px rgba(255, 127, 80, 0.4); /* Sombra resaltada */
+    transform: scale(2.05); /* Opcional: hacerla ligeramente más grande */
+    transition: all 0.3s ease; /* Transición suave */
+    
+}
+
+.imagen-destacada {
+    width: 1843px; /* La imagen ocupa todo el ancho de la tarjeta */
+    height: 413px; /* Altura fija para que todas las imágenes tengan el mismo tamaño */
+    object-fit: cover; /* Recorta la imagen para que cubra el espacio sin distorsionarse */
+    object-position: center;
+    border-radius: 8px 8px 0 0; /* Bordes redondeados solo en la parte superior */
+    margin-bottom: 15px;
+}
