@@ -1,5 +1,7 @@
 import React from 'react';
 import UploadArtworkForm from '../components/UploadArtworkForm'; // Tu formulario
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase/config';
 
 const AdminPage = () => {
     return (
@@ -18,6 +20,14 @@ const AdminPage = () => {
             <div style={{ textAlign: 'center', marginTop: '60px' }}>
                  <a href="/" style={{ color: '#4A90E2', textDecoration: 'none', fontSize: '1.2em' }}>
                     &larr; Volver al Home
+
+
+            <button 
+            onClick={() => signOut(auth)} 
+            style={{ marginTop: '20px', background: '#ff6347', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer' }}
+            >
+            Cerrar Sesión
+            </button>
                  </a>
             </div>
         </div>

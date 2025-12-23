@@ -12,7 +12,7 @@ import { Header } from '../components/organisms/Header';
 import OcPrincipal from '../components/organisms/Oc_Principal';
 import OcIntro from '../components/organisms/OcIntro';
 import GaleriaArte from '../components/organisms/GaleriaArte';
-import UploadArtworkForm from '../components/UploadArtworkForm';
+//import UploadArtworkForm from '../components/UploadArtworkForm';
 
 
 // =========================================================================
@@ -86,9 +86,9 @@ const HomePage = () => {
                     />
                 </section> 
 
-                <section className='seccion-pantalla-completa'> 
+                {/* <section className='seccion-pantalla-completa'> 
                     <UploadArtworkForm/>
-                </section> 
+                </section>  */}
 
                 {/* 4. CONTENIDO FLUIDO (Galerías y Footer) */}
                 <div className="seccion-contenido-fluido">
