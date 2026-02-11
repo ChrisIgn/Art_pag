@@ -1,112 +1,181 @@
-/* src/components/organisms/Header.css */
+/* src/components/organisms/Header.css
+   Cleaned and organized header styles
+*/
 
 .new-main-header {
-  /* --- POSICIONAMIENTO --- */
-  position: fixed; 
-  top: 0;
-  left: 0;
+  position: fixed;
+  inset: 0 0 auto 0; /* top:0; right:0; bottom:auto; left:0 */
   width: 100%;
-  z-index: 1000; 
-  
-  /* --- ESTÉTICA --- */
-  background-color: rgba(14, 22, 36, 0.95); 
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(14, 22, 36, 0.95);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 15px 40px;
-
-  /* --- CAMBIOS CLAVE PARA ALINEACIÓN IZQ/DER --- */
-  display: flex; /* Activa Flexbox */
-  justify-content: space-between; /* Empuja el título a la izq y nav a la der */
-  align-items: center; /* Centra verticalmente los elementos */
-  /* Eliminamos text-align: center; ya no es necesario */
+  padding: 12px 36px;
+  box-sizing: border-box; /* ensure padding doesn't cause overflow */
 }
 
-/* 1. Estilo del Título Superior */
 .header-title {
-  color: #9BA9B8; 
-  font-size: 2.5em; 
-  
-  /* CAMBIO: Eliminamos margin-bottom porque ya no están apilados */
-  margin-bottom: 0; 
-  
-  font-family: 'Times New Roman', Times, serif; 
-  font-weight: 200; 
-  letter-spacing: 3px; 
-  position: relative; 
-  padding-bottom: 10px; /* Ajustado ligeramente */
+  color: #9BA9B8;
+  font-size: 1.75rem;
+  margin: 0;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 200;
+  letter-spacing: 3px;
+  position: relative;
+  padding-bottom: 8px;
 }
 
-/* Ajuste de la línea decorativa del título */
 .header-title::after {
-   content: ''; 
-   position: absolute;
-   
-   /* CAMBIO: Alineación a la izquierda en lugar de centrada */
-   left: 0; 
-   transform: none; /* Quitamos el truco de centrado */
-   bottom: 0; 
-   
-   /* Puedes ajustar el ancho. '100%' ocupará lo que mida el texto, 
-      o puedes dejarlo en px fijos si prefieres */
-   width: 100%;  
-   
-   height: 4px; 
-   background-color: #717880; 
-   border-radius: 2px;
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #717880;
+  border-radius: 2px;
 }
 
-/* (Tu clase header-title2 la dejo igual, asumiendo que es para otra cosa) */
-.header-title2{
-  color: #bd3f3f; 
-  font-size: 2.0em; 
-  margin-bottom: 20px; 
-  font-family: 'Times New Roman', Times, serif; 
-  font-weight: 100; 
-  letter-spacing: 2px; 
-  position: relative; 
-  padding-bottom: 5px; 
+
+.header-title2 {
+  color: #bd3f3f;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 100;
+  letter-spacing: 2px;
+  position: relative;
+  padding-bottom: 5px;
 }
 
-/* 2. Estilos de la Navegación */
 .header-nav ul {
   list-style: none;
   display: flex;
-  /* CAMBIO: Quitamos justify-content: center, ya no es necesario centrarlo */
+  gap: 30px;
   padding: 0;
   margin: 0;
+  align-items: center;
 }
 
 .nav-item {
-  /* Ajustamos el margen para que se vea bien alineado a la derecha */
-  margin-left: 30px; /* Espacio a la izquierda de cada item */
-  Right: 60px;
-  margin-right: 0;
-  
-  padding-bottom: 10px; 
-  position: relative; 
+  padding-bottom: 10px;
+  position: relative;
 }
-
 .nav-item a {
-  color: #EAEAEA; 
+  color: #EAEAEA;
   text-decoration: none;
-  font-size: 1em;
+  font-size: 0.95rem;
   font-weight: 500;
-  text-transform: uppercase; 
+  text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding-bottom: 5px; 
-  transition: color 0.3s ease; /* Agregado para suavidad */
+  transition: color 0.2s ease;
 }
 
 .nav-item.active a {
-    color: #4A90E2; /* Cambié esto a tu azul de acento para que resalte sobre fondo oscuro */
-    font-weight: 600; 
+  color: #4A90E2;
+  font-weight: 600;
 }
 
 .nav-item.active::after {
-  content: ''; 
+  content: '';
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0; 
-  height: 2px; 
-  background-color: #4A90E2; 
+  bottom: -2px;
+  height: 2px;
+  background-color: #4A90E2;
 }
+
+/* Responsive: stack title + nav on small screens */
+@media (max-width: 768px) {
+  .new-main-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 12px; /* reduce side padding on small screens */
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+  }
+
+  .header-nav ul {
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+}
+
+/* Mobile menu toggle */
+.menu-toggle {
+  display: none; /* shown on small screens */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 10px; /* larger hit area */
+  line-height: 0;
+  z-index: 1201; /* above the nav when open */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.hamburger {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #EAEAEA;
+  position: relative;
+  transition: all 0.2s ease;
+  
+}
+.hamburger::before,
+.hamburger::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #EAEAEA;
+  transition: all 0.25s ease;
+  
+}
+.hamburger::before { top: -7px; }
+.hamburger::after { top: 7px; }
+.hamburger.is-open { background: transparent; }
+.hamburger.is-open::before { transform: rotate(45deg); top: 0; }
+.hamburger.is-open::after { transform: rotate(-45deg); top: 0; }
+
+@media (max-width: 768px) {
+  .menu-toggle { display: block; }
+
+  .header-top { box-sizing: border-box; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+
+  /* ensure the toggle stays visible: use margin-left auto and small right padding */
+  .menu-toggle { margin-left: auto; margin-right: 4px; position: relative; }
+
+  /* Position the nav as an overlay below the header-top for predictable touch
+     targets and to avoid shifting layout. */
+  .header-nav {
+    display: none;
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(14,22,36,0.98);
+    padding: 12px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    border-top: 1px solid rgba(255,255,255,0.03);
+    z-index: 1200;
+  }
+  .header-nav.open { display: block; }
+
+  .header-nav ul { flex-direction: column; gap: 12px; padding: 0; margin: 0; }
+
+  .nav-item { padding: 8px 0; }
+
+  /* Make each link a larger touch target */
+  .nav-item a { display: block; padding: 10px 12px; }
+}
+
+

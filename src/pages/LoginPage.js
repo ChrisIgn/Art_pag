@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { auth } from '../firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import './LoginPage.css';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -20,33 +21,33 @@ const LoginPage = () => {
     };
 
     return (
-        <div style={{ backgroundColor: '#0E1624', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <form onSubmit={handleLogin} style={loginFormStyle}>
-                <h2 style={{ color: '#4A90E2', textAlign: 'center' }}>Acceso Admin</h2>
-                {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+        <div className="login-page">
+            <form onSubmit={handleLogin} className="login-form">
+                <h2>Acceso Admin</h2>
+                {error && <p className="login-error">{error}</p>}
                 <input 
                     type="email" 
                     placeholder="Tu correo" 
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
-                    style={inputStyle} 
+                    className="login-input" 
                 />
                 <input 
                     type="password" 
                     placeholder="Contraseña" 
                     value={password} 
                     onChange={(e) => setPassword(e.target.value)} 
-                    style={inputStyle} 
+                    className="login-input" 
                 />
-                <button type="submit" style={buttonStyle}>Entrar</button>
+                <button type="submit" className="login-button">Entrar</button>
+              <div className="admin-actions">
+                  <a className="admin-backlink" href="/">
+                    &larr; Volver al Home
+                  </a>
+              </div>   
             </form>
         </div>
     );
 };
-
-// Estilos rápidos
-const loginFormStyle = { display: 'flex', flexDirection: 'column', gap: '20px', padding: '40px', background: '#1a2331', borderRadius: '10px', width: '300px' };
-const inputStyle = { padding: '10px', borderRadius: '5px', border: '1px solid #3d4f62', background: '#283747', color: 'white' };
-const buttonStyle = { padding: '10px', background: '#4A90E2', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' };
 
 export default LoginPage;

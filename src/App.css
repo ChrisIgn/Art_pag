@@ -1,76 +1,44 @@
 /* src/App.css */
-/* 1. Activar el Scroll Snap en toda la página */
+
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap');
+
+/* ==========================
+   Global / Base styles
+   ========================== */
 html {
-  scroll-behavior: smooth; /* Para que el botón de 'Comenzar' baje suave */
-  scroll-snap-type: y mandatory; /* 'Mandatory' fuerza a que siempre aterrice en una sección */
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
   overflow-y: scroll;
-}
-
-
-/* 2. Definir las secciones de "Pantalla Completa" */
-.seccion-pantalla-completa {
-  /* Esto obliga a la sección a ocupar al menos toda la pantalla */
-  min-height: 100vh;
-  
-  /* Esto define el punto de alineación (el tope de la sección toca el tope de la ventana) */
-  scroll-snap-align: start;
-  
-  /* (Opcional) Esto evita que te pases de largo la sección muy rápido */
-  scroll-snap-stop: always; 
-  
-  /* Flexbox para centrar el contenido (Opcional, pero se ve mejor) */
-  display: flex;
-  flex-direction: column;
-  justify-content: center; 
-}
-
-/* 3. El contenido fluido (Galerías, etc.) */
-.seccion-contenido-fluido {
-  /* Alineamos el inicio de este bloque grande */
-  scroll-snap-align: start;
-  /* Aquí no forzamos 100vh porque el contenido es variable */
 }
 
 .App {
   font-family: 'Arial', sans-serif;
-  color: #EAEAEA; /* CAMBIO: Color de texto principal a blanco/gris claro */
+  color: #EAEAEA;
   min-height: 100vh;
-  background-color: #0E1624; /* CAMBIO CLAVE: Fondo Azul Oscuro */
+  background-color: #0E1624;
 }
 
-/* El contenido principal debe ser transparente para que se vea el fondo */
+/* Page content wrapper */
 .page-content {
-    max-width: 0 auto; 
-    margin: 0 auto;
-    padding: 20px;
-    background-color: transparent; /* Aseguramos la transparencia */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: transparent;
 }
 
-h1, h2 {
-    color: #4A90E2; /* CAMBIO: Títulos en azul de acento */
-    margin-bottom: 15px;
-    font-weight: 700;
-    text-align: center;
-}
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Typography */
+h1,
+h2 {
+  color: #4A90E2;
+  margin-bottom: 15px;
+  font-weight: 700;
+  text-align: center;
 }
 
-.rojo {
-  background-color: red;
-}
-
-.verde {
-  background-color: green;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
+/* ==========================
+   App Header / Logo
+   ========================== */
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -82,42 +50,57 @@ h1, h2 {
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
-/* src/App.css (o index.css) */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap');
+/* ==========================
+   Sections & Layout helpers
+   ========================== */
+.seccion-pantalla-completa {
+  min-height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-/* ... (resto de tus estilos) ... */
+.seccion-contenido-fluido {
+  scroll-snap-align: start;
+}
 
-/* src/App.css */
+/* Utilities */
+.rojo { background-color: red; }
+.verde { background-color: green; }
 
+/* ==========================
+   Animations
+   ========================== */
 @keyframes fadeInSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-
+/* ==========================
+   Gallery
+   ========================== */
 .gallery {
-  display:  grid ;
-  grid-template-columns: repeat(3, 1fr); /* Crea 3 columnas de igual tamaño */
-  gap: 10px; /* Espacio entre las imágenes */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }
 
 .gallery img {
@@ -126,3 +109,10 @@ h1, h2 {
   display: block;
 }
 
+/* ==========================
+   Admin page small tweaks
+   ========================== */
+/* separa horizontalmente el botón del texto */
+a > button {
+  margin-left: 12px;
+}

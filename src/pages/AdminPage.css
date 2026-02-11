@@ -1,0 +1,44 @@
+/* Styles for AdminPage */
+.admin-page {
+  padding: 100px 20px 40px;
+  background-color: #0E1624;
+  min-height: 100vh;
+  color: white;
+}
+
+.admin-title {
+  color: #4A90E2;
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 3em;
+}
+
+.admin-subtitle {
+  color: #9BA9B8;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.admin-actions {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.admin-backlink {
+  color: #4A90E2;
+  text-decoration: none;
+  font-size: 1.2em;
+  display: inline-block;
+}
+
+.admin-backlink button {
+  margin-top: 20px;
+  margin-left: 12px; /* separacion horizontal si quedan en la misma linea */
+  margin-bottom: 40px; /* espacio inferior */
+  background: #ff6347;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}

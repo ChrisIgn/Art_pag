@@ -1,0 +1,83 @@
+/* Styles for HomePage component - extracted from inline styles */
+.home-loading {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0A122A;
+  color: white;
+  font-size: 1.5em;
+}
+
+.about-me-snippet {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 60px 20px;
+  background-color: #f9f9f9;
+}
+.about-me-snippet .about-left {
+  flex: 1;
+  text-align: left;
+}
+.about-me-snippet .about-left h2 {
+  font-size: 2.5em;
+}
+.about-me-snippet .about-left p {
+  font-size: 1.1em;
+  color: #555;
+  line-height: 1.6;
+  margin: 20px 0;
+}
+.about-me-snippet .about-right {
+  flex: 1;
+}
+.about-me-snippet .about-right img {
+  width: 100%;
+  border-radius: 8px;
+}
+.about-me-snippet .about-left .about-link {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.contact-cta {
+  padding: 80px 20px;
+  text-align: center;
+  background-color: #282c34;
+  color: white;
+}
+.contact-cta h2 {
+  font-size: 2.5em;
+}
+.contact-cta p {
+  font-size: 1.2em;
+  margin: 20px 0 30px;
+}
+.contact-cta .contact-btn {
+  padding: 15px 30px;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 40px 20px;
+  border-top: 1px solid #ddd;
+  margin-top: 50px;
+}
+
+/* En tu HomePage.css o Header.css */
+.anchor-section {
+    /* Esto hace que el "anclaje" se detenga 80px antes del borde superior */
+    scroll-margin-top: 80px; 
+}
+
+html {
+    scroll-behavior: smooth; /* Para que el deslizamiento sea suave */
+}

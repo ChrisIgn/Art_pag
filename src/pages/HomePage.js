@@ -21,6 +21,7 @@ import GaleriaArte from '../components/organisms/GaleriaArte';
 import brixoi from '../assets/images/arte/Brixoioi.jpg';
 import Brighella from '../assets/images/arte/Brighella.jpg';
 import Brir from '../assets/images/arte/Brir.jpg'; // Segunda fase
+import './HomePage.css';
 
 
 const HomePage = () => {
@@ -47,7 +48,7 @@ const HomePage = () => {
     // 4.1. ESTADO DE CARGA (Return temprano del componente si está cargando)
     if (cargando) {
         return (
-            <div style={{minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#0A122A', color: 'white', fontSize: '1.5em'}}>
+            <div className="home-loading">
                 Cargando el arte desde el Éter...
             </div>
         );
@@ -66,12 +67,12 @@ const HomePage = () => {
             <main className="page-content"> 
                 
                 {/* 1. BLOQUE INTRODUCCIÓN (Scroll Snap Point 1) */}
-                <section className="seccion-pantalla-completa">
+                <section id="home" className="seccion-pantalla-completa anchor-section">
                     <OcIntro />
                 </section>
                 
                 {/* 2. BLOQUE OC PRINCIPAL (Scroll Snap Point 2) */}
-                <section id="oc-principal-ancla" className="seccion-pantalla-completa">
+                <section id="personal" className="seccion-pantalla-completa anchor-section">
                     <OcPrincipal 
                         titulo="Selene"
                         nombreCodigo="Brighella"
@@ -103,38 +104,38 @@ const HomePage = () => {
                     </section>
 
                     {/* GALERÍA 2: Galery */}
-                    <GaleriaArte
-                        obras={obrasOtherStyles} 
-                        titulo="Galery" 
-                    />
+                    <section id="other" className="seccion-pantalla-completa anchor-section">
+                        <GaleriaArte
+                            obras={obrasOtherStyles} 
+                            titulo="Galery" 
+                        />
+                    </section>
                     
                     <hr />
                     
                     {/* SECCIÓN 5: SOBRE MÍ (Snippet) */}
-                    <section className="about-me-snippet" style={{ display: 'flex', alignItems: 'center', gap: '40px', padding: '60px 20px', backgroundColor: '#f9f9f9' }} >
-                        <div style={{ flex: 1, textAlign: 'left' }}>
-                            <h2 style={{ fontSize: '2.5em' }}>Sobre Mí</h2>
-                            <p style={{ fontSize: '1.1em', color: '#555', lineHeight: 1.6, margin: '20px 0' }}>
+                    <section id="about" className="about-me-snippet anchor-section">
+                        <div className="about-left">
+                            <h2>Sobre Mí</h2>
+                            <p>
                                 Soy Aponia_, un artista apasionada... 
-                            </p> 
-                            <a href="#/about-me" style={{ textDecoration: 'none', color: '#007bff', fontWeight: 'bold' }}>Leer más sobre mí...</a>
+                            </p>
+                            <a className="about-link" href="#/about-me">Leer más sobre mí...</a>
                         </div>
-                        <div style={{ flex: 1 }}>
-                            <img src={brixoi} alt="Avatar" style={{ width: '100%', borderRadius: '8px' }} />
+                        <div className="about-right">
+                            <img src={brixoi} alt="Avatar" />
                         </div>
                     </section>
                     
                     {/* SECCIÓN 6: LLAMADA A LA ACCIÓN (Contacto) */}
-                    <section className="contact-cta" style={{ padding: '80px 20px', textAlign: 'center', backgroundColor: '#282c34', color: 'white' }}>
-                        <h2 style={{ fontSize: '2.5em' }}>¿Interesado en una comisión?</h2>
-                        <p style={{ fontSize: '1.2em', margin: '20px 0 30px' }}>Disponible para trabajos.</p>
-                        <a href="#/contact" style={{ padding: '15px 30px', background: '#007bff', color: 'white', textDecoration: 'none', borderRadius: '5px', fontWeight: 'bold' }}>
-                            Contactar Ahora
-                        </a>
+                    <section className="contact-cta">
+                        <h2>¿Interesado en una comisión?</h2>
+                        <p>Disponible para trabajos.</p>
+                        <a className="contact-btn" href="#/contact">Contactar Ahora</a>
                     </section>
 
                     {/* FOOTER */}
-                    <footer style={{ textAlign: 'center', padding: '40px 20px', borderTop: '1px solid #ddd', marginTop: '50px' }}>
+                    <footer className="site-footer">
                         <p>© {new Date().getFullYear()} Erii Art Web. Todos los derechos reservados.</p>
                     </footer>
                 </div>

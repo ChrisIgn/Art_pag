@@ -1,0 +1,66 @@
+/* Styles for LoginPage */
+.login-page {
+  background-color: #0E1624;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px;
+  background: #1a2331;
+  border-radius: 10px;
+  width: 300px;
+}
+
+.login-form h2 {
+  color: #4A90E2;
+  text-align: center;
+  margin: 0;
+}
+
+.login-error {
+  color: red;
+  text-align: center;
+  margin: 0;
+}
+
+.login-input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #3d4f62;
+  background: #283747;
+  color: white;
+}
+
+.login-button {
+  padding: 10px;
+  background: #4A90E2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.admin-backlink {
+  color: #4A90E2;
+  text-decoration: none;
+  font-size: 1.2em;
+  display: inline-block;
+}
+
+.admin-backlink button {
+  margin-top: 20px;
+  margin-left: 12px; /* separacion horizontal si quedan en la misma linea */
+  margin-bottom: 40px; /* espacio inferior */
+  background: #ff6347;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
