@@ -14,6 +14,18 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding: 12px 36px;
   box-sizing: border-box; /* ensure padding doesn't cause overflow */
+  transition: all 0.4s ease;
+}
+
+.header-transparent {
+    background-color: transparent;
+    border-bottom: 1px solid transparent;
+}
+
+.header-solid {
+    background-color: rgba(14, 22, 36, 0.98);
+    backdrop-filter: blur(10px); /* Efecto moderno de 2026 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .header-title {
@@ -95,6 +107,7 @@
     align-items: flex-start;
     gap: 10px;
     padding: 12px 12px; /* reduce side padding on small screens */
+
   }
 
   .header-title {

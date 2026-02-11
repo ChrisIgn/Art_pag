@@ -1,145 +1,135 @@
-import React from 'react';
-
-// =========================================================================
-// 1. IMPORTS DE HOOKS Y FIREBASE
-// =========================================================================
+import React, { useEffect } from 'react'; // Añadimos useEffect
 import { useFirestore } from '../hooks/useFirestore';
 
-// =========================================================================
-// 2. IMPORTS DE COMPONENTES (Organismos/Moléculas)
-// =========================================================================
+// COMPONENTES
 import { Header } from '../components/organisms/Header'; 
 import OcPrincipal from '../components/organisms/Oc_Principal';
 import OcIntro from '../components/organisms/OcIntro';
 import GaleriaArte from '../components/organisms/GaleriaArte';
-//import UploadArtworkForm from '../components/UploadArtworkForm';
 
-
-// =========================================================================
-// 3. IMPORTS DE ASSETS (Estáticos)
-// =========================================================================
+// ASSETS
 import brixoi from '../assets/images/arte/Brixoioi.jpg';
 import Brighella from '../assets/images/arte/Brighella.jpg';
-import Brir from '../assets/images/arte/Brir.jpg'; // Segunda fase
+import Brir from '../assets/images/arte/Brir.jpg'; 
 import './HomePage.css';
 
-
 const HomePage = () => {
-
-    // =========================================================================
-    // 4. LÓGICA DE DATOS Y ESTADO DE CARGA
-    // =========================================================================
-    
-    // Llamamos a la base de datos para obtener la colección 'obras'
     const { docs: datosDeFirebase, cargando } = useFirestore('obras');
-
-    // Definimos la fuente de datos. Usamos [] si aún no llegan para evitar errores.
     const galeria = datosDeFirebase || [];
 
     // Lógica de Filtrado
-    const obrasPersonalStyle = galeria.filter(obra => 
-        obra.categorias && obra.categorias.includes('Bri')
-    );
-    
-    const obrasOtherStyles = galeria.filter(obra => 
+
+    const Galery = galeria.filter(obra => 
         obra.categorias && obra.categorias.includes('Galery')
     );
 
-    // 4.1. ESTADO DE CARGA (Return temprano del componente si está cargando)
+
+    // =========================================================================
+    // EFECTO DE REVELACIÓN (SCROLL REVEAL) - Nivel 2026
+    // =========================================================================
+    useEffect(() => {
+        const observerOptions = {
+            threshold: 0.15 // Se activa cuando el 15% del elemento es visible
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-active');
+                }
+            });
+        }, observerOptions);
+
+        // Seleccionamos todas las secciones con la clase 'reveal'
+        const sections = document.querySelectorAll('.reveal');
+        sections.forEach(section => observer.observe(section));
+
+        return () => observer.disconnect();
+    }, [cargando]); // Se re-ejecuta cuando termina de cargar los datos
+
     if (cargando) {
         return (
             <div className="home-loading">
-                Cargando el arte desde el Éter...
+                <div className="loader-portal"></div>
+                <p>Cargando el arte desde el Éter...</p>
             </div>
         );
     }
 
-    // =========================================================================
-    // 5. RENDERIZADO (JSX)
-    // =========================================================================
-
     return (
         <div className="home-page-layout">
-            
-            {/* CABECERA (Header) */}
+            {/* Fondo Atmosférico de partículas/luces (opcional añadir div extra) */}
+            <div className="atmospheric-layers"></div>
+
             <Header paginaActiva="HOME" /> 
             
             <main className="page-content"> 
                 
-                {/* 1. BLOQUE INTRODUCCIÓN (Scroll Snap Point 1) */}
+                {/* INTRODUCCIÓN */}
                 <section id="home" className="seccion-pantalla-completa anchor-section">
                     <OcIntro />
                 </section>
                 
-                {/* 2. BLOQUE OC PRINCIPAL (Scroll Snap Point 2) */}
-                <section id="personal" className="seccion-pantalla-completa anchor-section">
+                {/* OC PRINCIPAL - Con clase reveal */}
+                <section id="personal" className="seccion-pantalla-completa anchor-section reveal">
                     <OcPrincipal 
                         titulo="Selene"
                         nombreCodigo="Brighella"
                         descripcion="Bri es uno de mis actuales Ocs favoritos. Es un personaje con una historia profunda y un diseño visual que refleja su personalidad algo compleja. 
                         La cual ha vivido diversas experiencias que la han moldeado en quien es hoy. El estaria destinadx mas que un aprendiz el cual durante mucho tiempo fue tratado como alguien que no tiene cierta sensacion de pureza lo cual lo hizo sentir alguien incompetente y fue mal visto, sintiendo que sus esfuerzos fueron para nada, tras este acontecimiento Calypso que estuvo a su lado ese periodo, 
                         le enseño un cierto metodo pero requeria cierto sacricio, el cual siendo un angel podria perder su esencia pura... pero tenia un alto costo.."
-                        clase="Ángel Caído "
+                        clase="Ángel Caído"
                         habilidades={['May the light guide you', 'Even angels can play tricks!', 'Miracles are real']} 
                         imagenSrc={Brighella}
                         imagenSrc2={Brir}
-                        altImagen="Retrato principal de Bri, mi OC"
+                        altImagen="Retrato principal de Bri"
                     />
                 </section> 
 
-                {/* <section className='seccion-pantalla-completa'> 
-                    <UploadArtworkForm/>
-                </section>  */}
-
-                {/* 4. CONTENIDO FLUIDO (Galerías y Footer) */}
                 <div className="seccion-contenido-fluido">
                     
-                    {/* GALERÍA 1: Ecos del Mundo */}
-                    <section id="ecos-del-mundo-ancla" className="seccion-pantalla-completa">  
+                    {/* GALERÍA 1 - Con clase reveal */}
+                    <section id="ecos-del-mundo-ancla" className="anchor-section reveal">  
                         <GaleriaArte 
-                            obras={obrasPersonalStyle} 
+                            obras={Galery} 
                             titulo="Ecos del Mundo" 
-                            descripcion="Fragmentos visuales de realidades alternas. Cada pieza es un eco de una historia que existe en los márgenes de Brighella."
+                            descripcion="Fragmentos visuales de realidades alternas..."
                         />
                     </section>
 
-                    {/* GALERÍA 2: Galery */}
-                    <section id="other" className="seccion-pantalla-completa anchor-section">
+                    {/* GALERÍA 2 - Con clase reveal
+                    <section id="other" className="anchor-section reveal">
                         <GaleriaArte
-                            obras={obrasOtherStyles} 
+                            obras={Galery} 
                             titulo="Galery" 
                         />
-                    </section>
+                    </section> */}
                     
-                    <hr />
+                    <hr className="reveal" />
                     
-                    {/* SECCIÓN 5: SOBRE MÍ (Snippet) */}
-                    <section id="about" className="about-me-snippet anchor-section">
+                    {/* SOBRE MÍ */}
+                    <section id="about" className="about-me-snippet anchor-section reveal">
                         <div className="about-left">
                             <h2>Sobre Mí</h2>
-                            <p>
-                                Soy Aponia_, un artista apasionada... 
-                            </p>
+                            <p>Soy Aponia_, un artista apasionada...</p>
                             <a className="about-link" href="#/about-me">Leer más sobre mí...</a>
                         </div>
                         <div className="about-right">
-                            <img src={brixoi} alt="Avatar" />
+                            <img src={brixoi} alt="Avatar" className="floating-avatar" />
                         </div>
                     </section>
                     
-                    {/* SECCIÓN 6: LLAMADA A LA ACCIÓN (Contacto) */}
-                    <section className="contact-cta">
+                    {/* CONTACTO */}
+                    <section className="contact-cta reveal">
                         <h2>¿Interesado en una comisión?</h2>
                         <p>Disponible para trabajos.</p>
                         <a className="contact-btn" href="#/contact">Contactar Ahora</a>
                     </section>
 
-                    {/* FOOTER */}
                     <footer className="site-footer">
                         <p>© {new Date().getFullYear()} Erii Art Web. Todos los derechos reservados.</p>
                     </footer>
                 </div>
-
             </main>
         </div>
     );

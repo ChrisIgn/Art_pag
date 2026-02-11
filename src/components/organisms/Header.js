@@ -1,24 +1,37 @@
 // src/components/organisms/Header.jsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom'; // Añadir esta importación
 
 // Simulamos que la página activa se pasa como prop desde HomePage
 // Por ahora, la definimos internamente como 'HOME' para la demo.
-export const Header = ({ paginaActiva = 'HOME' }) => { 
-  const [menuOpen, setMenuOpen] = useState(false);
+export const Header = ({ paginaActiva }) => {
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            // Si bajamos más de 50px, el header se vuelve sólido
+            setIsScrolled(window.scrollY > 50);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const [menuOpen, setMenuOpen] = useState(false);
+
 
 const links = [
-    { name: "HOME", url: "/#home", isRoute: true }, // Apunta a la raíz + ancla
+    { name: "HOME", url: "/#home", isRoute: false }, // Apunta a la raíz + ancla
     { name: "PERSONAL STYLE", url: "#personal", isRoute: false },
-    { name: "STYLES", url: "#other", isRoute: false },
+    { name: "Ecos", url: "/#ecos-del-mundo-ancla", isRoute: false }, // Apunta a la sección de galería
+    { name: "Galeria", url: "#other", isRoute: false },
     { name: "ABOUT ME", url: "#about", isRoute: false },
     { name: "ADMIN", url: "/admin", isRoute: true }, // Nueva ruta para tu panel
 ];
 
   return (
-    <header className="new-main-header">
+    <header className={`new-main-header ${isScrolled ? 'header-solid' : 'header-transparent'}`}>
       <div className="header-top">
         <div className="header-title">Eri</div>
         <button
