@@ -1,5 +1,4 @@
-// src/components/organisms/GaleriaArte.jsx
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react'; // Añadimos useMemo
 import Arteoi from '../molecules/Arte_oi';
 import Modal from '../molecules/Modal'; 
 import './GaleriaArte.css';
@@ -9,7 +8,21 @@ const GaleriaArte = ({ obras, titulo, descripcion }) => {
   const [filtro, setFiltro] = useState('All'); // Estado para el filtro
   const [indiceSeleccionado, setIndiceSeleccionado] = useState(null);
 
-  // 1. Lógica de filtrado en tiempo real
+  // =========================================================================
+  // LOGICA DINÁMICA DE CATEGORÍAS (Nivel 2026)
+  // =========================================================================
+  const categoriasDinamicas = useMemo(() => {
+    // 1. Extraemos todos los arrays de categorías de todas las obras
+    const todasLasCategorias = obras.flatMap(obra => obra.categorias || []);
+    
+    // 2. Usamos "Set" para eliminar duplicados y creamos el array final
+    const unicas = [...new Set(todasLasCategorias)];
+    
+    // 3. Retornamos 'All' + las categorías encontradas ordenadas alfabéticamente
+    return ['All', ...unicas.sort()];
+  }, [obras]);
+
+  // Filtrado en tiempo real basado en el estado
   const obrasMostradas = filtro === 'All' 
     ? obras 
     : obras.filter(o => o.categorias && o.categorias.includes(filtro));
@@ -39,24 +52,24 @@ const GaleriaArte = ({ obras, titulo, descripcion }) => {
   const obraActual = indiceSeleccionado !== null ? obras[indiceSeleccionado] : null;
 
 return (
-    <section className="galeria-arte-section reveal">
-      <div className="galeria-header">
-        <h2 className="galeria-titulo">{titulo}</h2>
-        {descripcion && <p className="galeria-subtitulo">{descripcion}</p>}
-        
-        {/* 2. Botones de Filtro */}
-        <div className="galeria-filtros">
-          {['All', 'Bri', 'Galery'].map(cat => (
-            <button 
-              key={cat} 
-              className={`btn-filtro ${filtro === cat ? 'activo' : ''}`}
-              onClick={() => setFiltro(cat)}
-            >
-              {cat}
-            </button>
-          ))}
+  <section className="galeria-arte-section reveal">
+        <div className="galeria-header">
+          <h2 className="galeria-titulo">{titulo}</h2>
+          {descripcion && <p className="galeria-subtitulo">{descripcion}</p>}
+          
+          {/* BOTONES GENERADOS AUTOMÁTICAMENTE */}
+          <div className="galeria-filtros">
+            {categoriasDinamicas.map(cat => (
+              <button 
+                key={cat} 
+                className={`btn-filtro ${filtro === cat ? 'activo' : ''}`}
+                onClick={() => setFiltro(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
 
       <div className="galeria-grid-contenedor">
         {/* 3. Usamos 'obrasMostradas' en lugar de 'obras' */}
@@ -81,16 +94,6 @@ return (
         />,
         document.body 
       )}  
-      {/* El Modal/Lightbox */}
-      {indiceSeleccionado !== null && (
-        <Modal 
-          obra={obraActual} 
-          onClose={cerrarModal} 
-          onNavigate={navegar}
-          total={obras.length}
-          actual={indiceSeleccionado + 1}
-        />
-      )}
     </section>
   );
 };

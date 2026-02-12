@@ -143,3 +143,34 @@ html {
   pointer-events: none;
   z-index: 9998; /* Justo debajo del Lightbox pero encima de todo lo demás */
 }
+
+
+/* Transición global para el fondo */
+.home-page-layout {
+    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Modo Normal (Azul/Oscuro) */
+.global-pure {
+    background-color: #050a15;
+    --main-accent: #4A90E2;
+}
+
+/* Modo Caído (Rojo Profundo) */
+.global-fallen {
+    background-color: #120303; /* Casi negro con matiz rojo */
+    --main-accent: #bd3f3f;
+}
+
+/* Las luces de fondo cambian de color */
+.global-fallen .atmospheric-layers {
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(189, 63, 63, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(189, 63, 63, 0.08) 0%, transparent 40%);
+    filter: blur(80px);
+}
+
+/* El ruido visual se vuelve más intenso en modo caído */
+.global-fallen::after {
+    opacity: 0.06;
+}

@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import './oc.css';
 
-const OcPrincipal = ({ titulo, nombreCodigo, clase, habilidades, descripcion, imagenSrc, imagenSrc2, altImagen }) => {
+const OcPrincipal = ({ titulo, nombreCodigo, clase, habilidades, descripcion, imagenSrc, imagenSrc2, altImagen, onPhaseChange }) => {
     const [isPhaseOne, setIsPhaseOne] = useState(true);
 
+    
     const handleImageClick = () => {
-        setIsPhaseOne(!isPhaseOne);
-    };
+            const nextPhase = !isPhaseOne;
+            setIsPhaseOne(nextPhase);
+
+            // 2. Notificamos al HomePage: si PhaseOne es false, enviamos true (está caído)
+            if (onPhaseChange) {
+                onPhaseChange(!nextPhase); 
+            }
+        };
 
     const handleScrollToGallery = () => {
         const targetElement = document.getElementById('ecos-del-mundo-ancla');

@@ -13,7 +13,9 @@ const UploadArtworkForm = () => {
   const [error, setError] = useState(null);
   const [cargando, setCargando] = useState(false);
   const [progresoSubida, setProgresoSubida] = useState(0); // Para mostrar el % de subida
-
+  // ... otros estados
+  const [tipoImagen, setTipoImagen] = useState('galeria'); // Nuevo: galeria, oc_pure o oc_fallen
+  
   const handleFileChange = (e) => {
     // Solo permitimos un archivo a la vez
     if (e.target.files[0]) {
@@ -32,14 +34,13 @@ const UploadArtworkForm = () => {
       setCargando(false);
       return;
     }
-
+    
     // 1. Convertir la cadena de categorías a un array
     const categoriasArray = categoriasInput.split(',').map(cat => cat.trim()).filter(cat => cat !== '');
 
     // 2. Subir la imagen a Firebase Storage
     const storageRef = ref(storage, `obras/${file.name}`); // Crea una referencia en 'obras/nombre-del-archivo'
     const uploadTask = uploadBytesResumable(storageRef, file); // Inicia la subida
-
     uploadTask.on(
       'state_changed',
       (snapshot) => {
@@ -55,17 +56,21 @@ const UploadArtworkForm = () => {
       async () => {
         // 3. Una vez que la imagen se ha subido, obtenemos su URL de descarga
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-
-        try {
-          // 4. Guardar los datos del artwork en Firestore
-          await addDoc(collection(db, 'obras'), {
-            titulo: titulo,
-            descripcion: descripcion, // Puedes añadir un campo de descripción al formulario si quieres
-            imagenSrc: downloadURL,
-            categorias: categoriasArray,
-            createdAt: new Date(), // Opcional: Para ordenar por fecha de subida
-          });
-
+        
+      try {
+        await addDoc(collection(db, 'obras'), {
+          titulo: titulo,
+          descripcion: descripcion,
+          imagenSrc: downloadURL,
+          categorias: categoriasArray,
+          tipo: tipoImagen, // 👈 AÑADIMOS ESTO
+          createdAt: new Date(),
+        });
+  
+  // Al limpiar el formulario, reseteamos también el tipo
+  setTipoImagen('galeria');
+        
+        
           // 5. Limpiar el formulario y mostrar éxito
           setTitulo('');
           setFile(null);
@@ -138,6 +143,24 @@ const UploadArtworkForm = () => {
             disabled={cargando}
           />
         </div>
+        <div style={inputGroupStyle}>
+          <label htmlFor="tipoImagen" style={labelStyle}>Destino de la Imagen:</label>
+          <select 
+            id="tipoImagen"
+            value={tipoImagen}
+            onChange={(e) => setTipoImagen(e.target.value)} 
+            style={inputStyle}
+            disabled={cargando}
+          >
+            <option value="galeria">Galería Estándar</option>
+            <option value="oc_pure">Imagen Principal: Selene (Pura)</option>
+            <option value="oc_fallen">Imagen Principal: Brighella (Caída)</option>
+          </select>
+          <p style={{fontSize: '0.8em', color: '#9BA9B8', marginTop: '5px'}}>
+            * Selecciona una de las opciones "Principal" para cambiar la foto de la sección de Bi.
+          </p>
+        </div>
+
 
         <button type="submit" style={buttonStyle} disabled={cargando}>
           {cargando ? `Subiendo... ${progresoSubida.toFixed(0)}%` : 'Subir Obra'}

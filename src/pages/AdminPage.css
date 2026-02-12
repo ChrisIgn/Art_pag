@@ -42,3 +42,74 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+
+
+.admin-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dividimos en dos columnas */
+    gap: 40px;
+    margin-top: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.admin-obras-list {
+    max-height: 600px;
+    overflow-y: auto; /* Scroll interno si tienes muchas fotos */
+    background: rgba(255, 255, 255, 0.03);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(74, 144, 226, 0.2);
+}
+
+.admin-obra-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.3s ease;
+}
+
+.admin-obra-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-item-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.admin-item-info {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-btn-delete {
+    background: rgba(189, 63, 63, 0.2);
+    color: #ff6b6b;
+    border: 1px solid #bd3f3f;
+    padding: 5px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.admin-btn-delete:hover {
+    background: #bd3f3f;
+    color: white;
+}
+
+/* Ajuste móvil */
+@media (max-width: 900px) {
+    .admin-layout-grid {
+        grid-template-columns: 1fr;
+    }
+}

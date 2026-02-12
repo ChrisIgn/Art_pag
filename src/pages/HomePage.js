@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'; // Añadimos useEffect
+import React, { useState, useEffect } from 'react'; // 1. Importamos useState
 import { useFirestore } from '../hooks/useFirestore';
 
 // COMPONENTES
@@ -9,27 +9,23 @@ import GaleriaArte from '../components/organisms/GaleriaArte';
 
 // ASSETS
 import brixoi from '../assets/images/arte/Brixoioi.jpg';
-import Brighella from '../assets/images/arte/Brighella.jpg';
-import Brir from '../assets/images/arte/Brir.jpg'; 
+
 import './HomePage.css';
 
 const HomePage = () => {
     const { docs: datosDeFirebase, cargando } = useFirestore('obras');
     const galeria = datosDeFirebase || [];
-
-    // Lógica de Filtrado
-
-    const Galery = galeria.filter(obra => 
-        obra.categorias && obra.categorias.includes('Galery')
-    );
-
+    const imgBriPura = galeria.find(img => img.tipo === 'oc_pure')?.imagenSrc; 
+    const imgBriCaida = galeria.find(img => img.tipo === 'oc_fallen')?.imagenSrc;
+    // 2. Estado para la atmósfera global (Maneja el color de toda la web)
+    const [isFallenWorld, setIsFallenWorld] = useState(false);
 
     // =========================================================================
-    // EFECTO DE REVELACIÓN (SCROLL REVEAL) - Nivel 2026
+    // EFECTO DE REVELACIÓN (SCROLL REVEAL)
     // =========================================================================
     useEffect(() => {
         const observerOptions = {
-            threshold: 0.15 // Se activa cuando el 15% del elemento es visible
+            threshold: 0.15 
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -40,12 +36,11 @@ const HomePage = () => {
             });
         }, observerOptions);
 
-        // Seleccionamos todas las secciones con la clase 'reveal'
         const sections = document.querySelectorAll('.reveal');
         sections.forEach(section => observer.observe(section));
 
         return () => observer.disconnect();
-    }, [cargando]); // Se re-ejecuta cuando termina de cargar los datos
+    }, [cargando]); 
 
     if (cargando) {
         return (
@@ -57,20 +52,21 @@ const HomePage = () => {
     }
 
     return (
-        <div className="home-page-layout">
-            {/* Fondo Atmosférico de partículas/luces (opcional añadir div extra) */}
+        // 3. Aplicamos la clase dinámica aquí para que el CSS cambie el fondo
+        <div className={`home-page-layout ${isFallenWorld ? 'global-fallen' : 'global-pure'}`}>
+            
             <div className="atmospheric-layers"></div>
 
             <Header paginaActiva="HOME" /> 
             
             <main className="page-content"> 
                 
-                {/* INTRODUCCIÓN */}
+                {/* 1. INTRODUCCIÓN */}
                 <section id="home" className="seccion-pantalla-completa anchor-section">
                     <OcIntro />
                 </section>
                 
-                {/* OC PRINCIPAL - Con clase reveal */}
+                {/* 2. OC PRINCIPAL - Conectamos la transformación global */}
                 <section id="personal" className="seccion-pantalla-completa anchor-section reveal">
                     <OcPrincipal 
                         titulo="Selene"
@@ -80,34 +76,28 @@ const HomePage = () => {
                         le enseño un cierto metodo pero requeria cierto sacricio, el cual siendo un angel podria perder su esencia pura... pero tenia un alto costo.."
                         clase="Ángel Caído"
                         habilidades={['May the light guide you', 'Even angels can play tricks!', 'Miracles are real']} 
-                        imagenSrc={Brighella}
-                        imagenSrc2={Brir}
+                        imagenSrc={imgBriPura}   // Ahora vienen de Firebase!
+                        imagenSrc2={imgBriCaida} 
                         altImagen="Retrato principal de Bri"
+                        // 4. PASAMOS LA FUNCIÓN AL HIJO
+                        onPhaseChange={(fallen) => setIsFallenWorld(fallen)}
                     />
                 </section> 
 
                 <div className="seccion-contenido-fluido">
                     
-                    {/* GALERÍA 1 - Con clase reveal */}
+                    {/* 3. GALERÍA INTELIGENTE */}
                     <section id="ecos-del-mundo-ancla" className="anchor-section reveal">  
                         <GaleriaArte 
-                            obras={Galery} 
+                            obras={galeria} 
                             titulo="Ecos del Mundo" 
-                            descripcion="Fragmentos visuales de realidades alternas..."
+                            descripcion="Fragmentos visuales de realidades alternas. Filtra por categoría para explorar."
                         />
                     </section>
 
-                    {/* GALERÍA 2 - Con clase reveal
-                    <section id="other" className="anchor-section reveal">
-                        <GaleriaArte
-                            obras={Galery} 
-                            titulo="Galery" 
-                        />
-                    </section> */}
-                    
                     <hr className="reveal" />
                     
-                    {/* SOBRE MÍ */}
+                    {/* 4. SOBRE MÍ */}
                     <section id="about" className="about-me-snippet anchor-section reveal">
                         <div className="about-left">
                             <h2>Sobre Mí</h2>
@@ -119,7 +109,7 @@ const HomePage = () => {
                         </div>
                     </section>
                     
-                    {/* CONTACTO */}
+                    {/* 5. CONTACTO */}
                     <section className="contact-cta reveal">
                         <h2>¿Interesado en una comisión?</h2>
                         <p>Disponible para trabajos.</p>
