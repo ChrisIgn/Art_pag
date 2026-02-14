@@ -285,3 +285,49 @@
     height: 100vh;
     z-index: 9999; /* Un número muy alto para superar cualquier reveal */
 }
+
+
+/* Botón de expandir dentro de la descripción */
+.expand-btn {
+  margin-top: 20px;
+  background: rgba(74, 144, 226, 0.1);
+  border: 1px solid #4A90E2;
+  color: #4A90E2;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Lato', sans-serif;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+}
+
+.expand-btn:hover {
+  background: #4A90E2;
+  color: white;
+  box-shadow: 0 0 15px rgba(74, 144, 226, 0.4);
+}
+
+/* Efecto en la imagen principal */
+.modal-imagen-principal.interactive-img {
+  cursor: zoom-in;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.modal-imagen-principal.interactive-img:hover {
+  transform: scale(1.02); /* Un zoom muy ligero para indicar interactividad */
+}
+
+/* Cuando la imagen entra en modo Pantalla Completa nativo */
+.modal-imagen-principal:fullscreen {
+  object-fit: contain;
+  background-color: #050a15; /* Fondo oscuro de tu web */
+  padding: 20px;
+}
+
+/* Soporte para Safari */
+.modal-imagen-principal:-webkit-full-screen {
+  object-fit: contain;
+  background-color: #050a15;
+}

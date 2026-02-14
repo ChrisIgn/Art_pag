@@ -1,84 +1,78 @@
 // src/components/molecules/Modal.jsx
-
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react'; // Añadimos useRef
 import './Modal.css';
 
 const Modal = ({ obra, onClose, onNavigate }) => {
-  
-  // 1. Hook useEffect movido al principio para cumplir la Regla de Hooks
+  const imageRef = useRef(null); // Referencia para la imagen
+
   useEffect(() => {
-    // Si no hay obra, no hay nada que escuchar
-    if (!obra) {
-        return; 
-    }
+    if (!obra) return;
     
     const handleKeydown = (event) => {
-      // Navegación con flechas y Escape para cerrar
-      if (event.key === 'Escape') {
-        onClose();
-      } else if (event.key === 'ArrowRight') {
-        onNavigate(1);
-      } else if (event.key === 'ArrowLeft') {
-        onNavigate(-1);
-      }
+      if (event.key === 'Escape') onClose();
+      else if (event.key === 'ArrowRight') onNavigate(1);
+      else if (event.key === 'ArrowLeft') onNavigate(-1);
     };
 
     window.addEventListener('keydown', handleKeydown);
-    
-    // Función de limpieza
-    return () => {
-      window.removeEventListener('keydown', handleKeydown);
-    };
-  }, [onClose, onNavigate, obra]); // Añadimos 'obra' para que el efecto se limpie/reinicie correctamente
+    return () => window.removeEventListener('keydown', handleKeydown);
+  }, [onClose, onNavigate, obra]);
 
-  // Si no hay obra seleccionada (null), no renderiza nada
-  if (!obra) {
-    return null;
-  }
+  // Función para ver en pantalla completa nativa
+// Función para ver en pantalla completa nativa corregida
+  const verPantallaCompleta = () => {
+    // Obtenemos el elemento real desde la referencia
+    const element = imageRef.current;
 
-  // 2. El JSX (Interfaz)
+    if (!element) return; // Seguridad: si no hay imagen, no hacemos nada
+
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+      // Soporte para Safari y versiones antiguas de Chrome/Edge
+      element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+      // Soporte para Internet Explorer/Edge antiguo
+      element.msRequestFullscreen();
+    }
+  };
+
+  if (!obra) return null;
+
   return (
     <div className="modal-backdrop" onClick={onClose}>
-      
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         
-        {/* Botón Anterior */}
-        <button className="modal-nav-button prev" onClick={() => onNavigate(-1)}>
-          &lt; 
-        </button>
+        {/* Navegación */}
+        <button className="modal-nav-button prev" onClick={() => onNavigate(-1)}>&lt;</button>
+        <button className="modal-nav-button next" onClick={() => onNavigate(1)}>&gt;</button>
+        <button className="modal-close-button" onClick={onClose}>&times;</button>
 
-        {/* Botón Siguiente */}
-        <button className="modal-nav-button next" onClick={() => onNavigate(1)}>
-          &gt; 
-        </button>
-
-        {/* Botón Cerrar (X) */}
-        <button className="modal-close-button" onClick={onClose}>
-          &times;
-        </button>
-
-        {/* Contenedor Flexible para Imagen y Descripción */}
         <div className="modal-body-flex">
-          
-          {/* Columna de Descripción (Izquierda) */}
+          {/* Descripción */}
           <div className="modal-descripcion-wrapper">
             <h3 className="modal-titulo-grande">{obra.titulo}</h3>
             <p className="modal-descripcion-texto">{obra.descripcion}</p> 
-            {/* Si quieres añadir más detalles de la obra, este es el lugar. */}
+            
+            {/* Botón de expansión para el usuario */}
+            <button className="expand-btn" onClick={verPantallaCompleta}>
+              Ver a tamaño completo ⛶
+            </button>
           </div>
 
-          {/* Columna de Imagen (Derecha) */}
+          {/* Imagen con Ref y Zoom */}
           <div className="modal-imagen-wrapper">
             <img 
+              ref={imageRef}
               src={obra.imagenSrc} 
               alt={obra.titulo} 
-              className="modal-imagen-principal"
-              key={obra.id} // Forzar re-renderizado para la animación
+              className="modal-imagen-principal interactive-img"
+              key={obra.id}
+              onClick={verPantallaCompleta} // También abre pantalla completa al hacer clic
+              title="Haz clic para expandir"
             />
           </div>
-
         </div>
-        
       </div>
     </div>
   );
