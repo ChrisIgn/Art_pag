@@ -118,6 +118,12 @@ const HomePage = () => {
 
                     <footer className="site-footer">
                         <p>© {new Date().getFullYear()} Erii Art Web. Todos los derechos reservados.</p>
+                    <p>
+                        © {new Date().getFullYear()} Erii Art Web. 
+                        {/* Un punto casi invisible que te lleva al admin */}
+                        <a href="/admin" style={{ opacity: 0.1, cursor: 'default', textDecoration: 'none', color: 'inherit' }}> .</a>
+                    </p>
+                        
                     </footer>
                 </div>
             </main>

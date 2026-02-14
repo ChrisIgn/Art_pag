@@ -27,7 +27,7 @@ const links = [
     { name: "Ecos", url: "/#ecos-del-mundo-ancla", isRoute: false }, // Apunta a la sección de galería
     { name: "Galeria", url: "#other", isRoute: false },
     { name: "ABOUT ME", url: "#about", isRoute: false },
-    { name: "ADMIN", url: "/admin", isRoute: true }, // Nueva ruta para tu panel
+    //{ name: "ADMIN", url: "/admin", isRoute: true }, // Nueva ruta para tu panel
 ];
 
   return (
