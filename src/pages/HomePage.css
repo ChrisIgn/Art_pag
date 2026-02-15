@@ -174,3 +174,26 @@ html {
 .global-fallen::after {
     opacity: 0.06;
 }
+
+.contact-modal-size {
+    max-width: 500px !important; /* Limitamos el ancho para que sea un formulario elegante */
+    padding: 40px !important;
+    border: 1px solid rgba(74, 144, 226, 0.4);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(74, 144, 226, 0.2);
+}
+
+.contact-success-reveal {
+    text-align: center;
+    padding: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+.contact-btn-small {
+    background: transparent;
+    border: 1px solid #4A90E2;
+    color: #4A90E2;
+    padding: 5px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}
