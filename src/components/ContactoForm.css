@@ -1,36 +1,46 @@
 .contacto-form-pro {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    border: 1px solid rgba(74, 144, 226, 0.2);
+    gap: 25px; /* Más espacio entre campos para que no se vea apretado */
+    margin-top: 30px;
 }
 
 .input-group-glass input, 
 .input-group-glass textarea {
     width: 100%;
-    padding: 12px 15px;
-    background: rgba(5, 10, 21, 0.5);
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: white;
-    font-family: 'Lato', sans-serif;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
     transition: all 0.3s ease;
 }
 
+/* El brillo al hacer foco (Lo que le da vida) */
 .input-group-glass input:focus, 
 .input-group-glass textarea:focus {
-    outline: none;
     border-color: #4A90E2;
-    box-shadow: 0 0 15px rgba(74, 144, 226, 0.3);
+    background: rgba(74, 144, 226, 0.05);
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.2);
+    outline: none;
 }
 
-.input-group-glass textarea {
-    height: 150px;
-    resize: none;
+/* El botón de enviar debe ser el protagonista */
+.contacto-form-pro .contact-btn {
+    margin-top: 10px;
+    padding: 18px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #4A90E2, #357ABD);
+    color: white;
+    border: none;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.contacto-form-pro .contact-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(74, 144, 226, 0.4);
 }
