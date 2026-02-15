@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'; // 1. Importamos useState
 import { useFirestore } from '../hooks/useFirestore';
-
+import { createPortal } from 'react-dom';
 // COMPONENTES
 import { Header } from '../components/organisms/Header'; 
 import OcPrincipal from '../components/organisms/Oc_Principal';
 import OcIntro from '../components/organisms/OcIntro';
 import GaleriaArte from '../components/organisms/GaleriaArte';
-
+import ContactoForm from '../components/ContactoForm';
 // ASSETS
 import brixoi from '../assets/images/arte/Brixoioi.jpg';
 
@@ -19,7 +19,7 @@ const HomePage = () => {
     const imgBriCaida = galeria.find(img => img.tipo === 'oc_fallen')?.imagenSrc;
     // 2. Estado para la atmósfera global (Maneja el color de toda la web)
     const [isFallenWorld, setIsFallenWorld] = useState(false);
-
+const [mostrarContacto, setMostrarContacto] = useState(false);
     // =========================================================================
     // EFECTO DE REVELACIÓN (SCROLL REVEAL)
     // =========================================================================
@@ -27,7 +27,6 @@ const HomePage = () => {
         const observerOptions = {
             threshold: 0.15 
         };
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -110,12 +109,16 @@ const HomePage = () => {
                     </section>
                     
                     {/* 5. CONTACTO */}
+                    {/* SECCIÓN DE CONTACTO ACTUALIZADA */}
                     <section className="contact-cta reveal">
                         <h2>¿Interesado en una comisión?</h2>
-                        <p>Disponible para trabajos.</p>
-                        <a className="contact-btn" href="#/contact">Contactar Ahora</a>
+                        <p>Disponible para nuevos proyectos y colaboraciones.</p>
+                        
+                        {/* El botón ahora abre el modal en lugar de ser un link */}
+                        <button className="contact-btn" onClick={() => setMostrarContacto(true)}>
+                            Contactar Ahora
+                        </button>
                     </section>
-
                     <footer className="site-footer">
                         <p>© {new Date().getFullYear()} Erii Art Web. Todos los derechos reservados.</p>
                     <p>
@@ -127,6 +130,19 @@ const HomePage = () => {
                     </footer>
                 </div>
             </main>
+            {/* MODAL DE CONTACTO (Usando Portals para que no se rompa el fixed) */}
+                {mostrarContacto && createPortal(
+                    <div className="modal-overlay" onClick={() => setMostrarContacto(false)}>
+                        <div className="modal-content contact-modal-size" onClick={(e) => e.stopPropagation()}>
+                            <button className="modal-close-button" onClick={() => setMostrarContacto(false)}>
+                                &times;
+                            </button>
+                            <h2 className="galeria-titulo" style={{fontSize: '2rem', textAlign: 'center'}}>Enviar Mensaje</h2>
+                            <ContactoForm />
+                        </div>
+                    </div>,
+                    document.body
+                )}
         </div>
     );
 };

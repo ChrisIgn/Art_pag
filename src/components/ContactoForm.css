@@ -1,0 +1,36 @@
+.contacto-form-pro {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(74, 144, 226, 0.2);
+}
+
+.input-group-glass input, 
+.input-group-glass textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(5, 10, 21, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.input-group-glass input:focus, 
+.input-group-glass textarea:focus {
+    outline: none;
+    border-color: #4A90E2;
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.3);
+}
+
+.input-group-glass textarea {
+    height: 150px;
+    resize: none;
+}

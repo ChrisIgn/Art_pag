@@ -10,7 +10,7 @@ import './AdminPage.css';
 const AdminPage = () => {
     // Obtenemos las obras actuales para poder gestionarlas
     const { docs: obras } = useFirestore('obras');
-
+    const { docs: mensajes } = useFirestore('mensajes');
     const handleEliminar = async (id, urlImagen) => {
         if (window.confirm("¿Deseas eliminar esta obra permanentemente del Éter?")) {
             try {
@@ -62,7 +62,25 @@ const AdminPage = () => {
                     </div>
                 </section>
             </div>
-            
+                                        <section className="admin-messages-section">
+                <h2 className="section-title">Buzón de Mensajes</h2>
+                <div className="messages-container">
+                    {mensajes && mensajes.length > 0 ? (
+                        mensajes.map(msg => (
+                            <div key={msg.id} className={`message-card ${msg.leido ? 'read' : 'unread'}`}>
+                                <div className="message-header">
+                                    <strong>{msg.nombre}</strong>
+                                    <span>{msg.email}</span>
+                                </div>
+                                <p className="message-body">{msg.mensaje}</p>
+                                <small>{msg.fecha?.toDate().toLocaleString()}</small>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No hay mensajes en el Éter por ahora.</p>
+                    )}
+                </div>
+            </section>
             <div className="admin-actions">
                 <a className="admin-backlink" href="/"> &larr; Volver al Home </a>
                 <button className="admin-logout-btn" onClick={() => signOut(auth)}>
