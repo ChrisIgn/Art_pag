@@ -44,3 +44,22 @@
     transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(74, 144, 226, 0.4);
 }
+
+/* Un pequeño detalle decorativo en la parte superior */
+.contacto-form-pro::before {
+    content: "✉";
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4A90E2;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+    z-index: 1;
+}

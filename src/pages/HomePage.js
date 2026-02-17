@@ -9,7 +9,7 @@ import GaleriaArte from '../components/organisms/GaleriaArte';
 import ContactoForm from '../components/ContactoForm';
 // ASSETS
 import brixoi from '../assets/images/arte/Brixoioi.jpg';
-
+import SocialLinks from '../components/molecules/SocialLinks';
 import './HomePage.css';
 
 const HomePage = () => {
@@ -139,10 +139,17 @@ const [mostrarContacto, setMostrarContacto] = useState(false);
                             </button>
                             <h2 className="galeria-titulo" style={{fontSize: '2rem', textAlign: 'center'}}>Enviar Mensaje</h2>
                             <ContactoForm />
+            {/* --- APARTADO DE REDES SOCIALES --- */}
+                        <div className="modal-content contact-modal-size" onClick={(e) => e.stopPropagation()}>
+                            {/* ... título y formulario ... */}
+                            <hr className="modal-divider" />
+                            <p style={{ textAlign: 'center', fontSize: '0.8rem', color: '#9BA9B8' }}>O encuéntrame en:</p>
+                            <SocialLinks />
                         </div>
-                    </div>,
-                    document.body
-                )}
+                    </div>
+                </div>,
+                document.body
+            )}
         </div>
     );
 };

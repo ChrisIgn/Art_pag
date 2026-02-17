@@ -8,23 +8,32 @@ const ContactoForm = () => {
     const [formData, setFormData] = useState({ nombre: '', email: '', mensaje: '' });
     const [status, setStatus] = useState('idle'); // idle, sending, success, error
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setStatus('sending');
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('sending');
 
-        try {
-            await addDoc(collection(db, 'mensajes'), {
-                ...formData,
-                fecha: serverTimestamp(),
-                leido: false
-            });
-            setStatus('success');
-            setFormData({ nombre: '', email: '', mensaje: '' });
-        } catch (error) {
-            console.error("Error:", error);
-            setStatus('error');
-        }
-    };
+    try {
+        // 1. Guardamos en Firebase (lo que ya teníamos)
+        await addDoc(collection(db, 'mensajes'), {
+            ...formData,
+            fecha: serverTimestamp(),
+            leido: false
+        });
+
+        // 2. Lógica de WhatsApp
+        const miTelefono = "56968568045"; // Tu número con código de país
+        const textoWA = `Hola Erii Art Web! Tienes una nueva solicitud de comisión:%0A%0A*Nombre:* ${formData.nombre}%0A*Email:* ${formData.email}%0A*Mensaje:* ${formData.mensaje}`;
+        
+        // Abrir WhatsApp en una nueva pestaña
+        window.open(`https://wa.me/${miTelefono}?text=${textoWA}`, '_blank');
+
+        setStatus('success');
+        setFormData({ nombre: '', email: '', mensaje: '' });
+    } catch (error) {
+        console.error("Error:", error);
+        setStatus('error');
+    }
+};
 
     if (status === 'success') {
         return (
