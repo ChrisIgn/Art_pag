@@ -130,20 +130,22 @@ const [mostrarContacto, setMostrarContacto] = useState(false);
                     </footer>
                 </div>
             </main>
-            {/* MODAL DE CONTACTO (Usando Portals para que no se rompa el fixed) */}
-                {mostrarContacto && createPortal(
-                    <div className="modal-overlay" onClick={() => setMostrarContacto(false)}>
-                        <div className="modal-content contact-modal-size" onClick={(e) => e.stopPropagation()}>
-                            <button className="modal-close-button" onClick={() => setMostrarContacto(false)}>
-                                &times;
-                            </button>
-                            <h2 className="galeria-titulo" style={{fontSize: '2rem', textAlign: 'center'}}>Enviar Mensaje</h2>
-                            <ContactoForm />
-            {/* --- APARTADO DE REDES SOCIALES --- */}
-                        <div className="modal-content contact-modal-size" onClick={(e) => e.stopPropagation()}>
-                            {/* ... título y formulario ... */}
-                            <hr className="modal-divider" />
-                            <p style={{ textAlign: 'center', fontSize: '0.8rem', color: '#9BA9B8' }}>O encuéntrame en:</p>
+            {/* MODAL DE CONTACTO */}
+            {mostrarContacto && createPortal(
+                <div className="modal-overlay" onClick={() => setMostrarContacto(false)}>
+                    <div className="modal-content contact-modal-size" onClick={(e) => e.stopPropagation()}>
+                        <button className="modal-close-button" onClick={() => setMostrarContacto(false)}>
+                            &times;
+                        </button>
+                        <h2 className="galeria-titulo" style={{fontSize: '2rem', textAlign: 'center'}}>Enviar Mensaje</h2>
+                        
+                        <ContactoForm />
+            
+                        {/* --- APARTADO DE REDES SOCIALES --- */}
+                        <div style={{ marginTop: '30px', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '20px' }}>
+                            <p style={{ textAlign: 'center', fontSize: '0.8rem', color: '#9BA9B8', marginBottom: '15px' }}>
+                                O encuéntrame en mis redes:
+                            </p>
                             <SocialLinks />
                         </div>
                     </div>
