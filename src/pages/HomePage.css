@@ -66,11 +66,26 @@
 }
 
 .site-footer {
-  text-align: center;
-  padding: 40px 20px;
-  border-top: 1px solid #ddd;
-  margin-top: 50px;
+    padding: 0px 20px;
+    margin-top: 100px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: center;
 }
+
+.footer-info {
+    margin-top: 30px;
+    opacity: 0.6;
+    font-size: 0.9rem;
+}
+
+.secret-dot {
+    opacity: 0.05;
+    text-decoration: none;
+    color: inherit;
+    cursor: default;
+}
+
+.secret-dot:hover { opacity: 0.2; }
 
 /* En tu HomePage.css o Header.css */
 .anchor-section {

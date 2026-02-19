@@ -12,12 +12,33 @@ const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
 
+
+    const DISCORD_WEBHOOK_URL = process.env.REACT_APP_DISCORD_WEBHOOK;
+
     try {
         // 1. Guardamos en Firebase (lo que ya teníamos)
         await addDoc(collection(db, 'mensajes'), {
             ...formData,
             fecha: serverTimestamp(),
             leido: false
+        });
+
+        // 2. Notificación a Discord
+        await fetch(DISCORD_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                content: "🔔 **¡Nueva Solicitud de Comisión!**",
+                embeds: [{
+                    title: `Mensaje de ${formData.nombre}`,
+                    color: 4886498, // Color azul
+                    fields: [
+                        { name: "Email", value: formData.email, inline: true },
+                        { name: "Mensaje", value: formData.mensaje }
+                    ],
+                    footer: { text: "Enviado desde Erii Art Web" }
+                }]
+            })
         });
 
         // 2. Lógica de WhatsApp

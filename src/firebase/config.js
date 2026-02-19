@@ -8,12 +8,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCVzVBvdoHJQ_w7RvKdI8Pr7cQ6b5tOeoo",
-  authDomain: "fishy-art-portafolio.firebaseapp.com",
-  projectId: "fishy-art-portafolio",
-  storageBucket: "fishy-art-portafolio.firebasestorage.app",
-  messagingSenderId: "1096165914828",
-  appId: "1:1096165914828:web:b3e0802a369ec417e92a69"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
 // Initialize Firebase

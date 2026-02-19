@@ -120,13 +120,17 @@ const [mostrarContacto, setMostrarContacto] = useState(false);
                         </button>
                     </section>
                     <footer className="site-footer">
-                        <p>© {new Date().getFullYear()} Erii Art Web. Todos los derechos reservados.</p>
-                    <p>
-                        © {new Date().getFullYear()} Erii Art Web. 
-                        {/* Un punto casi invisible que te lleva al admin */}
-                        <a href="/admin" style={{ opacity: 0.1, cursor: 'default', textDecoration: 'none', color: 'inherit' }}> .</a>
-                    </p>
-                        
+                        <div className="footer-content reveal">
+                            <SocialLinks /> {/* <--- Aquí aparecen en el footer */}
+
+                            <div className="footer-info">
+                                <p>© {new Date().getFullYear()} Erii Art Web. Todos los derechos reservados.</p>
+                                <p className="admin-access">
+                                    Erii Art Web
+                                    <a href="/admin" className="secret-dot"> .</a>
+                                </p>
+                            </div>
+                        </div>
                     </footer>
                 </div>
             </main>
@@ -152,6 +156,7 @@ const [mostrarContacto, setMostrarContacto] = useState(false);
                 </div>,
                 document.body
             )}
+            
         </div>
     );
 };
