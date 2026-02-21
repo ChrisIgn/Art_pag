@@ -130,49 +130,49 @@ const AdminPage = () => {
                 </section>
             </div>
 
-            {/* SECCIÓN DE MENSAJES (Buzón Actualizado) */}
-            <section className="admin-messages-section">
-                <h2 className="section-title">Buzón de Mensajes</h2>
-                <div className="messages-container">
-                    {mensajes && mensajes.length > 0 ? (
-                        mensajes.map(msg => (
-                            <div key={msg.id} className={`message-card ${msg.leido ? 'read' : 'unread'}`}>
-                                <div className="message-header">
-                                    <div className="sender-info">
-                                        <strong>{msg.nombre}</strong>
-                                        <span>{msg.email}</span>
-                                    </div>
-                                    <div className="message-actions">
-                                        {/* Botón de Leído/No Leído */}
-                                        <button 
-                                            onClick={() => toggleLeido(msg.id, msg.leido)}
-                                            className="btn-icon"
-                                            title={msg.leido ? "Marcar como no leído" : "Marcar como leído"}
-                                        >
-                                            {msg.leido ? '👁️‍🗨️' : '👁️'}
-                                        </button>
-                                        {/* Botón de Eliminar Mensaje */}
-                                        <button 
-                                            onClick={() => eliminarMensaje(msg.id)}
-                                            className="btn-icon btn-delete-msg"
-                                            title="Eliminar mensaje"
-                                        >
-                                            🗑️
-                                        </button>
-                                    </div>
-                                </div>
-                                <p className="message-body">{msg.mensaje}</p>
-                                <div className="message-footer">
-                                    <small>{msg.fecha?.toDate().toLocaleString()}</small>
-                                    {msg.leido && <span className="status-badge">Leído</span>}
-                                </div>
+    {/* SECCIÓN DE MENSAJES (Buzón Actualizado) */}
+    <section className="admin-messages-section">
+        <h2 className="section-title">Buzón de Mensajes</h2>
+        <div className="messages-container">
+            {mensajes && mensajes.length > 0 ? (
+                mensajes.map(msg => (
+                    <div key={msg.id} className={`message-card ${msg.leido ? 'read' : 'unread'}`}>
+                        <div className="message-header">
+                            <div className="sender-info">
+                                <strong>{msg.nombre}</strong>
+                                <span>{msg.email}</span>
                             </div>
-                        ))
-                    ) : (
-                        <p className="no-messages">El Éter está en silencio... (No hay mensajes).</p>
-                    )}
-                </div>
-            </section>
+                            <div className="message-actions">
+                                {/* Botón de Leído/No Leído */}
+                                <button 
+                                    onClick={() => toggleLeido(msg.id, msg.leido)}
+                                    className="btn-icon"
+                                    title={msg.leido ? "Marcar como no leído" : "Marcar como leído"}
+                                >
+                                    {msg.leido ? '👁️‍🗨️' : '👁️'}
+                                </button>
+                                {/* Botón de Eliminar Mensaje */}
+                                <button 
+                                    onClick={() => eliminarMensaje(msg.id)}
+                                    className="btn-icon btn-delete-msg"
+                                    title="Eliminar mensaje"
+                                >
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                        <p className="message-body">{msg.mensaje}</p>
+                        <div className="message-footer">
+                            <small>{msg.fecha?.toDate().toLocaleString()}</small>
+                            {msg.leido && <span className="status-badge">Leído</span>}
+                        </div>
+                    </div>
+                ))
+            ) : (
+                <p className="no-messages">El Éter está en silencio... (No hay mensajes).</p>
+            )}
+        </div>
+    </section>
 
             <div className="admin-actions">
                 <a className="admin-backlink" href="/"> &larr; Volver al Home </a>
