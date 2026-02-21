@@ -1,0 +1,87 @@
+.precios-container {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.precios-titulo {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    background: linear-gradient(to right, #4A90E2, #fff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.precios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.precio-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto cuando Brighella cambia a caída */
+.global-fallen .precio-card {
+    border-color: rgba(255, 0, 0, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.precio-card:hover {
+    transform: translateY(-15px);
+    border-color: #4A90E2;
+    background: rgba(74, 144, 226, 0.05);
+}
+
+.monto {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #4A90E2;
+    margin: 20px 0;
+}
+
+.lista-incluye {
+    list-style: none;
+    padding: 0;
+    margin: 30px 0;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #9BA9B8;
+}
+
+.lista-incluye li {
+    margin-bottom: 10px;
+}
+
+.btn-ordenar {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-ordenar:hover {
+    background: #4A90E2;
+    box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+}
+
+.card-pro {
+    border: 1px solid rgba(74, 144, 226, 0.5);
+    transform: scale(1.05);
+}

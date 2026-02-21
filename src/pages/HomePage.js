@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react'; // 1. Importamos useState
 import { useFirestore } from '../hooks/useFirestore';
 import { createPortal } from 'react-dom';
+
 // COMPONENTES
 import { Header } from '../components/organisms/Header'; 
 import OcPrincipal from '../components/organisms/Oc_Principal';
 import OcIntro from '../components/organisms/OcIntro';
 import GaleriaArte from '../components/organisms/GaleriaArte';
 import ContactoForm from '../components/ContactoForm';
+import PreciosComisiones from '../components/organisms/PreciosComisiones';
 // ASSETS
 import brixoi from '../assets/images/arte/Brixoioi.jpg';
 import SocialLinks from '../components/molecules/SocialLinks';
+
 import './HomePage.css';
 
 const HomePage = () => {
@@ -110,6 +113,9 @@ const [mostrarContacto, setMostrarContacto] = useState(false);
                     
                     {/* 5. CONTACTO */}
                     {/* SECCIÓN DE CONTACTO ACTUALIZADA */}
+                    <section id="precios" className="reveal">
+                        <PreciosComisiones />
+                    </section>
                     <section className="contact-cta reveal">
                         <h2>¿Interesado en una comisión?</h2>
                         <p>Disponible para nuevos proyectos y colaboraciones.</p>
