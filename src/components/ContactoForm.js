@@ -34,7 +34,8 @@ const handleSubmit = async (e) => {
                     color: 4886498, // Color azul
                     fields: [
                         { name: "Email", value: formData.email, inline: true },
-                        { name: "Mensaje", value: formData.mensaje }
+                        { name: "Mensaje", value: formData.mensaje },
+                        { name: "Usuario de Discord", value: formData.discordUser || "No proporcionado", inline: true }
                     ],
                     footer: { text: "Enviado desde Erii Art Web" }
                 }]
