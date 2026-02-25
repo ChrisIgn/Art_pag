@@ -5,7 +5,7 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import './ContactoForm.css';
 
 const ContactoForm = () => {
-    const [formData, setFormData] = useState({ nombre: '', email: '', mensaje: '' });
+    const [formData, setFormData] = useState({ nombre: '', email: '', mensaje: '', discordUser: '' });
     const [status, setStatus] = useState('idle'); // idle, sending, success, error
 
 const handleSubmit = async (e) => {
@@ -84,6 +84,17 @@ const handleSubmit = async (e) => {
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
                     required 
                 />
+            </div>
+            <div className="form-group">
+                <label>Usuario de Discord (Opcional)</label>
+                <input 
+                    type="text" 
+                    placeholder="Ej: erii_art o erii#1234"
+                    value={formData.discordUser}
+                    onChange={(e) => setFormData({...formData, discordUser: e.target.value})}
+                    className="form-input"
+                />
+                <small className="form-help">Para contactarte más rápido por Discord.</small>
             </div>
             <div className="input-group-glass">
                 <textarea 
