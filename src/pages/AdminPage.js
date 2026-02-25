@@ -166,7 +166,18 @@ const AdminPage = () => {
                             <small>{msg.fecha?.toDate().toLocaleString()}</small>
                             {msg.leido && <span className="status-badge">Leído</span>}
                         </div>
+                        // En el mapeo de mensajes dentro de AdminPage.js
+                        <div className="message-header">
+                            <strong>{msg.nombre}</strong>
+                            <span>{msg.email}</span>
+                            {msg.discordUser && (
+                                <span className="discord-tag">
+                                    🎮 {msg.discordUser}
+                                </span>
+                            )}
+                        </div>
                     </div>
+
                 ))
             ) : (
                 <p className="no-messages">El Éter está en silencio... (No hay mensajes).</p>
