@@ -85,16 +85,14 @@ const handleSubmit = async (e) => {
                     required 
                 />
             </div>
-            <div className="form-group">
-                <label>Usuario de Discord (Opcional)</label>
+            <div className="input-group-glass">
                 <input 
                     type="text" 
-                    placeholder="Ej: erii_art o erii#1234"
+                    placeholder="Tu Usuario de discord(opcional) Ej:erii_art o erii#1234"
                     value={formData.discordUser}
                     onChange={(e) => setFormData({...formData, discordUser: e.target.value})}
                     className="form-input"
                 />
-                <small className="form-help">Para contactarte más rápido por Discord.</small>
             </div>
             <div className="input-group-glass">
                 <textarea 

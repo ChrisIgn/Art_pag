@@ -160,13 +160,6 @@ const AdminPage = () => {
                                     🗑️
                                 </button>
                             </div>
-                        </div>
-                        <p className="message-body">{msg.mensaje}</p>
-                        <div className="message-footer">
-                            <small>{msg.fecha?.toDate().toLocaleString()}</small>
-                            {msg.leido && <span className="status-badge">Leído</span>}
-                        </div>
-                        // En el mapeo de mensajes dentro de AdminPage.js
                         <div className="message-header">
                             <strong>{msg.nombre}</strong>
                             <span>{msg.email}</span>
@@ -175,6 +168,13 @@ const AdminPage = () => {
                                     🎮 {msg.discordUser}
                                 </span>
                             )}
+                        </div>
+                        <p className="message-body">{msg.mensaje}</p>
+                        <div className="message-footer">
+                            <small>{msg.fecha?.toDate().toLocaleString()}</small>
+                            {msg.leido && <span className="status-badge">Leído</span>}
+                        </div>
+
                         </div>
                     </div>
 
