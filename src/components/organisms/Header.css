@@ -192,3 +192,58 @@
 }
 
 
+.header-brand-container {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espacio entre "Eri" y el indicador */
+}
+
+.status-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.65rem; /* Pequeño y elegante */
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s ease;
+}
+
+/* Punto de luz */
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+/* Colores para OPEN */
+.status-pill.open {
+    color: #34d399; /* Verde esmeralda */
+    border-color: rgba(52, 211, 153, 0.3);
+}
+.status-pill.open .status-dot {
+    background-color: #34d399;
+    box-shadow: 0 0 6px #34d399;
+}
+
+/* Colores para CLOSED */
+.status-pill.closed {
+    color: #9ca3af; /* Gris */
+    border-color: rgba(156, 163, 175, 0.2);
+}
+.status-pill.closed .status-dot {
+    background-color: #9ca3af;
+}
+
+/* Responsive: Ocultar texto en pantallas muy pequeñas si es necesario */
+@media (max-width: 480px) {
+    .status-label {
+        display: none; /* Solo queda el puntito brillante en celulares muy chicos */
+    }
+    .status-pill {
+        padding: 4px;
+    }
+}

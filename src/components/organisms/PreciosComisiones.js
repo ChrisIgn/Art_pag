@@ -1,33 +1,10 @@
 import React from 'react';
 import './PreciosComisiones.css';
+import { artistaConfig } from '../../config/artistaConfig'; // Ajusta la ruta según tu carpeta
 
 const PreciosComisiones = () => {
-    const servicios = [
-        {
-            id: 1,
-            tipo: "Headshot / Icon",
-            precio: "Desde $25",
-            descripcion: "Retrato hasta los hombros, ideal para perfiles sociales.",
-            incluye: ["Color base", "Fondo simple", "Alta resolución"],
-            imagen: "https://via.placeholder.com/300x300?text=Ejemplo+Icon" // Cambia por tus artes
-        },
-        {
-            id: 2,
-            tipo: "Half Body",
-            precio: "Desde $45",
-            descripcion: "Dibujo de la cintura para arriba. Incluye más detalle.",
-            incluye: ["Sombreado completo", "Efectos mágicos", "Archivo PSD"],
-            destacado: true // Para que brille más
-        },
-        {
-            id: 3,
-            tipo: "Full Body",
-            precio: "Desde $70",
-            descripcion: "Personaje completo de pies a cabeza con máxima calidad.",
-            incluye: ["Renderizado detallado", "Accesorios complejos", "Uso comercial"],
-            imagen: "https://via.placeholder.com/300x500?text=Ejemplo+Full+Body"
-        }
-    ];
+    // Ya no definimos 'servicios' aquí, los traemos del config
+    const { servicios } = artistaConfig;
 
     return (
         <div className="precios-container">
@@ -44,9 +21,7 @@ const PreciosComisiones = () => {
                                 <li key={i}>✨ {item}</li>
                             ))}
                         </ul>
-                        <button className="btn-ordenar" onClick={() => {
-                            document.querySelector('.contact-btn').click(); // Abre el modal de contacto
-                        }}>
+                        <button className="btn-ordenar">
                             Solicitar
                         </button>
                     </div>

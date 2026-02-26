@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { db } from '../firebase/config';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import './ContactoForm.css';
+import { artistaConfig } from '../config/artistaConfig';
 
 const ContactoForm = () => {
     const [formData, setFormData] = useState({ nombre: '', email: '', mensaje: '', discordUser: '' });
@@ -33,9 +34,10 @@ const handleSubmit = async (e) => {
                     title: `Mensaje de ${formData.nombre}`,
                     color: 4886498, // Color azul
                     fields: [
-                        { name: "Email", value: formData.email, inline: true },
-                        { name: "Mensaje", value: formData.mensaje },
-                        { name: "Usuario de Discord", value: formData.discordUser || "No proporcionado", inline: true }
+                            { name: "✨ Servicio Interesado", value: formData.servicio || "Consulta General", inline: false },
+                            { name: "📧 Email", value: formData.email, inline: true },
+                            { name: "🎮 Discord", value: formData.discordUser || "No proporcionado", inline: true },
+                            { name: "💬 Mensaje", value: formData.mensaje }
                     ],
                     footer: { text: "Enviado desde Erii Art Web" }
                 }]
@@ -85,6 +87,23 @@ const handleSubmit = async (e) => {
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
                     required 
                 />
+            </div>
+            {/* NUEVO: Selector de Servicios dinámico */}
+            <div className="input-group-glass">
+                <select 
+                    value={formData.servicio}
+                    onChange={(e) => setFormData({...formData, servicio: e.target.value})}
+                    className="input-group-glass-select"
+                    required
+                >
+                    <option value="" disabled>¿Qué servicio te interesa?</option>
+                    <option value="Consulta General">Consulta General / Otro</option>
+                    {artistaConfig.servicios.map((s) => (
+                        <option key={s.id} value={s.tipo}>
+                            {s.tipo} ({s.precio})
+                        </option>
+                    ))}
+                </select>
             </div>
             <div className="input-group-glass">
                 <input 

@@ -3,13 +3,15 @@ import UploadArtworkForm from '../components/UploadArtworkForm';
 import { signOut } from 'firebase/auth';
 import { auth, db, storage } from '../firebase/config';
 import { useFirestore } from '../hooks/useFirestore';
-import { doc, deleteDoc, updateDoc } from 'firebase/firestore'; // Añadimos updateDoc
+import { setDoc,doc, deleteDoc, updateDoc } from 'firebase/firestore'; // Añadimos updateDoc
 import { ref, deleteObject } from 'firebase/storage';
 import './AdminPage.css';
+import { useConfig } from '../hooks/useConfig';
 
 const AdminPage = () => {
     const { docs: obras } = useFirestore('obras');
     const { docs: mensajes } = useFirestore('mensajes');
+    const { config, loading } = useConfig();
 
     // ESTADOS PARA EDICIÓN
     const [editandoId, setEditandoId] = useState(null);
@@ -67,6 +69,24 @@ const AdminPage = () => {
             }
         }
     };
+    // Función para alternar estado de comisiones
+    const toggleComisiones = async () => {
+        const docRef = doc(db, 'comisionesAbiertas', 'global');
+        
+        try {
+            await setDoc(docRef, {
+                // USAR EL NOMBRE CORRECTO: comisionesAbiertas
+                comisionesAbiertas: !config.comisionesAbiertas 
+            }, { merge: true });
+            
+            console.log("Cambio enviado a comisionesAbiertas");
+        } catch (error) {
+            console.error("Error al actualizar:", error);
+        }
+    };
+        if (loading) return <p>Cargando configuración...</p>;
+
+    
     return (
         <div className="admin-page">
             <h1 className="admin-title">Panel de Administración</h1>
@@ -129,7 +149,18 @@ const AdminPage = () => {
                     </div>
                 </section>
             </div>
-
+    {/* Sección de Ajustes Rápidos */}
+    <section className="admin-quick-settings">
+        <div className="setting-item">
+            <span>Estado de Comisiones: </span>
+            <button 
+                onClick={toggleComisiones}
+                className={`btn-switch ${config.comisionesAbiertas ? 'active' : 'inactive'}`}
+            >
+                {config.comisionesAbiertas ? "ABIERTAS" : "CERRADAS"}
+            </button>
+        </div>
+    </section>
     {/* SECCIÓN DE MENSAJES (Buzón Actualizado) */}
     <section className="admin-messages-section">
         <h2 className="section-title">Buzón de Mensajes</h2>
@@ -140,19 +171,23 @@ const AdminPage = () => {
                         <div className="message-header">
                             <div className="sender-info">
                                 <strong>{msg.nombre}</strong>
-                                <span>{msg.email}</span>
+                                <span className="sender-email">{msg.email}</span>
+                                {msg.servicio && (
+                                    <span className="sender-servicio"> - {msg.servicio}</span>
+                                )}
+                                {msg.discordUser && (
+                                    <span className="discord-tag">🎮 {msg.discordUser}</span>
+                                )}
                             </div>
                             <div className="message-actions">
-                                {/* Botón de Leído/No Leído */}
-                                <button 
+                                <button
                                     onClick={() => toggleLeido(msg.id, msg.leido)}
                                     className="btn-icon"
                                     title={msg.leido ? "Marcar como no leído" : "Marcar como leído"}
                                 >
                                     {msg.leido ? '👁️‍🗨️' : '👁️'}
                                 </button>
-                                {/* Botón de Eliminar Mensaje */}
-                                <button 
+                                <button
                                     onClick={() => eliminarMensaje(msg.id)}
                                     className="btn-icon btn-delete-msg"
                                     title="Eliminar mensaje"
@@ -160,30 +195,22 @@ const AdminPage = () => {
                                     🗑️
                                 </button>
                             </div>
-                        <div className="message-header">
-                            <strong>{msg.nombre}</strong>
-                            <span>{msg.email}</span>
-                            {msg.discordUser && (
-                                <span className="discord-tag">
-                                    🎮 {msg.discordUser}
-                                </span>
-                            )}
                         </div>
+
                         <p className="message-body">{msg.mensaje}</p>
+
                         <div className="message-footer">
                             <small>{msg.fecha?.toDate().toLocaleString()}</small>
                             {msg.leido && <span className="status-badge">Leído</span>}
                         </div>
-
-                        </div>
                     </div>
-
                 ))
             ) : (
                 <p className="no-messages">El Éter está en silencio... (No hay mensajes).</p>
             )}
         </div>
     </section>
+
 
             <div className="admin-actions">
                 <a className="admin-backlink" href="/"> &larr; Volver al Home </a>

@@ -12,10 +12,11 @@ import PreciosComisiones from '../components/organisms/PreciosComisiones';
 // ASSETS
 import brixoi from '../assets/images/arte/Brixoioi.jpg';
 import SocialLinks from '../components/molecules/SocialLinks';
-
+import { useConfig } from '../hooks/useConfig';
 import './HomePage.css';
 
 const HomePage = () => {
+    const { config } = useConfig();
     const { docs: datosDeFirebase, cargando } = useFirestore('obras');
     const galeria = datosDeFirebase || [];
     const imgBriPura = galeria.find(img => img.tipo === 'oc_pure')?.imagenSrc; 
@@ -121,9 +122,13 @@ const [mostrarContacto, setMostrarContacto] = useState(false);
                         <p>Disponible para nuevos proyectos y colaboraciones.</p>
                         
                         {/* El botón ahora abre el modal en lugar de ser un link */}
-                        <button className="contact-btn" onClick={() => setMostrarContacto(true)}>
-                            Contactar Ahora
-                        </button>
+                    <button 
+                        disabled={!config.comisionesAbiertas}
+                        className={`btn-contact ${config.comisionesAbiertas ? 'open' : 'closed'}`}
+                        onClick={() => setMostrarContacto(true)}    
+                    >
+                        {config.comisionesAbiertas ? "✨ Solicitar Comisión" : "⏳ Agenda Llena"}
+                    </button>
                     </section>
                     <footer className="site-footer">
                         <div className="footer-content reveal">

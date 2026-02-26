@@ -227,3 +227,35 @@ html {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* Estilo base del botón */
+.btn-contact {
+    padding: 15px 30px;
+    border-radius: 50px;
+    border: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    color: white;
+}
+
+/* Estado cuando están ABIERTAS (Llamativo) */
+.btn-contact.open {
+    background: linear-gradient(45deg, #4A90E2, #63b3ed);
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+}
+
+.btn-contact.open:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.6);
+}
+
+/* Estado cuando están CERRADAS (Apagado) */
+.btn-contact.closed {
+    background: #374151; /* Gris oscuro */
+    cursor: not-allowed;
+    opacity: 0.7;
+    filter: grayscale(1);
+    transform: scale(0.98);
+}

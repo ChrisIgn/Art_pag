@@ -3,11 +3,14 @@
 import React, { useState, useEffect} from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom'; // Añadir esta importación
+import { useConfig } from '../../hooks/useConfig';
+import { artistaConfig } from '../../config/artistaConfig';
 
 // Simulamos que la página activa se pasa como prop desde HomePage
 // Por ahora, la definimos internamente como 'HOME' para la demo.
 export const Header = ({ paginaActiva }) => {
     const [isScrolled, setIsScrolled] = useState(false);
+    const { config } = useConfig();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -33,7 +36,17 @@ const links = [
   return (
     <header className={`new-main-header ${isScrolled ? 'header-solid' : 'header-transparent'}`}>
       <div className="header-top">
-        <div className="header-title">Eri</div>
+        <div className="header-brand-container">
+          <div className="header-title">{artistaConfig.nombre}</div>
+          
+          {/* Nuevo: Indicador de Comisiones al lado del nombre */}
+          <div className={`status-pill ${config.comisionesAbiertas ? 'open' : 'closed'}`}>
+            <span className="status-dot"></span>
+            <span className="status-label">
+              {config.comisionesAbiertas ? 'OPEN' : 'CLOSED'}
+            </span>
+          </div>
+        </div>
         <button
           className="menu-toggle"
           aria-expanded={menuOpen}

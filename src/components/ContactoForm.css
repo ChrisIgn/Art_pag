@@ -5,8 +5,10 @@
     margin-top: 30px;
 }
 
+/* Aplicamos los mismos estilos base al select */
 .input-group-glass input, 
-.input-group-glass textarea {
+.input-group-glass textarea,
+.input-group-glass select { /* Añadimos el select aquí */
     width: 100%;
     padding: 15px;
     background: rgba(0, 0, 0, 0.2);
@@ -15,15 +17,22 @@
     color: #fff;
     font-size: 1rem;
     transition: all 0.3s ease;
+    appearance: none; /* Quita la flecha por defecto de Windows/Mac */
+    cursor: pointer;
 }
 
-/* El brillo al hacer foco (Lo que le da vida) */
-.input-group-glass input:focus, 
-.input-group-glass textarea:focus {
+/* El brillo azul también para el select */
+.input-group-glass select:focus {
     border-color: #4A90E2;
     background: rgba(74, 144, 226, 0.05);
     box-shadow: 0 0 15px rgba(74, 144, 226, 0.2);
     outline: none;
+}
+
+/* Estilo para las opciones dentro del desplegable */
+.input-group-glass select option {
+    background: #1a1a1a; 
+    color: white;
 }
 
 /* El botón de enviar debe ser el protagonista */
@@ -63,3 +72,4 @@
     box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
     z-index: 1;
 }
+

@@ -113,7 +113,7 @@ const UploadArtworkForm = () => {
           <label htmlFor="descripcion" style={labelStyle}>Descripción:</label>
           <input
             type="text" 
-            id="titulo"
+            id="descripcion"
             value={descripcion} 
             onChange={(e) => setDescripcion(e.target.value)} 
             style={inputStyle}
