@@ -1,41 +1,40 @@
 import React from 'react';
-import Boton from '../atoms/boton'; // Reutilizaremos el botón
+import Boton from '../atoms/boton'; 
+import { useConfig } from '../../hooks/useConfig'; // CAMBIO: Usamos el hook
 import './OcIntro.css';
-import brix1 from '../../assets/images/arte/Brix1.jpg';
-// Este componente no necesita props, ya que su contenido es estático
+
 const OcIntro = () => {
+  const { config, loading } = useConfig();
 
   const handleScrollToOC = () => {
-    // 1. Obtenemos el elemento por su ID
     const targetElement = document.getElementById('oc-principal-ancla');
-    
-    // 2. Si el elemento existe, aplicamos el scroll suave
     if (targetElement) {
-      targetElement.scrollIntoView({ 
-        behavior: 'smooth' // CLAVE: Hace la animación suave
-      });
+      targetElement.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
+  if (loading) return null; // O un spinner
+
   return (
     <section 
-     className="Oc-intro-contenedor"
-     style={{ backgroundImage: `url(${brix1})` }}
+      className="Oc-intro-contenedor"
+      // La imagen la manejaremos en el siguiente paso, por ahora usemos una fija o del config
+      style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${config.ocImagenUrl || 'TU_IMAGEN_POR_DEFECTO'})` }}
     >
-      <h1 className="Oc-intro-titulo">
-        Sueños y futuro
-      </h1>
-      <p className="Oc-intro-subtitulo">
-        Explora una línea de tiempo donde las imaginaciones lejanas se vuelven realidad. 
-        Bienvenido al mundo de BrigHella.
-      </p>
-      
-      {/* Usamos el texto de botón mejorado */}
-      <Boton 
-        texto="Comienza la aventura"
-        onClick={handleScrollToOC}
-        variante="primario" // O una nueva variante si quieres un estilo especial
-      />
+      <div className="Oc-intro-content">
+        <h1 className="Oc-intro-titulo">
+          {config.ocTitulo || "Sueños y futuro"} 
+        </h1>
+        <p className="Oc-intro-subtitulo">
+          {config.ocSubtitulo || "Bienvenido a mi mundo artístico."}
+        </p>
+        
+        <Boton 
+          texto="Comienza la aventura"
+          onClick={handleScrollToOC}
+          variante="primario" 
+        />
+      </div>
     </section>
   );
 };

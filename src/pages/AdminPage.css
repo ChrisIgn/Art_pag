@@ -299,3 +299,117 @@
     color: #cbd5e1;
     font-weight: 500;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Contenedor principal de la edición de Config */
+.setting-item-edit {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    transition: all 0.3s ease;
+}
+
+.setting-item-edit h3 {
+    color: var(--color-primario, #4A90E2);
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Formulario de edición */
+.config-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    animation: fadeIn 0.4s ease;
+}
+
+.config-edit-form label {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: -10px;
+    font-weight: 500;
+}
+
+/* Inputs y Textarea */
+.config-edit-form input, 
+.config-edit-form textarea {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 12px;
+    color: white;
+    font-family: inherit;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.config-edit-form input:focus, 
+.config-edit-form textarea:focus {
+    border-color: var(--color-primario, #4A90E2);
+}
+
+.config-edit-form textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Botonera de la edición */
+.edit-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-save {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    flex: 1;
+    transition: background 0.3s;
+}
+
+.btn-save:hover {
+    background: #2ecc71;
+}
+
+.btn-cancel {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

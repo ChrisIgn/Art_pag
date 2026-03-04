@@ -16,7 +16,9 @@ const AdminPage = () => {
     // ESTADOS PARA EDICIÓN
     const [editandoId, setEditandoId] = useState(null);
     const [nuevoTitulo, setNuevoTitulo] = useState("");
-
+    // 1. Añade estos nuevos estados al inicio del componente
+    const [editConfig, setEditConfig] = useState(false);
+    const [tempConfig, setTempConfig] = useState({});
     // FUNCIÓN PARA ELIMINAR
     const handleEliminar = async (id, urlImagen) => {
         if (window.confirm("¿Deseas eliminar esta obra permanentemente del Éter?")) {
@@ -47,6 +49,22 @@ const AdminPage = () => {
         }
     };
 
+        // 2. Función para guardar los nuevos textos
+    const handleGuardarConfigOc = async () => {
+        const docRef = doc(db, 'comisionesAbiertas', 'global');
+        try {
+            await updateDoc(docRef, {
+                ocTitulo: tempConfig.ocTitulo,
+                ocSubtitulo: tempConfig.ocSubtitulo,
+                ocImagenUrl: tempConfig.ocImagenUrl
+            });
+            setEditConfig(false);
+            alert("Configuración de Intro actualizada.");
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error al guardar.");
+        }
+    };
 
     const toggleLeido = async (id, estadoActual) => {
         try {
@@ -161,6 +179,49 @@ const AdminPage = () => {
             </button>
         </div>
     </section>
+
+    {/* --- NUEVA SECCIÓN: Editar OcIntro --- */}
+        <div className="setting-item-edit">
+            <h3>Editar Sección Intro (OC)</h3>
+            {!editConfig ? (
+                <button onClick={() => {
+                    setEditConfig(true);
+                    setTempConfig({
+                        ocTitulo: config.ocTitulo,
+                        ocSubtitulo: config.ocSubtitulo,
+                        ocImagenUrl: config.ocImagenUrl
+                    });
+                }} className="admin-btn-edit">✏️ Editar Textos e Imagen</button>
+            ) : (
+                <div className="config-edit-form">
+                    <label>Título Intro:</label>
+                    <input 
+                        type="text" 
+                        value={tempConfig.ocTitulo} 
+                        onChange={(e) => setTempConfig({...tempConfig, ocTitulo: e.target.value})}
+                    />
+                    
+                    <label>Subtítulo Intro:</label>
+                    <textarea 
+                        value={tempConfig.ocSubtitulo} 
+                        onChange={(e) => setTempConfig({...tempConfig, ocSubtitulo: e.target.value})}
+                    />
+
+                    <label>URL Imagen de Fondo:</label>
+                    <input 
+                        type="text" 
+                        placeholder="https://link-a-tu-imagen.jpg"
+                        value={tempConfig.ocImagenUrl} 
+                        onChange={(e) => setTempConfig({...tempConfig, ocImagenUrl: e.target.value})}
+                    />
+
+                    <div className="edit-buttons">
+                        <button onClick={handleGuardarConfigOc} className="btn-save">Guardar Cambios</button>
+                        <button onClick={() => setEditConfig(false)} className="btn-cancel">Cancelar</button>
+                    </div>
+                </div>
+            )}
+        </div>
     {/* SECCIÓN DE MENSAJES (Buzón Actualizado) */}
     <section className="admin-messages-section">
         <h2 className="section-title">Buzón de Mensajes</h2>
