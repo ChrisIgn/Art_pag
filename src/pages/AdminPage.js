@@ -1,27 +1,67 @@
-import React, { useState } from 'react'; // Añadimos useState
+import React, { useState } from 'react';
+
+// Components
 import UploadArtworkForm from '../components/UploadArtworkForm';
+
+// Firebase
 import { signOut } from 'firebase/auth';
 import { auth, db, storage } from '../firebase/config';
-import { useFirestore } from '../hooks/useFirestore';
-import { setDoc,doc, deleteDoc, updateDoc } from 'firebase/firestore'; // Añadimos updateDoc
+import { setDoc, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'firebase/storage';
-import './AdminPage.css';
+
+// Hooks
+import { useFirestore } from '../hooks/useFirestore';
 import { useConfig } from '../hooks/useConfig';
 
+// Styles
+import './AdminPage.css';
+
+/**
+ * AdminPage
+ * Panel de administración para manejar obras, mensajes y configuración.
+ * - Subida de obras (UploadArtworkForm)
+ * - Listado y edición/eliminación de obras
+ * - Gestión rápida de configuración (comisiones abiertas, OC intro)
+ * - Gestión de tarifas/servicios
+ * - Buzón de mensajes (marcar leído / eliminar)
+ *
+ * Notas de refactor:
+ * - Mantener la lógica de Firebase en funciones pequeñas y puras cuando sea posible.
+ * - Considerar extraer formularios complejos a componentes separados.
+ */
+
 const AdminPage = () => {
+    // Firestore hooks
     const { docs: obras } = useFirestore('obras');
     const { docs: mensajes } = useFirestore('mensajes');
+    const { docs: serviciosFirebase } = useFirestore('servicios');
+
+    // Config hook
     const { config, loading } = useConfig();
+
+    // UI state
     const [previewUrl, setPreviewUrl] = useState(null);
-    // ESTADOS PARA EDICIÓN
+    const [subiendo, setSubiendo] = useState(false);
+
+    // Edición obras
     const [editandoId, setEditandoId] = useState(null);
     const [nuevoTitulo, setNuevoTitulo] = useState("");
-    // 1. Añade estos nuevos estados al inicio del componente
+
+    // Editar config OC
     const [editConfig, setEditConfig] = useState(false);
     const [tempConfig, setTempConfig] = useState({});
     const [archivoImagen, setArchivoImagen] = useState(null);
-    const [subiendo, setSubiendo] = useState(false); // Para mostrar un estado de carga
+
+    // Servicios (tarifas)
+    const [servicioEditando, setServicioEditando] = useState(null);
+    const [tempServicio, setTempServicio] = useState({});
+    
     // FUNCIÓN PARA ELIMINAR
+    /**
+     * Elimina una obra en Firestore y su imagen en Storage (si existe en Storage).
+     * @param {string} id - ID del documento en la colección 'obras'.
+     * @param {string} urlImagen - Ruta/URL de la imagen en Storage (o URL externa).
+     */
     const handleEliminar = async (id, urlImagen) => {
         if (window.confirm("¿Deseas eliminar esta obra permanentemente del Éter?")) {
             try {
@@ -35,8 +75,77 @@ const AdminPage = () => {
             }
         }
     };
+    const handleAddIncluye = () => {
+        /**
+         * Añade un item vacío a la lista `incluye` en `tempServicio`.
+         * Usado en el formulario de edición de servicios.
+         */
+        setTempServicio({
+            ...tempServicio,
+            incluye: [...(tempServicio.incluye || []), " Nuevo detalle"]
+        });
+    };
+
+    const handleRemoveIncluye = (index) => {
+        /**
+         * Elimina un item de la lista `incluye` por índice.
+         * @param {number} index - Índice del item a eliminar.
+         */
+        const nuevaLista = [...tempServicio.incluye];
+        nuevaLista.splice(index, 1);
+        setTempServicio({ ...tempServicio, incluye: nuevaLista });
+    };
+
+    const handleChangeIncluye = (index, valor) => {
+        /**
+         * Actualiza un item de la lista `incluye` en `tempServicio`.
+         * @param {number} index - Índice del item a actualizar.
+         * @param {string} valor - Nuevo valor del item.
+         */
+        const nuevaLista = [...tempServicio.incluye];
+        nuevaLista[index] = valor;
+        setTempServicio({ ...tempServicio, incluye: nuevaLista });
+    };
+        // Modifica tu función de guardado para que incluya la lista:
+   const handleGuardarServicio = async (idParametro) => {
+        /**
+         * Guarda/actualiza un servicio en la colección 'servicios'.
+         * Acepta el id como string; si recibe un evento accidental, lo ignora.
+         * @param {string|Event} idParametro - ID del servicio o evento de formulario.
+         */
+    // 1. Extraemos el ID
+    const idExtraido = typeof idParametro === 'object' && idParametro.target ? undefined : idParametro;
+    
+    if (!idExtraido) {
+        alert("Error: El ID está llegando vacío.");
+        return; 
+    }
+
+    // 2. MAGIA AQUÍ: Forzamos a que siempre sea un Texto (String)
+    const idString = String(idExtraido); 
+
+    try {
+        const docRef = doc(db, 'servicios', idString);
+        
+        // 3. Copiamos y limpiamos
+        const datosAEnviar = { ...tempServicio };
+        delete datosAEnviar.id; // Seguimos borrando el id interno para no confundir a Firebase
+
+        // 4. Actualizamos
+        await updateDoc(docRef, datosAEnviar);
+        setServicioEditando(null);
+        alert("¡Tarifa y detalles actualizados con éxito!");
+    } catch (error) {
+        console.error("Error al actualizar en Firebase:", error);
+        alert("Hubo un error al guardar los cambios.");
+    }
+};
     // Función para manejar el cambio de archivo
     const handleFileChange = (e) => {
+        /**
+         * Maneja selección de archivo para previsualizar y preparar subida.
+         * Guarda el archivo en `archivoImagen` y crea una URL temporal en `previewUrl`.
+         */
         const file = e.target.files[0];
         if (file) {
             setArchivoImagen(file);
@@ -46,6 +155,10 @@ const AdminPage = () => {
     };
     // FUNCIÓN PARA ACTUALIZAR (EDICIÓN)
     const handleGuardarEdicion = async (id) => {
+        /**
+         * Actualiza el título de una obra en Firestore.
+         * @param {string} id - ID del documento en 'obras'.
+         */
         try {
             const obraRef = doc(db, 'obras', id);
             await updateDoc(obraRef, {
@@ -61,6 +174,10 @@ const AdminPage = () => {
 
         // 2. Función para guardar los nuevos textos
     const handleGuardarConfigOc = async () => {
+        /**
+         * Guarda la configuración de la sección "OC Intro" en Firestore.
+         * Si se seleccionó `archivoImagen`, lo sube a Storage y usa la URL resultante.
+         */
     setSubiendo(true);
     let urlFinal = tempConfig.ocImagenUrl; // Por defecto la que ya existe
 
@@ -94,6 +211,11 @@ const AdminPage = () => {
     };
 
     const toggleLeido = async (id, estadoActual) => {
+            /**
+             * Alterna el estado `leido` de un mensaje en la colección 'mensajes'.
+             * @param {string} id - ID del documento de mensaje.
+             * @param {boolean} estadoActual - Estado actual de `leido`.
+             */
         try {
             const mensajeRef = doc(db, 'mensajes', id);
             await updateDoc(mensajeRef, {
@@ -106,6 +228,10 @@ const AdminPage = () => {
     };
     
     const eliminarMensaje = async (id) => {
+        /**
+         * Elimina un mensaje de la colección 'mensajes' tras confirmación.
+         * @param {string} id - ID del mensaje a eliminar.
+         */
         if (window.confirm("¿Deseas borrar este mensaje del Éter?")) {
             try {
                 await deleteDoc(doc(db, 'mensajes', id));
@@ -116,6 +242,10 @@ const AdminPage = () => {
     };
     // Función para alternar estado de comisiones
     const toggleComisiones = async () => {
+        /**
+         * Alterna el booleano `comisionesAbiertas` en el documento 'comisionesAbiertas/global'.
+         * Usa `setDoc` con `merge: true` para no pisar otros campos.
+         */
         const docRef = doc(db, 'comisionesAbiertas', 'global');
         
         try {
@@ -281,7 +411,70 @@ const AdminPage = () => {
         </div>
     )}
 </div>
+<section className="admin-management-section">
+    <h2 className="section-title">💰 Gestión de Tarifas (Comisiones)</h2>
+    <div className="admin-servicios-list">
+        {serviciosFirebase && serviciosFirebase.map(srv => (
+            <div key={srv.id} className={`admin-servicio-item ${srv.destacado ? 'destacado' : ''}`}>
+                {servicioEditando === srv.id ? (
+                                    <div className="edit-mode-vertical">
+                    <label>Nombre del Servicio:</label>
+                    <input 
+                        type="text" 
+                        value={tempServicio.tipo} 
+                        onChange={(e) => setTempServicio({...tempServicio, tipo: e.target.value})}
+                    />
+                    
+                    <label>Precio:</label>
+                    <input 
+                        type="text" 
+                        value={tempServicio.precio} 
+                        onChange={(e) => setTempServicio({...tempServicio, precio: e.target.value})}
+                    />
+                
+                    <label>¿Qué incluye? (Lista):</label>
+                    <div className="incluye-edit-list">
+                        {tempServicio.incluye && tempServicio.incluye.map((item, index) => (
+                            <div key={index} className="incluye-item-row">
+                                <input 
+                                    type="text" 
+                                    value={item} 
+                                    onChange={(e) => handleChangeIncluye(index, e.target.value)}
+                                />
+                                <button onClick={() => handleRemoveIncluye(index)} className="btn-remove-item">🗑️</button>
+                            </div>
+                        ))}
+                        <button onClick={handleAddIncluye} className="btn-add-item">+ Añadir Item</button>
+                    </div>
+                    
+                    <label>Descripción:</label>
+                    <textarea 
+                        value={tempServicio.descripcion} 
+                        onChange={(e) => setTempServicio({...tempServicio, descripcion: e.target.value})}
+                    />
 
+                    <div className="edit-buttons">
+                        <button onClick={() => handleGuardarServicio(srv.id)} className="btn-save">Guardar</button>
+                        <button onClick={() => setServicioEditando(null)} className="btn-cancel">Cancelar</button>
+                    </div>
+                </div>
+                ) : (
+                    <div className="servicio-info-display">
+                        <div className="srv-header">
+                            <strong>{srv.tipo}</strong>
+                            <span className="srv-price">{srv.precio}</span>
+                        </div>
+                        <p>{srv.descripcion}</p>
+                        <button onClick={() => {
+                            setServicioEditando(srv.id);
+                            setTempServicio(srv);
+                        }} className="admin-btn-edit">✏️ Editar Tarifa</button>
+                    </div>
+                )}
+            </div>
+        ))}
+    </div>
+</section>
     {/* SECCIÓN DE MENSAJES (Buzón Actualizado) */}
     <section className="admin-messages-section">
         <h2 className="section-title">Buzón de Mensajes</h2>

@@ -483,3 +483,78 @@
         flex-direction: column;
     }
 }
+
+
+/* Añade esto a AdminPage.css si no lo tienes */
+.edit-mode-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(74, 144, 226, 0.3);
+}
+
+.admin-servicio-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.srv-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.srv-price {
+    color: #4A90E2;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.incluye-edit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+}
+
+.incluye-item-row {
+    display: flex;
+    gap: 5px;
+}
+
+.incluye-item-row input {
+    flex: 1;
+    font-size: 0.85rem !important;
+    padding: 8px !important;
+}
+
+.btn-remove-item {
+    background: rgba(255, 0, 0, 0.2);
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-add-item {
+    background: rgba(74, 144, 226, 0.2);
+    color: #4A90E2;
+    border: 1px dashed #4A90E2;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-top: 5px;
+}

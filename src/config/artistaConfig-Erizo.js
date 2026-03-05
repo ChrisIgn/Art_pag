@@ -39,7 +39,7 @@ export const artistaConfig = {
         {
             id: 1,
             tipo: "Headshot / Icon",
-            precio: "Desde $25",
+            precio: "Desde $27",
             descripcion: "Retrato hasta los hombros, ideal para perfiles sociales.",
             incluye: ["Color base", "Fondo simple", "Alta resolución"],
         },
