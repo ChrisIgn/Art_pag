@@ -4,13 +4,28 @@ export const artistaConfig = {
     profesion: "Ilustradora/o Digital/ Concept Artist",
     emailContacto: "eriiartweb@gmail.com",
 
-    //Configuracion de la estetica
-    colores: {
-         principal: "#4A90E2",
-         secundario: "#f3f4f6",
-         acento: "#ff7eb9"
+// CONFIGURACIÓN DE LA ESTÉTICA (UI/UX)
+    // Cambia estos códigos para cambiar el "vibe" de toda la web al instante
+    estetica: {
+        primario: "#4A90E2",    // Azul principal (Brillos, botones)
+        fondo: "#0a0b10",      // Fondo oscuro profundo
+        tarjeta: "rgba(255, 255, 255, 0.05)", // Glassmorphism
+        texto: "#ffffff",
+        acento: "#ff7eb9"      // Para detalles especiales o avisos
     },
 
+
+// SECCIÓN HERO (Lo primero que ven al entrar)
+    hero: {
+        titulo: "Sueños y Futuro",
+        subtitulo: "Explora una línea de tiempo donde las imaginaciones lejanas se vuelven realidad. Bienvenido al mundo de BrigHella.",
+        botonPrincipal: "Comienza la aventura",
+        // OPCIÓN A: Una imagen de stock profesional de Unsplash (Cyberpunk/Futurista)
+        imagenFondo: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=2070&auto=format&fit=crop",
+        // OPCIÓN B: Si prefieres usar una imagen local que SÍ sea tuya:
+        // imagenFondo: require('../../assets/images/arte/NuevaImagen.jpg')
+    },
+    
     // Redes sociales
     redes: {
         instagram: "https://www.instagram.com/erii_art/",

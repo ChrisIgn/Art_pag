@@ -4,7 +4,7 @@ import { signOut } from 'firebase/auth';
 import { auth, db, storage } from '../firebase/config';
 import { useFirestore } from '../hooks/useFirestore';
 import { setDoc,doc, deleteDoc, updateDoc } from 'firebase/firestore'; // Añadimos updateDoc
-import { ref, deleteObject } from 'firebase/storage';
+import { ref, deleteObject, uploadBytes, getDownloadURL } from 'firebase/storage';
 import './AdminPage.css';
 import { useConfig } from '../hooks/useConfig';
 
@@ -12,11 +12,15 @@ const AdminPage = () => {
     const { docs: obras } = useFirestore('obras');
     const { docs: mensajes } = useFirestore('mensajes');
     const { config, loading } = useConfig();
-
+    const [previewUrl, setPreviewUrl] = useState(null);
     // ESTADOS PARA EDICIÓN
     const [editandoId, setEditandoId] = useState(null);
     const [nuevoTitulo, setNuevoTitulo] = useState("");
-
+    // 1. Añade estos nuevos estados al inicio del componente
+    const [editConfig, setEditConfig] = useState(false);
+    const [tempConfig, setTempConfig] = useState({});
+    const [archivoImagen, setArchivoImagen] = useState(null);
+    const [subiendo, setSubiendo] = useState(false); // Para mostrar un estado de carga
     // FUNCIÓN PARA ELIMINAR
     const handleEliminar = async (id, urlImagen) => {
         if (window.confirm("¿Deseas eliminar esta obra permanentemente del Éter?")) {
@@ -31,7 +35,15 @@ const AdminPage = () => {
             }
         }
     };
-
+    // Función para manejar el cambio de archivo
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setArchivoImagen(file);
+            // Creamos una URL temporal para la vista previa
+            setPreviewUrl(URL.createObjectURL(file));
+        }
+    };
     // FUNCIÓN PARA ACTUALIZAR (EDICIÓN)
     const handleGuardarEdicion = async (id) => {
         try {
@@ -47,6 +59,39 @@ const AdminPage = () => {
         }
     };
 
+        // 2. Función para guardar los nuevos textos
+    const handleGuardarConfigOc = async () => {
+    setSubiendo(true);
+    let urlFinal = tempConfig.ocImagenUrl; // Por defecto la que ya existe
+
+    try {
+        // 1. Si seleccionaste un archivo nuevo, subirlo a Storage
+        if (archivoImagen) {
+            const nombreArchivo = `config/hero_${Date.now()}`;
+            const storageRef = ref(storage, nombreArchivo);
+            
+            const snapshot = await uploadBytes(storageRef, archivoImagen);
+            urlFinal = await getDownloadURL(snapshot.ref);
+        }
+
+        // 2. Actualizar Firestore con los textos y la URL (nueva o vieja)
+        const docRef = doc(db, 'comisionesAbiertas', 'global');
+        await updateDoc(docRef, {
+            ocTitulo: tempConfig.ocTitulo,
+            ocSubtitulo: tempConfig.ocSubtitulo,
+            ocImagenUrl: urlFinal
+        });
+
+            setEditConfig(false);
+            setArchivoImagen(null);
+            alert("¡Configuración actualizada con éxito!");
+        } catch (error) {
+            console.error("Error al actualizar:", error);
+            alert("Error al guardar los cambios.");
+        } finally {
+            setSubiendo(false);
+        }
+    };
 
     const toggleLeido = async (id, estadoActual) => {
         try {
@@ -161,6 +206,82 @@ const AdminPage = () => {
             </button>
         </div>
     </section>
+
+    {/* --- NUEVA SECCIÓN: Editar OcIntro --- */}
+        <div className="setting-item-edit">
+            <h3>Editar Sección Intro (OC)</h3>
+    {!editConfig ? (
+        <button onClick={() => {
+            setEditConfig(true);
+            setTempConfig({
+                ocTitulo: config.ocTitulo || "",
+                ocSubtitulo: config.ocSubtitulo || "",
+                ocImagenUrl: config.ocImagenUrl || ""
+            });
+        }} className="admin-btn-edit">✏️ Editar Textos e Imagen</button>
+    ) : (
+        <div className="config-edit-form">
+            <label>Título Intro:</label>
+            <input 
+                type="text" 
+                value={tempConfig.ocTitulo} 
+                onChange={(e) => setTempConfig({...tempConfig, ocTitulo: e.target.value})}
+            />
+            
+            <label>Subtítulo Intro:</label>
+            <textarea 
+                value={tempConfig.ocSubtitulo} 
+                onChange={(e) => setTempConfig({...tempConfig, ocSubtitulo: e.target.value})}
+            />
+
+            <label>Imagen de Fondo (Archivo):</label>
+                <div className="file-upload-wrapper">
+                    <input 
+                        type="file" 
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="admin-file-input"
+                    />
+                    
+                    {/* VISTA PREVIA DINÁMICA */}
+                    {(previewUrl || tempConfig.ocImagenUrl) && (
+                        <div className="image-preview-container">
+                            <span className="preview-badge">
+                                {previewUrl ? "Nueva (Vista Previa)" : "Actual"}
+                            </span>
+                            <img 
+                                src={previewUrl || tempConfig.ocImagenUrl} 
+                                alt="Vista previa fondo" 
+                            />
+                        </div>
+                    )}
+                    
+                    {archivoImagen && <p className="file-name">📷 Seleccionado: {archivoImagen.name}</p>}
+                </div>
+
+            <div className="edit-buttons">
+                <button 
+                    onClick={handleGuardarConfigOc} 
+                    className="btn-save" 
+                    disabled={subiendo}
+                >
+                    {subiendo ? "Subiendo..." : "Guardar Cambios"}
+                </button>
+                <button 
+                    onClick={() => {
+                        setEditConfig(false);
+                        setArchivoImagen(null);
+                    }} 
+                    className="btn-cancel"
+                    disabled={subiendo}
+                >
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    )}
+</div>
+
     {/* SECCIÓN DE MENSAJES (Buzón Actualizado) */}
     <section className="admin-messages-section">
         <h2 className="section-title">Buzón de Mensajes</h2>
