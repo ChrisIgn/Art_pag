@@ -16,27 +16,17 @@ const OcIntro = () => {
   if (loading) return null; // O un spinner
 
   return (
-    <section 
-      className="Oc-intro-contenedor"
-      // La imagen la manejaremos en el siguiente paso, por ahora usemos una fija o del config
-      style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${config.ocImagenUrl || 'TU_IMAGEN_POR_DEFECTO'})` }}
-    >
-      <div className="Oc-intro-content">
-        <h1 className="Oc-intro-titulo">
-          {config.ocTitulo || "Sueños y futuro"} 
-        </h1>
-        <p className="Oc-intro-subtitulo">
-          {config.ocSubtitulo || "Bienvenido a mi mundo artístico."}
-        </p>
-        
-        <Boton 
-          texto="Comienza la aventura"
-          onClick={handleScrollToOC}
-          variante="primario" 
-        />
-      </div>
-    </section>
-  );
+  <section 
+    className="Oc-intro-contenedor"
+    style={{ backgroundImage: `url(${config.ocImagenUrl})` }}
+  >
+    <div className="Oc-overlay"> {/* <-- ESTE ES EL SECRETO */}
+      <h1 className="Oc-intro-titulo">{config.ocTitulo}</h1>
+      <p className="Oc-intro-subtitulo">{config.ocSubtitulo}</p>
+      <Boton texto="Ver Galería" onClick={handleScrollToOC} variante="primario" />
+    </div>
+  </section>
+);
 };
 
 export default OcIntro;
