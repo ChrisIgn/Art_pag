@@ -1,0 +1,80 @@
+/* src/components/organisms/OcIntro.css */
+
+.Oc-intro-contenedor {
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  /* ESTILOS DE LA IMAGEN DE FONDO */
+  min-height: 100vh; /* Cambiado a 100vh para un impacto total al inicio */
+  background-size: cover;
+  background-position: center;
+  /* background-attachment: fixed; <- Nota: En móviles a veces da problemas, puedes comentarlo si ves saltos */
+  position: relative;
+  overflow: hidden;
+}
+
+/* El filtro oscuro que protege el texto */
+.Oc-overlay {
+  background: linear-gradient(
+    rgba(14, 22, 36, 0.4), /* Un azul muy oscuro casi transparente */
+    rgba(14, 22, 36, 0.8)  /* Más oscuro hacia abajo para dar peso */
+  );
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px); /* Un toque sutil de desenfoque pro */
+}
+
+.Oc-intro-titulo {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 8vw, 5rem); /* Se ajusta solo al tamaño de pantalla */
+  font-weight: 700;
+  color: #ffffff; /* BLANCO para legibilidad */
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra para resaltar */
+  margin-bottom: 20px;
+  animation: fadeInSlideUp 1s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+.Oc-intro-subtitulo {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.2em;
+  color: #e0e0e0; /* Gris muy claro */
+  line-height: 1.6;
+  max-width: 650px; 
+  margin-bottom: 40px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  animation: fadeInSlideUp 1s ease-out 0.5s forwards;
+  opacity: 0;
+}
+
+/* Animación que ya tenías pero asegurándonos que funcione */
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive para tablets y móviles */
+@media (max-width: 768px) {
+    .Oc-intro-titulo {
+        font-size: 3rem;
+    }
+    .Oc-intro-subtitulo {
+        font-size: 1rem;
+        padding: 0 20px;
+    }
+}
