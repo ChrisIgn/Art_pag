@@ -116,11 +116,13 @@ html {
 .home-page-layout {
     background: #050a15; /* Un poco más oscuro */
     position: relative;
-    overflow-x: hidden;
+    /* ✅ CAMBIO CLAVE AQUÍ: Cambiamos overflow-x por overflow general oculto para los fondos */
+    overflow: hidden; 
+    min-height: 100vh;
 }
 
 .atmospheric-layers {
-    position: fixed;
+    position: fixed; /* Esto está bien */
     top: 0; left: 0;
     width: 100%; height: 100%;
     background: 
@@ -144,19 +146,20 @@ html {
 }
 
 
+
 /* CAPA DE RUIDO GLOBAL */
 .home-page-layout::after {
   content: "";
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  /* Usamos un SVG muy pequeño en base64 que genera ruido */
+  /* ✅ CAMBIO CLAVE AQUÍ: Cambiamos 100vw por 100% */
+  width: 100%; 
+  height: 100%; /* Mejor usar 100% que 100vh aquí */
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.04; /* Ajusta este valor: 0.03 para algo casi invisible, 0.06 para algo más rústico */
+  opacity: 0.04;
   pointer-events: none;
-  z-index: 9998; /* Justo debajo del Lightbox pero encima de todo lo demás */
+  z-index: 9998; 
 }
 
 
@@ -258,4 +261,94 @@ html {
     opacity: 0.7;
     filter: grayscale(1);
     transform: scale(0.98);
+}
+
+
+/* ==========================================================================
+   CARRUSEL DE PERSONAJES (HOME)
+   ========================================================================== */
+
+/* Contenedor relativo para poder posicionar las flechas encima */
+.carrusel-oc-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh; /* Asegura que tenga buena altura */
+}
+
+/* Estilo base de los botones de flecha */
+.btn-carrusel {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); /* Centrado vertical perfecto */
+    background: rgba(14, 22, 36, 0.6); /* Fondo oscuro semitransparente */
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 20; /* Asegura que estén por encima de la imagen del OC */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px); /* Efecto cristal */
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Efecto Hover (Al pasar el mouse) */
+.btn-carrusel:hover {
+    background: rgba(74, 144, 226, 0.8); /* Tu azul primario */
+    color: #ffffff;
+    border-color: #4A90E2;
+    transform: translateY(-50%) scale(1.15); /* Crece un poquito */
+    box-shadow: 0 0 20px rgba(74, 144, 226, 0.4); /* Resplandor azul */
+}
+
+/* Posicionamiento a los lados */
+.btn-carrusel.prev {
+    left: 3vw; /* Separado del borde izquierdo */
+}
+
+.btn-carrusel.next {
+    right: 3vw; /* Separado del borde derecho */
+}
+
+/* ==========================================================================
+   PANTALLA DE CARGA (Sincronizando con el Éter)
+   ========================================================================== */
+.home-loading {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #0a0b10;
+    color: #4A90E2;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
+
+/* ==========================================================================
+   RESPONSIVO (MÓVILES)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .btn-carrusel {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+        background: rgba(14, 22, 36, 0.8); /* Más opaco en móviles para que se vea bien */
+    }
+    
+    /* Los pegamos más a los bordes en pantallas pequeñas */
+    .btn-carrusel.prev { 
+        left: 10px; 
+    }
+    .btn-carrusel.next { 
+        right: 10px; 
+    }
 }

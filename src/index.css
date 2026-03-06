@@ -12,3 +12,10 @@ code {
     monospace;
 }
 
+/* index.css o App.css */
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Esto asegura que NUNCA haya scroll horizontal */
+    width: 100%;
+}

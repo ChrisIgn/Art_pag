@@ -558,3 +558,133 @@
     font-weight: bold;
     margin-top: 5px;
 }
+
+/* ==========================================================================
+   GESTOR DE PERSONAJES (OCs) - ADMIN
+   ========================================================================== */
+
+/* Contenedor del formulario de edición de OCs */
+.edit-mode-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: rgba(14, 22, 36, 0.8); /* Fondo oscuro profundo */
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 126, 185, 0.3); /* Borde rosado sutil */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+}
+
+.edit-mode-vertical h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #ffffff;
+    font-size: 1.4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+/* Inputs y Textareas dentro del editor */
+.edit-mode-vertical input[type="text"],
+.edit-mode-vertical textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.edit-mode-vertical input[type="text"]:focus,
+.edit-mode-vertical textarea:focus {
+    outline: none;
+    border-color: #4A90E2; /* Azul al hacer foco */
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.edit-mode-vertical textarea {
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* Contenedores de subida de imágenes (Pura vs Caída) */
+.oc-image-upload-container {
+    display: flex;
+    gap: 20px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.oc-image-box {
+    flex: 1;
+    min-width: 250px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.oc-image-box:hover {
+    transform: translateY(-2px);
+}
+
+/* Colores específicos para cada fase */
+.oc-image-box.pura {
+    border: 1px dashed #4A90E2; /* Azul */
+}
+
+.oc-image-box.caida {
+    border: 1px dashed #ff7eb9; /* Rosa/Rojo */
+}
+
+.oc-image-box label {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.oc-image-box input[type="file"] {
+    width: 100%;
+    font-size: 0.85rem;
+    color: #9BA9B8;
+    background: rgba(255,255,255,0.02);
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Previsualización de imágenes subidas */
+.oc-preview-img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    object-position: top;
+    margin-top: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    border: 2px solid rgba(255,255,255,0.1);
+}
+
+/* Tarjetas de la lista de personajes guardados */
+.admin-servicio-card h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.3rem;
+    color: #ffffff;
+}
+
+.admin-servicio-card .desc-text {
+    color: #4A90E2;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
