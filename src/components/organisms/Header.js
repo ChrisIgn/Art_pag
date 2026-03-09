@@ -28,7 +28,7 @@ const links = [
     { name: "HOME", url: "/#home", isRoute: false }, // Apunta a la raíz + ancla
     { name: "PERSONAL STYLE", url: "#personal", isRoute: false },
     { name: "Ecos", url: "/#ecos-del-mundo-ancla", isRoute: false }, // Apunta a la sección de galería
-    { name: "Galeria", url: "#other", isRoute: false },
+    //{ name: "Galeria", url: "#other", isRoute: false },
     { name: "ABOUT ME", url: "#about", isRoute: false },
     //{ name: "ADMIN", url: "/admin", isRoute: true }, // Nueva ruta para tu panel
 ];
