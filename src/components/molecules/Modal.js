@@ -18,8 +18,8 @@ const Modal = ({ obra, onClose, onNavigate }) => {
     return () => window.removeEventListener('keydown', handleKeydown);
   }, [onClose, onNavigate, obra]);
 
-  // Función para ver en pantalla completa nativa
-// Función para ver en pantalla completa nativa corregida
+
+// Función para ver en pantalla completa nativa
   const verPantallaCompleta = () => {
     // Obtenemos el elemento real desde la referencia
     const element = imageRef.current;

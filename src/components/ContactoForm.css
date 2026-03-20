@@ -1,14 +1,20 @@
 .contacto-form-pro {
+    /* Contenedor principal del formulario de contacto */
     display: flex;
     flex-direction: column;
-    gap: 25px; /* Más espacio entre campos para que no se vea apretado */
+    gap: 25px;
     margin-top: 30px;
+    position: relative; /* para posicionar pseudo-elementos decorativos */
 }
 
-/* Aplicamos los mismos estilos base al select */
-.input-group-glass input, 
+/* ------------------------------------------------------------------
+     Inputs / textarea / select
+     - Estilos compartidos para elementos de formulario dentro de
+         `.input-group-glass`.
+*/
+.input-group-glass input,
 .input-group-glass textarea,
-.input-group-glass select { /* Añadimos el select aquí */
+.input-group-glass select {
     width: 100%;
     padding: 15px;
     background: rgba(0, 0, 0, 0.2);
@@ -17,11 +23,10 @@
     color: #fff;
     font-size: 1rem;
     transition: all 0.3s ease;
-    appearance: none; /* Quita la flecha por defecto de Windows/Mac */
+    appearance: none; /* elimina UI nativo en algunos navegadores */
     cursor: pointer;
 }
 
-/* El brillo azul también para el select */
 .input-group-glass select:focus {
     border-color: #4A90E2;
     background: rgba(74, 144, 226, 0.05);
@@ -29,19 +34,20 @@
     outline: none;
 }
 
-/* Estilo para las opciones dentro del desplegable */
 .input-group-glass select option {
-    background: #1a1a1a; 
-    color: white;
+    background: #1a1a1a;
+    color: #fff;
 }
 
-/* El botón de enviar debe ser el protagonista */
+/* ------------------------------------------------------------------
+     Botón principal (enviar)
+*/
 .contacto-form-pro .contact-btn {
     margin-top: 10px;
     padding: 18px;
     border-radius: 15px;
     background: linear-gradient(135deg, #4A90E2, #357ABD);
-    color: white;
+    color: #fff;
     border: none;
     font-weight: bold;
     letter-spacing: 1px;
@@ -54,7 +60,9 @@
     box-shadow: 0 10px 20px rgba(74, 144, 226, 0.4);
 }
 
-/* Un pequeño detalle decorativo en la parte superior */
+/* ------------------------------------------------------------------
+     Elementos decorativos / pseudo-elementos
+*/
 .contacto-form-pro::before {
     content: "✉";
     position: absolute;

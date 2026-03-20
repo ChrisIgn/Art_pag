@@ -1,9 +1,11 @@
 .precios-container {
+    /* Contenedor principal de la sección de precios */
     padding: 80px 20px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
+/* Título con gradiente aplicado al texto */
 .precios-titulo {
     text-align: center;
     font-size: 2.5rem;
@@ -20,6 +22,7 @@
     gap: 30px;
 }
 
+/* Card individual de precio */
 .precio-card {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -27,12 +30,12 @@
     border-radius: 20px;
     padding: 40px 30px;
     text-align: center;
-    transition: all 0.4s ease;
+    transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
     position: relative;
     overflow: hidden;
 }
 
-/* Efecto cuando Brighella cambia a caída */
+/* Estado global (tema / evento) que modifica las cards */
 .global-fallen .precio-card {
     border-color: rgba(255, 0, 0, 0.2);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -60,9 +63,7 @@
     color: #9BA9B8;
 }
 
-.lista-incluye li {
-    margin-bottom: 10px;
-}
+.lista-incluye li { margin-bottom: 10px; }
 
 .btn-ordenar {
     width: 100%;
@@ -73,7 +74,7 @@
     color: white;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .btn-ordenar:hover {

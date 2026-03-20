@@ -9,7 +9,7 @@ const GaleriaArte = ({ obras, titulo, descripcion }) => {
   const [indiceSeleccionado, setIndiceSeleccionado] = useState(null);
 
   // =========================================================================
-  // LOGICA DINÁMICA DE CATEGORÍAS (Nivel 2026)
+  // LOGICA DINÁMICA DE CATEGORÍAS 
   // =========================================================================
   const categoriasDinamicas = useMemo(() => {
     // 1. Extraemos todos los arrays de categorías de todas las obras

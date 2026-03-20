@@ -1,66 +1,100 @@
-/* Styles for LoginPage */
+
+/* -----------------
+   Variables locales
+   ----------------- */
+:root {
+  --login-bg: #0E1624;
+  --card-bg: #1a2331;
+  --input-bg: #283747;
+  --accent: #4A90E2;
+  --danger: #ff4d4f;
+  --text-on-dark: #ffffff;
+}
+
+/* -----------------
+   Layout / Wrapper
+   ----------------- */
 .login-page {
-  background-color: #0E1624;
+  background-color: var(--login-bg);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+/* -----------------
+   Card / Form
+   ----------------- */
 .login-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 40px;
-  background: #1a2331;
+  background: var(--card-bg);
   border-radius: 10px;
   width: 300px;
 }
-
 .login-form h2 {
-  color: #4A90E2;
+  color: var(--accent);
   text-align: center;
   margin: 0;
 }
 
+/* -----------------
+   Form states / messages
+   ----------------- */
 .login-error {
-  color: red;
+  color: var(--danger);
   text-align: center;
   margin: 0;
 }
 
+/* -----------------
+   Inputs
+   ----------------- */
 .login-input {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #3d4f62;
-  background: #283747;
-  color: white;
+  background: var(--input-bg);
+  color: var(--text-on-dark);
 }
 
+/* -----------------
+   Buttons
+   ----------------- */
 .login-button {
   padding: 10px;
-  background: #4A90E2;
-  color: white;
+  background: var(--accent);
+  color: var(--text-on-dark);
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .admin-backlink {
-  color: #4A90E2;
+  color: var(--accent);
   text-decoration: none;
   font-size: 1.2em;
   display: inline-block;
 }
-
 .admin-backlink button {
   margin-top: 20px;
   margin-left: 12px; /* separacion horizontal si quedan en la misma linea */
   margin-bottom: 40px; /* espacio inferior */
   background: #ff6347;
-  color: white;
+  color: var(--text-on-dark);
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
 }
+
+/* -----------------
+   Responsive (pequeñas pantallas)
+   ----------------- */
+@media (max-width: 480px) {
+  .login-form { width: calc(100% - 40px); padding: 24px; }
+  .admin-backlink { font-size: 1rem; }
+}
+

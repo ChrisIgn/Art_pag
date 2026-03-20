@@ -1,35 +1,56 @@
 /* src/components/organisms/Header.css
-   Cleaned and organized header styles
-*/
+/* ------------------------------------------------------------------
+   Variables
+   ------------------------------------------------------------------ */
+:root {
+  --header-bg: rgba(14, 22, 36, 0.95);
+  --header-bg-solid: rgba(14, 22, 36, 0.98);
+  --muted-text: #9BA9B8;
+  --accent: #4A90E2;
+  --accent-weak: rgba(74, 144, 226, 0.2);
+  --panel-bg: rgba(255,255,255,0.05);
+}
 
+/* ------------------------------------------------------------------
+   2) Contenedor principal
+   ------------------------------------------------------------------ */
 .new-main-header {
   position: fixed;
-  inset: 0 0 auto 0; /* top:0; right:0; bottom:auto; left:0 */
+  inset: 0 0 auto 0; /* top/right/bottom/left */
   width: 100%;
   z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(14, 22, 36, 0.95);
+  background-color: var(--header-bg);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding: 12px 36px;
-  box-sizing: border-box; /* ensure padding doesn't cause overflow */
+  box-sizing: border-box;
   transition: all 0.4s ease;
 }
 
 .header-transparent {
-    background-color: transparent;
-    border-bottom: 1px solid transparent;
+  background-color: transparent;
+  border-bottom: 1px solid transparent;
 }
 
 .header-solid {
-    background-color: rgba(14, 22, 36, 0.98);
-    backdrop-filter: blur(10px); /* Efecto moderno de 2026 */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: var(--header-bg-solid);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ------------------------------------------------------------------
+   3) Títulos / marca
+   ------------------------------------------------------------------ */
+.header-brand-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .header-title {
-  color: #9BA9B8;
+  color: var(--muted-text);
   font-size: 1.75rem;
   margin: 0;
   font-family: 'Times New Roman', Times, serif;
@@ -50,7 +71,6 @@
   border-radius: 2px;
 }
 
-
 .header-title2 {
   color: #bd3f3f;
   font-size: 1.25rem;
@@ -62,6 +82,9 @@
   padding-bottom: 5px;
 }
 
+/* ------------------------------------------------------------------
+   4) Navegación principal
+   ------------------------------------------------------------------ */
 .header-nav ul {
   list-style: none;
   display: flex;
@@ -75,6 +98,7 @@
   padding-bottom: 10px;
   position: relative;
 }
+
 .nav-item a {
   color: #EAEAEA;
   text-decoration: none;
@@ -86,7 +110,7 @@
 }
 
 .nav-item.active a {
-  color: #4A90E2;
+  color: var(--accent);
   font-weight: 600;
 }
 
@@ -97,38 +121,20 @@
   right: 0;
   bottom: -2px;
   height: 2px;
-  background-color: #4A90E2;
+  background-color: var(--accent);
 }
 
-/* Responsive: stack title + nav on small screens */
-@media (max-width: 768px) {
-  .new-main-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 12px 12px; /* reduce side padding on small screens */
-
-  }
-
-  .header-title {
-    font-size: 1.5rem;
-  }
-
-  .header-nav ul {
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-}
-
-/* Mobile menu toggle */
+/* ------------------------------------------------------------------
+   5) Mobile menu toggle & hamburger
+   ------------------------------------------------------------------ */
 .menu-toggle {
-  display: none; /* shown on small screens */
+  display: none; /* visible en mobile */
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 10px; /* larger hit area */
+  padding: 10px;
   line-height: 0;
-  z-index: 1201; /* above the nav when open */
+  z-index: 1201;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
@@ -140,7 +146,6 @@
   background: #EAEAEA;
   position: relative;
   transition: all 0.2s ease;
-  
 }
 .hamburger::before,
 .hamburger::after {
@@ -151,7 +156,6 @@
   height: 2px;
   background: #EAEAEA;
   transition: all 0.25s ease;
-  
 }
 .hamburger::before { top: -7px; }
 .hamburger::after { top: 7px; }
@@ -159,23 +163,30 @@
 .hamburger.is-open::before { transform: rotate(45deg); top: 0; }
 .hamburger.is-open::after { transform: rotate(-45deg); top: 0; }
 
+/* Mobile-specific layout and overlay nav */
 @media (max-width: 768px) {
-  .menu-toggle { display: block; }
+  .new-main-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 12px;
+  }
+
+  .header-title { font-size: 1.5rem; }
+
+  .header-nav ul { gap: 16px; flex-wrap: wrap; }
+
+  .menu-toggle { display: block; margin-left: auto; margin-right: 4px; position: relative; }
 
   .header-top { box-sizing: border-box; width: 100%; display: flex; justify-content: space-between; align-items: center; }
 
-  /* ensure the toggle stays visible: use margin-left auto and small right padding */
-  .menu-toggle { margin-left: auto; margin-right: 4px; position: relative; }
-
-  /* Position the nav as an overlay below the header-top for predictable touch
-     targets and to avoid shifting layout. */
   .header-nav {
     display: none;
     width: 100%;
     position: absolute;
     top: 100%;
     left: 0;
-    background: rgba(14,22,36,0.98);
+    background: var(--header-bg-solid);
     padding: 12px 12px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.25);
     border-top: 1px solid rgba(255,255,255,0.03);
@@ -186,64 +197,41 @@
   .header-nav ul { flex-direction: column; gap: 12px; padding: 0; margin: 0; }
 
   .nav-item { padding: 8px 0; }
-
-  /* Make each link a larger touch target */
   .nav-item a { display: block; padding: 10px 12px; }
 }
 
-
-.header-brand-container {
-    display: flex;
-    align-items: center;
-    gap: 12px; /* Espacio entre "Eri" y el indicador */
-}
-
+/* ------------------------------------------------------------------
+   6) Brand / Status pill
+   ------------------------------------------------------------------ */
 .status-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.65rem; /* Pequeño y elegante */
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.4s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: var(--panel-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
 }
 
-/* Punto de luz */
-.status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; }
 
-/* Colores para OPEN */
 .status-pill.open {
-    color: #34d399; /* Verde esmeralda */
-    border-color: rgba(52, 211, 153, 0.3);
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.3);
 }
-.status-pill.open .status-dot {
-    background-color: #34d399;
-    box-shadow: 0 0 6px #34d399;
-}
+.status-pill.open .status-dot { background-color: #34d399; box-shadow: 0 0 6px #34d399; }
 
-/* Colores para CLOSED */
 .status-pill.closed {
-    color: #9ca3af; /* Gris */
-    border-color: rgba(156, 163, 175, 0.2);
+  color: #9ca3af;
+  border-color: rgba(156, 163, 175, 0.2);
 }
-.status-pill.closed .status-dot {
-    background-color: #9ca3af;
-}
+.status-pill.closed .status-dot { background-color: #9ca3af; }
 
-/* Responsive: Ocultar texto en pantallas muy pequeñas si es necesario */
 @media (max-width: 480px) {
-    .status-label {
-        display: none; /* Solo queda el puntito brillante en celulares muy chicos */
-    }
-    .status-pill {
-        padding: 4px;
-    }
+  .status-label { display: none; }
+  .status-pill { padding: 4px; }
 }

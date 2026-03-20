@@ -1,84 +1,102 @@
-/* src/components/molecules/Modal.css */
-
-/* ========================================================================= */
-/* 1. LAYOUT PRINCIPAL (Backdrop y Contenedor del Modal) */
-/* ========================================================================= */
-
+/* src/components/molecules/Modal.css
+/* ------------------------------------------------------------------
+   1) OVERLAY / BACKDROP
+   - Fondo y centrado del modal
+   - Mantengo `modal-backdrop` y `modal-overlay` porque pueden
+     usarse en variantes distintas del modal dentro de la app.
+   ------------------------------------------------------------------ */
 .modal-backdrop {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0; /* top/right/bottom/left: 0 */
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.85); /* Fondo oscuro */
+  background-color: rgba(0, 0, 0, 0.85);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
-.modal-content {
+.modal-overlay {
+  position: fixed !important; /* Asegura superioridad frente a otros elementos */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(5, 10, 21, 0.85);
+  backdrop-filter: blur(15px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+/* ------------------------------------------------------------------
+   2) CONTENEDORES PRINCIPALES
+   - `modal-content` y `modal-content-wrapper` se mantienen ambos
+     (puede que distintos modales usen uno u otro).
+   ------------------------------------------------------------------ */
+.modal-content,
+.modal-content-wrapper {
   position: relative;
-  
-  /* Dimensiones y Apariencia */
   max-width: 90vw;
   max-height: 90vh;
-  padding: 30px; 
-  background-color: rgba(255, 255, 255, 0.05); /* Blanco con solo 5% de opacidad */
-  border-radius: 12px; /* Bordes redondeados */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); /* Sombra mejorada */
-  overflow: hidden; 
-  
-  /* Layout Interno */
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
-/* ========================================================================= */
-/* 2. ESTRUCTURA INTERNA (Imagen y Descripción) */
-/* ========================================================================= */
+.modal-content {
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
 
+.modal-content-wrapper {
+  align-items: center;
+  max-height: 85vh; /* variante ligeramente menor para algunas implementaciones */
+  padding: 0 20px;
+}
+
+/* ------------------------------------------------------------------
+   3) ESTRUCTURA INTERNA: LAYOUT FLEX (IMAGEN + DESCRIPCIÓN)
+   ------------------------------------------------------------------ */
 .modal-body-flex {
   display: flex;
-  gap: 30px; /* Espacio entre columnas */
+  gap: 30px;
   width: 100%;
   height: 100%;
-  /* Calcular la altura restante después del padding y los botones */
-  max-height: calc(90vh - 60px); 
-  overflow: hidden; 
+  max-height: calc(90vh - 60px);
+  overflow: hidden;
 }
 
-/* Columna de Descripción (Izquierda) */
 .modal-descripcion-wrapper {
-  flex: 1; /* Ocupa una fracción */
+  flex: 1;
   min-width: 300px;
   max-width: 400px;
   padding-right: 20px;
-  overflow-y: auto; /* Scroll si el texto es muy largo */
-  
-  /* Fondo blanco sólido para mejor lectura del texto */
-  background-color: #1a2331; 
+  overflow-y: auto;
+  background-color: #1a2331;
   color: #EAEAEA;
   padding: 15px;
   border-radius: 5px;
 }
 
-/* Columna de Imagen (Derecha) */
 .modal-imagen-wrapper {
-  flex: 2; /* Ocupa el doble de espacio */
+  flex: 2;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-
-/* ========================================================================= */
-/* 3. ELEMENTOS INTERNOS (Tipografía e Imagen) */
-/* ========================================================================= */
-
+/* ------------------------------------------------------------------
+   4) TIPOGRAFÍA Y TEXTOS
+   ------------------------------------------------------------------ */
 .modal-titulo-grande {
-  font-size: 2em; 
+  font-size: 2em;
   color: #4A90E2;
   margin-bottom: 15px;
 }
@@ -90,19 +108,46 @@
   text-align: justify;
 }
 
-.modal-imagen-principal {
+/* ------------------------------------------------------------------
+   5) IMÁGENES / MEDIA
+   ------------------------------------------------------------------ */
+.modal-imagen-principal,
+.modal-imagen {
   max-width: 100%;
-  max-height: 100%;
-  object-fit: contain; /* Mantiene la proporción sin recortar */
-  border-radius: 5px;
-  animation: fadeIn 0.4s ease-out; /* Aplica la animación */
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(74, 144, 226, 0.2);
+  animation: zoomIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ========================================================================= */
-/* 4. BOTONES DE INTERACCIÓN (Cerrar y Navegar) */
-/* ========================================================================= */
+.modal-imagen-principal {
+  animation: fadeIn 0.4s ease-out;
+}
 
-/* Botón Cerrar (X) */
+/* Imagen interactiva (zoom-in cursor) */
+.modal-imagen-principal.interactive-img {
+  cursor: zoom-in;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.modal-imagen-principal.interactive-img:hover {
+  transform: scale(1.02);
+}
+
+/* Pantalla completa (estilos cross-browser) */
+.modal-imagen-principal:fullscreen,
+.modal-imagen-principal:-webkit-full-screen {
+  object-fit: contain;
+  background-color: #050a15;
+  padding: 20px;
+}
+
+/* ------------------------------------------------------------------
+   6) BOTONES: cerrar y navegación
+   - Se conservan ambas familias `.modal-nav-button` y `.modal-nav-btn`
+     ya que el proyecto usa variantes distintas.
+   ------------------------------------------------------------------ */
 .modal-close-button {
   position: absolute;
   top: 20px;
@@ -121,12 +166,11 @@
   align-items: center;
 }
 
-/* Botones de Navegación (Flechas) */
 .modal-nav-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(74, 144, 226, 0.6); /* Azul de acento semi-transparente */
+  background-color: rgba(74, 144, 226, 0.6);
   color: white;
   border: none;
   padding: 10px 15px;
@@ -135,157 +179,39 @@
   z-index: 1010;
   opacity: 0.7;
   transition: opacity 0.3s ease;
-  border-radius: 50%; /* Botón redondo */
+  border-radius: 50%;
 }
 
-.modal-nav-button:hover {
-  opacity: 1;
-  background-color: rgba(0, 0, 0, 0.8);
-}
+.modal-nav-button:hover { opacity: 1; background-color: rgba(0, 0, 0, 0.8); }
+.modal-nav-button.prev { left: 20px; }
+.modal-nav-button.next { right: 20px; }
 
-.modal-nav-button.prev {
-  left: 20px;
-}
-
-.modal-nav-button.next {
-  right: 20px;
-}
-
-/* ========================================================================= */
-/* 5. ANIMACIONES */
-/* ========================================================================= */
-
-@keyframes fadeIn {
-  from { opacity: 0.2; }
-  to { opacity: 1; }
-}
-
-
-/* ========================================================================= */
-/* MEDIA QUERY: LAYOUT MÓVIL (Pantallas de 768px o menos) */
-/* ========================================================================= */
-@media (max-width: 768px) {
-    
-    /* 1. LAYOUT DEL MODAL: Apilar y Permitir Scroll General */
-    .modal-body-flex {
-        flex-direction: column; /* La imagen y descripción se APILAN */
-        max-height: 85vh; /* Damos altura máxima al contenedor flexible */
-        overflow-y: auto; /* Permitimos scroll en el cuerpo si la descripción es muy larga */
-    }
-
-    /* 2. IMAGEN: Ponerla arriba (opcional) y limitar su altura */
-    .modal-imagen-wrapper {
-        order: -1; /* Mueve la imagen arriba de la descripción */
-        max-height: 40vh; /* Limita la altura de la imagen para que el usuario vea el texto debajo */
-        margin-bottom: 10px;
-    }
-
-    /* 3. DESCRIPCIÓN: Permitir que ocupe todo el ancho */
-    .modal-descripcion-wrapper {
-        min-width: auto; /* Quitar el ancho mínimo forzado */
-        max-width: none; /* Ocupar el 100% del ancho disponible */
-        padding-right: 0;
-    }
-    
-    /* 4. BOTONES DE NAVEGACIÓN: Moverlos más cerca de los bordes del móvil */
-    .modal-nav-button {
-        padding: 8px 12px;
-        font-size: 1.5em;
-    }
-    .modal-nav-button.prev {
-        left: 5px; /* Más cerca del borde */
-    }
-    .modal-nav-button.next {
-        right: 5px; /* Más cerca del borde */
-    }
-}
-
-/* Estilos para el Lightbox / Modal */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(5, 10, 21, 0.85); /* Fondo oscuro profundo */
-    backdrop-filter: blur(15px); /* DESENFOQUE DE FONDO: Clave 2026 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    animation: fadeIn 0.3s ease;
-}
-
-.modal-content-wrapper {
-    position: relative;
-    max-width: 90vw;
-    max-height: 85vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.modal-imagen {
-    max-width: 100%;
-    max-height: 75vh;
-    object-fit: contain;
-    border-radius: 8px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(74, 144, 226, 0.2);
-    animation: zoomIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Botones de Navegación Estilizados */
 .modal-nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 1.5rem;
-    transition: all 0.3s ease;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
 }
 
-.modal-nav-btn:hover {
-    background: #4A90E2;
-    box-shadow: 0 0 20px rgba(74, 144, 226, 0.6);
-}
-
+.modal-nav-btn:hover { background: #4A90E2; box-shadow: 0 0 20px rgba(74, 144, 226, 0.6); }
 .prev-btn { left: -70px; }
 .next-btn { right: -70px; }
 
 /* Indicador de posición (ej: 1 / 12) */
 .modal-counter {
-    margin-top: 20px;
-    color: #9BA9B8;
-    letter-spacing: 2px;
-    font-size: 0.9rem;
+  margin-top: 20px;
+  color: #9BA9B8;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
 }
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes zoomIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-/* Esto asegura que el modal siempre flote por encima de cualquier efecto de reveal */
-.modal-overlay {
-    position: fixed !important; /* Forzamos que sea fijo respecto a la ventana */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9999; /* Un número muy alto para superar cualquier reveal */
-}
-
 
 /* Botón de expandir dentro de la descripción */
 .expand-btn {
@@ -303,32 +229,33 @@
   letter-spacing: 1px;
 }
 
-.expand-btn:hover {
-  background: #4A90E2;
-  color: white;
-  box-shadow: 0 0 15px rgba(74, 144, 226, 0.4);
+.expand-btn:hover { background: #4A90E2; color: white; box-shadow: 0 0 15px rgba(74, 144, 226, 0.4); }
+
+/* ------------------------------------------------------------------
+   7) ANIMACIONES
+   - Unificada `fadeIn` y `zoomIn`
+   ------------------------------------------------------------------ */
+@keyframes fadeIn {
+  from { opacity: 0.2; }
+  to { opacity: 1; }
 }
 
-/* Efecto en la imagen principal */
-.modal-imagen-principal.interactive-img {
-  cursor: zoom-in;
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-.modal-imagen-principal.interactive-img:hover {
-  transform: scale(1.02); /* Un zoom muy ligero para indicar interactividad */
+/* ------------------------------------------------------------------
+   8) MEDIA QUERIES: Responsividad móvil
+   - Apila contenido y ajusta botones para pantallas pequeñas
+   ------------------------------------------------------------------ */
+@media (max-width: 768px) {
+  .modal-body-flex { flex-direction: column; max-height: 85vh; overflow-y: auto; }
+  .modal-imagen-wrapper { order: -1; max-height: 40vh; margin-bottom: 10px; }
+  .modal-descripcion-wrapper { min-width: auto; max-width: none; padding-right: 0; }
+  .modal-nav-button { padding: 8px 12px; font-size: 1.5em; }
+  .modal-nav-button.prev { left: 5px; }
+  .modal-nav-button.next { right: 5px; }
 }
 
-/* Cuando la imagen entra en modo Pantalla Completa nativo */
-.modal-imagen-principal:fullscreen {
-  object-fit: contain;
-  background-color: #050a15; /* Fondo oscuro de tu web */
-  padding: 20px;
-}
-
-/* Soporte para Safari */
-.modal-imagen-principal:-webkit-full-screen {
-  object-fit: contain;
-  background-color: #050a15;
-}
 

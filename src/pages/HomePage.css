@@ -1,131 +1,57 @@
-/* Styles for HomePage component - extracted from inline styles */
-.home-loading {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #0A122A;
-  color: white;
-  font-size: 1.5em;
+
+/* -----------------------------
+     Variables (local / optional)
+     ----------------------------- */
+:root {
+    --home-bg: #050a15;
+    --accent-blue: #4A90E2;
+    --accent-red: #bd3f3f;
+    --muted-text: #555;
 }
 
-.about-me-snippet {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  padding: 60px 20px;
-  background-color: #f9f9f9;
-}
-.about-me-snippet .about-left {
-  flex: 1;
-  text-align: left;
-}
-.about-me-snippet .about-left h2 {
-  font-size: 2.5em;
-}
-.about-me-snippet .about-left p {
-  font-size: 1.1em;
-  color: #555;
-  line-height: 1.6;
-  margin: 20px 0;
-}
-.about-me-snippet .about-right {
-  flex: 1;
-}
-.about-me-snippet .about-right img {
-  width: 100%;
-  border-radius: 8px;
-}
-.about-me-snippet .about-left .about-link {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
-}
-
-.contact-cta {
-  padding: 80px 20px;
-  text-align: center;
-  background-color: #282c34;
-  color: white;
-}
-.contact-cta h2 {
-  font-size: 2.5em;
-}
-.contact-cta p {
-  font-size: 1.2em;
-  margin: 20px 0 30px;
-}
-.contact-cta .contact-btn {
-  padding: 15px 30px;
-  background: #007bff;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  font-weight: bold;
-  display: inline-block;
-}
-
-.site-footer {
-    padding: 0px 20px;
-    margin-top: 100px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    text-align: center;
-}
-
-.footer-info {
-    margin-top: 30px;
-    opacity: 0.6;
-    font-size: 0.9rem;
-}
-
-.secret-dot {
-    opacity: 0.05;
-    text-decoration: none;
-    color: inherit;
-    cursor: default;
-}
-
-.secret-dot:hover { opacity: 0.2; }
-
-/* En tu HomePage.css o Header.css */
-.anchor-section {
-    /* Esto hace que el "anclaje" se detenga 80px antes del borde superior */
-    scroll-margin-top: 80px; 
+/* -----------------------------
+     Global layout / Home wrapper
+     ----------------------------- */
+.home-page-layout {
+    background: var(--home-bg);
+    position: relative;
+    overflow: hidden; /* evita overflow horizontal del fondo */
+    min-height: 100vh;
+    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html {
-    scroll-behavior: smooth; /* Para que el deslizamiento sea suave */
+    scroll-behavior: smooth; /* navegación suave */
 }
 
+.anchor-section {
+    /* Ajuste para anclajes fijos (por ejemplo header fijo) */
+    scroll-margin-top: 80px;
+}
 
-/* EFECTO REVEAL */
+/* -----------------------------
+     Reveal animation helpers
+     ----------------------------- */
 .reveal {
     opacity: 0;
     transform: translateY(40px) scale(0.98);
     transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
     visibility: hidden;
 }
-
 .reveal-active {
     opacity: 1;
     transform: translateY(0) scale(1);
     visibility: visible;
 }
 
-/* FONDO ATMOSFÉRICO 2026 */
-.home-page-layout {
-    background: #050a15; /* Un poco más oscuro */
-    position: relative;
-    /* ✅ CAMBIO CLAVE AQUÍ: Cambiamos overflow-x por overflow general oculto para los fondos */
-    overflow: hidden; 
-    min-height: 100vh;
-}
-
+/* -----------------------------
+     Atmospheric background layers
+     ----------------------------- */
 .atmospheric-layers {
-    position: fixed; /* Esto está bien */
+    position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: 
+    background:
         radial-gradient(circle at 20% 30%, rgba(74, 144, 226, 0.08) 0%, transparent 40%),
         radial-gradient(circle at 80% 70%, rgba(189, 63, 63, 0.05) 0%, transparent 40%);
     pointer-events: none;
@@ -133,222 +59,137 @@ html {
     filter: blur(60px);
 }
 
-/* ANIMACIÓN AVATAR SOBRE MÍ */
+.home-page-layout::after {
+    /* Capa de ruido sutil sobre el layout */
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 9998;
+}
+
+/* Theme variants (aplicar sobre body o wrapper) */
+.global-pure {
+    background-color: var(--home-bg);
+    --main-accent: var(--accent-blue);
+}
+.global-fallen {
+    background-color: #120303;
+    --main-accent: var(--accent-red);
+}
+.global-fallen .atmospheric-layers {
+    background:
+        radial-gradient(circle at 20% 30%, rgba(189,63,63,0.12) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(189,63,63,0.08) 0%, transparent 40%);
+    filter: blur(80px);
+}
+.global-fallen::after { opacity: 0.06; }
+
+/* -----------------------------
+     Floating avatar animation
+     ----------------------------- */
 .floating-avatar {
     animation: floating 6s ease-in-out infinite;
     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
-
 @keyframes floating {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-15px); }
     100% { transform: translateY(0px); }
 }
 
-
-
-/* CAPA DE RUIDO GLOBAL */
-.home-page-layout::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  /* ✅ CAMBIO CLAVE AQUÍ: Cambiamos 100vw por 100% */
-  width: 100%; 
-  height: 100%; /* Mejor usar 100% que 100vh aquí */
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.04;
-  pointer-events: none;
-  z-index: 9998; 
-}
-
-
-/* Transición global para el fondo */
-.home-page-layout {
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Modo Normal (Azul/Oscuro) */
-.global-pure {
-    background-color: #050a15;
-    --main-accent: #4A90E2;
-}
-
-/* Modo Caído (Rojo Profundo) */
-.global-fallen {
-    background-color: #120303; /* Casi negro con matiz rojo */
-    --main-accent: #bd3f3f;
-}
-
-/* Las luces de fondo cambian de color */
-.global-fallen .atmospheric-layers {
-    background: 
-        radial-gradient(circle at 20% 30%, rgba(189, 63, 63, 0.12) 0%, transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(189, 63, 63, 0.08) 0%, transparent 40%);
-    filter: blur(80px);
-}
-
-/* El ruido visual se vuelve más intenso en modo caído */
-.global-fallen::after {
-    opacity: 0.06;
-}
-
-
-
-/* El cuadro de la solicitud (Mejorado) */
+/* -----------------------------
+     Contact / Modal styles
+     ----------------------------- */
 .contact-modal-size {
     width: 100%;
-    max-width: 550px; /* Ancho ideal para lectura */
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(74, 144, 226, 0.3); /* Borde azul sutil */
+    max-width: 550px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(74,144,226,0.3);
     border-radius: 24px;
     padding: 50px 40px;
     position: relative;
-    box-shadow: 
-        0 20px 50px rgba(0, 0, 0, 0.5),
-        0 0 20px rgba(74, 144, 226, 0.1);
-    animation: modalSlideUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px rgba(74,144,226,0.1);
+    animation: modalSlideUp 0.4s cubic-bezier(0.2,0.8,0.2,1);
 }
-
-.contact-success-reveal {
-    text-align: center;
-    padding: 20px;
-    animation: fadeIn 0.5s ease;
-}
-
+.contact-success-reveal { text-align: center; padding: 20px; animation: fadeIn 0.5s ease; }
 .contact-btn-small {
-    background: transparent;
-    border: 1px solid #4A90E2;
-    color: #4A90E2;
-    padding: 5px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    margin-top: 10px;
+    background: transparent; border: 1px solid var(--accent-blue); color: var(--accent-blue);
+    padding: 5px 15px; border-radius: 20px; cursor: pointer; margin-top: 10px;
 }
+@keyframes modalSlideUp { from { opacity:0; transform: translateY(30px);} to { opacity:1; transform: translateY(0);} }
 
-@keyframes modalSlideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+/* -----------------------------
+     Contact CTA (section) — contenido
+     ----------------------------- */
+.contact-cta {
+    padding: 80px 20px; text-align: center; background-color: #282c34; color: white;
 }
+.contact-cta h2 { font-size: 2.5em; }
+.contact-cta p { font-size: 1.2em; margin: 20px 0 30px; }
+.contact-cta .contact-btn { padding: 15px 30px; background: var(--accent-blue); color: white; text-decoration:none; border-radius:5px; font-weight:bold; display:inline-block; }
 
-/* Estilo base del botón */
+/* -----------------------------
+     Buttons (base states)
+     ----------------------------- */
 .btn-contact {
-    padding: 15px 30px;
-    border-radius: 50px;
-    border: none;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    color: white;
+    padding: 15px 30px; border-radius: 50px; border: none; font-weight: bold; text-transform: uppercase;
+    transition: all 0.3s ease; cursor: pointer; color: white;
 }
-
-/* Estado cuando están ABIERTAS (Llamativo) */
 .btn-contact.open {
-    background: linear-gradient(45deg, #4A90E2, #63b3ed);
-    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+    background: linear-gradient(45deg, var(--accent-blue), #63b3ed);
+    box-shadow: 0 4px 15px rgba(74,144,226,0.4);
 }
+.btn-contact.open:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(74,144,226,0.6); }
+.btn-contact.closed { background: #374151; cursor: not-allowed; opacity: 0.7; filter: grayscale(1); transform: scale(0.98); }
 
-.btn-contact.open:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.6);
-}
+/* -----------------------------
+     About snippet (two-column) — estructura
+     ----------------------------- */
+.about-me-snippet { display:flex; align-items:center; gap:40px; padding:60px 20px; background-color:#f9f9f9; }
+.about-me-snippet .about-left { flex:1; text-align:left; }
+.about-me-snippet .about-left h2 { font-size:2.5em; }
+.about-me-snippet .about-left p { font-size:1.1em; color:var(--muted-text); line-height:1.6; margin:20px 0; }
+.about-me-snippet .about-right { flex:1; }
+.about-me-snippet .about-right img { width:100%; border-radius:8px; }
+.about-me-snippet .about-left .about-link { text-decoration:none; color:#007bff; font-weight:bold; }
 
-/* Estado cuando están CERRADAS (Apagado) */
-.btn-contact.closed {
-    background: #374151; /* Gris oscuro */
-    cursor: not-allowed;
-    opacity: 0.7;
-    filter: grayscale(1);
-    transform: scale(0.98);
-}
-
-
-/* ==========================================================================
-   CARRUSEL DE PERSONAJES (HOME)
-   ========================================================================== */
-
-/* Contenedor relativo para poder posicionar las flechas encima */
-.carrusel-oc-container {
-    position: relative;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 80vh; /* Asegura que tenga buena altura */
-}
-
-/* Estilo base de los botones de flecha */
+/* -----------------------------
+     Carrusel de personajes (botones y contenedor)
+     ----------------------------- */
+.carrusel-oc-container { position:relative; width:100%; display:flex; align-items:center; justify-content:center; min-height:80vh; }
 .btn-carrusel {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%); /* Centrado vertical perfecto */
-    background: rgba(14, 22, 36, 0.6); /* Fondo oscuro semitransparente */
-    color: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    z-index: 20; /* Asegura que estén por encima de la imagen del OC */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(8px); /* Efecto cristal */
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position:absolute; top:50%; transform: translateY(-50%);
+    background: rgba(14,22,36,0.6); color: rgba(255,255,255,0.8); border:1px solid rgba(255,255,255,0.1);
+    width:55px; height:55px; border-radius:50%; font-size:1.5rem; cursor:pointer; z-index:20; display:flex; align-items:center; justify-content:center;
+    backdrop-filter: blur(8px); transition: all 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
 }
+.btn-carrusel:hover { background: rgba(74,144,226,0.8); color:#fff; border-color:var(--accent-blue); transform: translateY(-50%) scale(1.15); box-shadow: 0 0 20px rgba(74,144,226,0.4); }
+.btn-carrusel.prev { left: 3vw; }
+.btn-carrusel.next { right: 3vw; }
 
-/* Efecto Hover (Al pasar el mouse) */
-.btn-carrusel:hover {
-    background: rgba(74, 144, 226, 0.8); /* Tu azul primario */
-    color: #ffffff;
-    border-color: #4A90E2;
-    transform: translateY(-50%) scale(1.15); /* Crece un poquito */
-    box-shadow: 0 0 20px rgba(74, 144, 226, 0.4); /* Resplandor azul */
-}
+/* -----------------------------
+     Loading / Splash screen
+     ----------------------------- */
+.home-loading { height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; background-color:#0a0b10; color:var(--accent-blue); font-family:'Playfair Display', serif; font-size:1.2rem; letter-spacing:2px; }
 
-/* Posicionamiento a los lados */
-.btn-carrusel.prev {
-    left: 3vw; /* Separado del borde izquierdo */
-}
+/* -----------------------------
+     Footer / small utilities
+     ----------------------------- */
+.site-footer { padding: 0 20px; margin-top:100px; border-top: 1px solid rgba(255,255,255,0.05); text-align:center; }
+.footer-info { margin-top:30px; opacity:0.6; font-size:0.9rem; }
+.secret-dot { opacity:0.05; text-decoration:none; color:inherit; cursor:default; }
+.secret-dot:hover { opacity:0.2; }
 
-.btn-carrusel.next {
-    right: 3vw; /* Separado del borde derecho */
-}
-
-/* ==========================================================================
-   PANTALLA DE CARGA (Sincronizando con el Éter)
-   ========================================================================== */
-.home-loading {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #0a0b10;
-    color: #4A90E2;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    letter-spacing: 2px;
-}
-
-/* ==========================================================================
-   RESPONSIVO (MÓVILES)
-   ========================================================================== */
+/* -----------------------------
+     Responsive
+     ----------------------------- */
 @media (max-width: 768px) {
-    .btn-carrusel {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-        background: rgba(14, 22, 36, 0.8); /* Más opaco en móviles para que se vea bien */
-    }
-    
-    /* Los pegamos más a los bordes en pantallas pequeñas */
-    .btn-carrusel.prev { 
-        left: 10px; 
-    }
-    .btn-carrusel.next { 
-        right: 10px; 
-    }
+    .btn-carrusel { width:40px; height:40px; font-size:1.2rem; background: rgba(14,22,36,0.8); }
+    .btn-carrusel.prev { left:10px; }
+    .btn-carrusel.next { right:10px; }
+    .about-me-snippet { flex-direction:column; gap:20px; padding:40px 16px; }
 }

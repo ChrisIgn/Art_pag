@@ -10,6 +10,10 @@ requierements.txt
 
 src/hooks/useConfig-Erizo.js
 src/config/artistaConfig-Erizo.js
+src/components/organisms/OcIntro-Erizo.css
+src/components/organisms/OcIntro-Erizo.js
+src\pages\AdminPage-Erizo.js 
+src\pages\AdminPage-Erizo.css
 # production
 /build
 
