@@ -8,6 +8,8 @@ requierements.txt
 # testing
 /coverage
 
+src/hooks/useConfig-Erizo.js
+src/config/artistaConfig-Erizo.js
 # production
 /build
 

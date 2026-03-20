@@ -5,13 +5,12 @@ export const artistaConfig = {
     emailContacto: "eriiartweb@gmail.com",
 
 // CONFIGURACIÓN DE LA ESTÉTICA (UI/UX)
-    // Cambia estos códigos para cambiar el "vibe" de toda la web al instante
+    // Esto modifica los colores principales del sitio, como fondo, tarjetas, botones, etc.
     estetica: {
-        primario: "#4A90E2",    // Azul principal (Brillos, botones)
-        fondo: "#0a0b10",      // Fondo oscuro profundo
-        tarjeta: "rgba(255, 255, 255, 0.05)", // Glassmorphism
-        texto: "#ffffff",
-        acento: "#ff7eb9"      // Para detalles especiales o avisos
+        primario: "#4A90E2",    
+        fondo: "#0a0b10",      
+        tarjeta: "rgba(255, 255, 255, 0.05)", 
+        acento: "#ff7eb9"      
     },
 
 
@@ -20,9 +19,9 @@ export const artistaConfig = {
         titulo: "Sueños y Futuro",
         subtitulo: "Explora una línea de tiempo donde las imaginaciones lejanas se vuelven realidad. Bienvenido al mundo de BrigHella.",
         botonPrincipal: "Comienza la aventura",
-        // OPCIÓN A: Una imagen de stock profesional de Unsplash (Cyberpunk/Futurista)
+        // OPCIÓN A: Imagen de prueba 
         imagenFondo: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=2070&auto=format&fit=crop",
-        // OPCIÓN B: Si prefieres usar una imagen local que SÍ sea tuya:
+        // OPCIÓN B: si se prefiere usar una imagen personalizada
         // imagenFondo: require('../../assets/images/arte/NuevaImagen.jpg')
     },
     
@@ -39,7 +38,7 @@ export const artistaConfig = {
         {
             id: 1,
             tipo: "Headshot / Icon",
-            precio: "Desde $25",
+            precio: "Desde $27",
             descripcion: "Retrato hasta los hombros, ideal para perfiles sociales.",
             incluye: ["Color base", "Fondo simple", "Alta resolución"],
         },
