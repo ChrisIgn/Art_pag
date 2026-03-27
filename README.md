@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+# Erii Art Web - Portafolio Dinámico & Custom CMS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Una Single Page Application (SPA) desarrollada para gestionar un portafolio artístico, tarifas de comisiones y lore de personajes originales (OCs). 
 
-## Available Scripts
+A diferencia de un portafolio estático tradicional, este proyecto cuenta con un Panel de Administración (CMS) 100% a medida, construido con React y Firebase, que permite la gestión del contenido en tiempo real sin necesidad de tocar el código fuente.
 
-In the project directory, you can run:
+🔗 [Ver Proyecto en Vivo](https://tu-enlace-de-netlify.netlify.app)
 
-### `npm start`
+#  Características Principales
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Interfaz Pública (UI/UX)
+* Diseño Inmersivo: Temas dinámicos impulsados por CSS Variables y efectos de *Glassmorphism*. El fondo y la paleta de colores reaccionan a las interacciones del usuario (ej. cambiar entre la fase "Pura" y "Caída" de un personaje).
+* Scroll Reveal: Animaciones fluidas al hacer scroll utilizando la API nativa `Intersection Observer`.
+* Carrusel Dinámico de Personajes: Renderizado interactivo de OCs extraídos directamente de la base de datos.
+* Buzón de Contacto: Formulario renderizado mediante React Portals para evitar conflictos de apilamiento (z-index), conectado directamente al entorno de Firebase.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Panel de Administración (CMS Privado)
+* Gestor de Galerías y Personajes: Operaciones CRUD completas. Subida de imágenes a la nube con previsualización en tiempo real.
+* Control de Tarifas: Modificación de precios y estado de comisiones (Abiertas/Cerradas) al instante.
+* Bandeja de Entrada: Sistema de lectura y gestión de mensajes enviados por clientes.
 
-### `npm test`
+# Arquitectura y Seguridad
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+El proyecto implementa prácticas de seguridad de nivel de producción:
+* Control de Acceso Basado en Roles (RBAC): Reglas estrictas en Firestore y Storage. Solo el UID del administrador principal tiene permisos de escritura (`write`).
+* Modo Demo (Solo Lectura): Un usuario de demostración que permite a los visitantes explorar la interfaz del panel de control con los botones de mutación (guardar/borrar) visualmente bloqueados e interceptados.
+* Auto-Logout (Idle Timeout): Un Custom Hook que cierra automáticamente la sesión del administrador tras 15 minutos de inactividad utilizando los listeners de eventos del navegador.
+* Protección de Credenciales: Variables de entorno (`.env`) para resguardar la configuración de la API.
 
-### `npm run build`
+# Stack Tecnológico
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Frontend: React.js (Hooks funcionales, Portals), CSS3 (Nativo, sin librerías externas para máximo control del layout).
+* Backend as a Service (BaaS): Firebase.
+  * *Firestore:* Base de datos NoSQL en tiempo real.
+  * *Cloud Storage:* Alojamiento de assets pesados e imágenes.
+  * *Authentication:* Gestión de sesiones y seguridad.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Acceso Demo para Reclutadores
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Puedes explorar el Panel de Administración interactivo sin riesgo de modificar la base de datos de producción ingresando con las siguientes credenciales de Solo Lectura:
 
-### `npm run eject`
+* Ruta: `tusitio.com/admin` (o a través del enlace oculto en el footer).
+* Email: `demo@eriiart.com`
+* Contraseña: `demo1234567`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Instalación Local
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Si deseas correr este proyecto en tu máquina local:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Clona el repositorio:
+   ```bash
+   git clone [https://github.com/tu-usuario/tu-repo.git](https://github.com/tu-usuario/tu-repo.git)
