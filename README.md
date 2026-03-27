@@ -4,7 +4,7 @@ Una Single Page Application (SPA) desarrollada para gestionar un portafolio art�
 
 A diferencia de un portafolio estático tradicional, este proyecto cuenta con un Panel de Administración (CMS) 100% a medida, construido con React y Firebase, que permite la gestión del contenido en tiempo real sin necesidad de tocar el código fuente.
 
-🔗 [Ver Proyecto en Vivo](https://tu-enlace-de-netlify.netlify.app)
+🔗 [Ver Proyecto en Vivo](https://eriart.netlify.app)
 
 #  Características Principales
 
@@ -39,7 +39,7 @@ El proyecto implementa prácticas de seguridad de nivel de producción:
 
 Puedes explorar el Panel de Administración interactivo sin riesgo de modificar la base de datos de producción ingresando con las siguientes credenciales de Solo Lectura:
 
-* Ruta: `tusitio.com/admin` (o a través del enlace oculto en el footer).
+* Ruta: `https://eriart.netlify.app/login` (o a través del enlace oculto en el footer).
 * Email: `demo@eriiart.com`
 * Contraseña: `demo1234567`
 
@@ -47,6 +47,6 @@ Puedes explorar el Panel de Administración interactivo sin riesgo de modificar 
 
 Si deseas correr este proyecto en tu máquina local:
 
-1. Clona el repositorio:
+Clona el repositorio:
    ```bash
    git clone [https://github.com/tu-usuario/tu-repo.git](https://github.com/tu-usuario/tu-repo.git)
