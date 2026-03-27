@@ -12,16 +12,23 @@ import { ref, deleteObject, uploadBytes, getDownloadURL } from 'firebase/storage
 // Hooks
 import { useFirestore } from '../hooks/useFirestore';
 import { useConfig } from '../hooks/useConfig';
+import { useIdleTimeout } from '../hooks/useIdleTimeout';
 
 // Styles
 import './AdminPage.css';
 
 const AdminPage = () => {
+    // Timeout de seguridad
+    useIdleTimeout(15);
+    
+    // VERIFICACIÓN MODO DEMO
+    const usuarioActual = auth.currentUser;
+    const esModoDemo = usuarioActual && usuarioActual.email === 'demo@eriiart.com';
+
     // Firestore hooks
     const { docs: obras } = useFirestore('obras');
     const { docs: mensajes } = useFirestore('mensajes');
     const { docs: serviciosFirebase } = useFirestore('servicios');
-    // NUEVO HOOK: Traemos los personajes (OCs)
     const { docs: personajesFirebase } = useFirestore('personajes');
 
     // Config hook
@@ -44,9 +51,7 @@ const AdminPage = () => {
     const [servicioEditando, setServicioEditando] = useState(null);
     const [tempServicio, setTempServicio] = useState({});
     
-    // ==========================================
-    // NUEVOS ESTADOS: GESTOR DE PERSONAJES (OCs)
-    // ==========================================
+    // Gestor de Personajes (OCs)
     const [editandoOcId, setEditandoOcId] = useState(null);
     const [guardandoOc, setGuardandoOc] = useState(false);
     const [tempOc, setTempOc] = useState({ 
@@ -56,7 +61,7 @@ const AdminPage = () => {
     const [imgCaidaFile, setImgCaidaFile] = useState(null);
 
     // ==========================================
-    // FUNCIONES: OBRAS (GALERÍA)
+    // FUNCIONES (Se mantienen igual, la UI las bloquea)
     // ==========================================
     const handleEliminar = async (id, urlImagen) => {
         if (window.confirm("¿Deseas eliminar esta obra permanentemente del Éter?")) {
@@ -65,41 +70,24 @@ const AdminPage = () => {
                 const imagenRef = ref(storage, urlImagen);
                 await deleteObject(imagenRef);
                 alert("Obra eliminada.");
-            } catch (error) {
-                console.error("Error al eliminar:", error);
-                alert("Hubo un error al eliminar. (Nota: Si la imagen es externa, no se podrá borrar del Storage)");
-            }
+            } catch (error) { console.error("Error al eliminar:", error); }
         }
     };
 
     const handleGuardarEdicion = async (id) => {
         try {
-            const obraRef = doc(db, 'obras', id);
-            await updateDoc(obraRef, { titulo: nuevoTitulo });
+            await updateDoc(doc(db, 'obras', id), { titulo: nuevoTitulo });
             setEditandoId(null);
             alert("Título actualizado con éxito.");
-        } catch (error) {
-            console.error("Error al actualizar:", error);
-            alert("Error al actualizar el título.");
-        }
+        } catch (error) { console.error("Error al actualizar:", error); }
     };
 
-    // ==========================================
-    // FUNCIONES: SERVICIOS (TARIFAS)
-    // ==========================================
-    const handleAddIncluye = () => {
-        setTempServicio({
-            ...tempServicio,
-            incluye: [...(tempServicio.incluye || []), " Nuevo detalle"]
-        });
-    };
-
+    const handleAddIncluye = () => setTempServicio({ ...tempServicio, incluye: [...(tempServicio.incluye || []), " Nuevo detalle"] });
     const handleRemoveIncluye = (index) => {
         const nuevaLista = [...tempServicio.incluye];
         nuevaLista.splice(index, 1);
         setTempServicio({ ...tempServicio, incluye: nuevaLista });
     };
-
     const handleChangeIncluye = (index, valor) => {
         const nuevaLista = [...tempServicio.incluye];
         nuevaLista[index] = valor;
@@ -108,24 +96,16 @@ const AdminPage = () => {
 
     const handleGuardarServicio = async (idParametro) => {
         const idExtraido = typeof idParametro === 'object' && idParametro.target ? undefined : idParametro;
-        if (!idExtraido) { alert("Error: El ID está llegando vacío."); return; }
-        const idString = String(idExtraido); 
+        if (!idExtraido) return;
         try {
-            const docRef = doc(db, 'servicios', idString);
             const datosAEnviar = { ...tempServicio };
             delete datosAEnviar.id; 
-            await updateDoc(docRef, datosAEnviar);
+            await updateDoc(doc(db, 'servicios', String(idExtraido)), datosAEnviar);
             setServicioEditando(null);
             alert("¡Tarifa y detalles actualizados con éxito!");
-        } catch (error) {
-            console.error("Error al actualizar en Firebase:", error);
-            alert("Hubo un error al guardar los cambios.");
-        }
+        } catch (error) { console.error("Error al actualizar en Firebase:", error); }
     };
 
-    // ==========================================
-    // FUNCIONES: GESTOR DE PERSONAJES (NUEVO)
-    // ==========================================
     const handleNuevoOc = () => {
         setEditandoOcId('nuevo');
         setTempOc({ titulo: '', nombreCodigo: '', clase: '', descripcion: '', habilidades: [] });
@@ -151,39 +131,26 @@ const AdminPage = () => {
             let urlPura = tempOc.imgPuraUrl || '';
             let urlCaida = tempOc.imgCaidaUrl || '';
 
-            // Subir imagen Pura
             if (imgPuraFile) {
                 const storageRef = ref(storage, `personajes/${Date.now()}_pura_${imgPuraFile.name}`);
                 await uploadBytes(storageRef, imgPuraFile);
                 urlPura = await getDownloadURL(storageRef);
             }
-
-            // Subir imagen Caída
             if (imgCaidaFile) {
                 const storageRef2 = ref(storage, `personajes/${Date.now()}_caida_${imgCaidaFile.name}`);
                 await uploadBytes(storageRef2, imgCaidaFile);
                 urlCaida = await getDownloadURL(storageRef2);
             }
 
-            const datosAEnviar = {
-                ...tempOc,
-                imgPuraUrl: urlPura,
-                imgCaidaUrl: urlCaida
-            };
+            const datosAEnviar = { ...tempOc, imgPuraUrl: urlPura, imgCaidaUrl: urlCaida };
             delete datosAEnviar.id;
 
-            if (editandoOcId === 'nuevo') {
-                await addDoc(collection(db, 'personajes'), datosAEnviar);
-            } else {
-                await updateDoc(doc(db, 'personajes', editandoOcId), datosAEnviar);
-            }
+            if (editandoOcId === 'nuevo') await addDoc(collection(db, 'personajes'), datosAEnviar);
+            else await updateDoc(doc(db, 'personajes', editandoOcId), datosAEnviar);
 
             setEditandoOcId(null);
             alert("¡Personaje guardado en el Éter!");
-        } catch (error) {
-            console.error("Error guardando OC:", error);
-            alert("Hubo un error al guardar el personaje.");
-        }
+        } catch (error) { console.error("Error guardando OC:", error); }
         setGuardandoOc(false);
     };
 
@@ -193,9 +160,6 @@ const AdminPage = () => {
         }
     };
 
-    // ==========================================
-    // FUNCIONES: CONFIGURACIÓN E INTRO
-    // ==========================================
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -209,13 +173,10 @@ const AdminPage = () => {
         let urlFinal = tempConfig.ocImagenUrl; 
         try {
             if (archivoImagen) {
-                const nombreArchivo = `config/hero_${Date.now()}`;
-                const storageRef = ref(storage, nombreArchivo);
-                const snapshot = await uploadBytes(storageRef, archivoImagen);
+                const snapshot = await uploadBytes(ref(storage, `config/hero_${Date.now()}`), archivoImagen);
                 urlFinal = await getDownloadURL(snapshot.ref);
             }
-            const docRef = doc(db, 'comisionesAbiertas', 'global');
-            await updateDoc(docRef, {
+            await updateDoc(doc(db, 'comisionesAbiertas', 'global'), {
                 ocTitulo: tempConfig.ocTitulo,
                 ocSubtitulo: tempConfig.ocSubtitulo,
                 ocImagenUrl: urlFinal
@@ -223,30 +184,18 @@ const AdminPage = () => {
             setEditConfig(false);
             setArchivoImagen(null);
             alert("¡Configuración actualizada con éxito!");
-        } catch (error) {
-            console.error("Error al actualizar:", error);
-            alert("Error al guardar los cambios.");
-        } finally {
-            setSubiendo(false);
-        }
+        } catch (error) { console.error("Error al actualizar:", error); } 
+        finally { setSubiendo(false); }
     };
 
     const toggleComisiones = async () => {
-        const docRef = doc(db, 'comisionesAbiertas', 'global');
-        try {
-            await setDoc(docRef, { comisionesAbiertas: !config.comisionesAbiertas }, { merge: true });
-        } catch (error) {
-            console.error("Error al actualizar:", error);
-        }
+        try { await setDoc(doc(db, 'comisionesAbiertas', 'global'), { comisionesAbiertas: !config.comisionesAbiertas }, { merge: true }); } 
+        catch (error) { console.error("Error al actualizar:", error); }
     };
 
-    // ==========================================
-    // FUNCIONES: MENSAJES
-    // ==========================================
     const toggleLeido = async (id, estadoActual) => {
-        try {
-            await updateDoc(doc(db, 'mensajes', id), { leido: !estadoActual });
-        } catch (error) { console.error("Error al actualizar mensaje:", error); }
+        try { await updateDoc(doc(db, 'mensajes', id), { leido: !estadoActual }); } 
+        catch (error) { console.error("Error al actualizar mensaje:", error); }
     };
     
     const eliminarMensaje = async (id) => {
@@ -260,13 +209,16 @@ const AdminPage = () => {
 
     return (
         <div className="admin-page">
-            <h1 className="admin-title">Panel de Administración</h1>
-            <p className="admin-subtitle">Gestiona el contenido de tu mundo artístico.</p>
+            <h1 className="admin-title">Panel de Administración {esModoDemo && <span style={{color: '#ff7eb9'}}>(Modo Demo)</span>}</h1>
+            <p className="admin-subtitle">
+                {esModoDemo ? "Estás viendo una versión de Solo Lectura. Los cambios están desactivados." : "Gestiona el contenido de tu mundo artístico."}
+            </p>
             
             <div className="admin-layout-grid">
                 {/* SECCIÓN DE SUBIDA DE OBRAS */}
                 <section className="admin-upload-section">
                     <h2 className="section-title">Nueva Obra</h2>
+                    {esModoDemo && <p style={{color: '#ff7eb9', fontSize: '0.85rem'}}>🔒 Subida desactivada en Demo</p>}
                     <UploadArtworkForm />
                 </section>
 
@@ -280,13 +232,11 @@ const AdminPage = () => {
                                 <div className="admin-item-info">
                                     {editandoId === obra.id ? (
                                         <div className="edit-mode">
-                                            <input 
-                                                type="text" value={nuevoTitulo} 
-                                                onChange={(e) => setNuevoTitulo(e.target.value)}
-                                                className="admin-edit-input"
-                                            />
+                                            <input type="text" value={nuevoTitulo} onChange={(e) => setNuevoTitulo(e.target.value)} className="admin-edit-input"/>
                                             <div className="edit-buttons">
-                                                <button onClick={() => handleGuardarEdicion(obra.id)} className="btn-save">💾</button>
+                                                <button onClick={() => handleGuardarEdicion(obra.id)} className="btn-save" disabled={esModoDemo}>
+                                                    {esModoDemo ? '🔒' : '💾'}
+                                                </button>
                                                 <button onClick={() => setEditandoId(null)} className="btn-cancel">✖</button>
                                             </div>
                                         </div>
@@ -295,7 +245,9 @@ const AdminPage = () => {
                                             <span className="obra-titulo-display">{obra.titulo}</span>
                                             <div className="item-actions">
                                                 <button onClick={() => { setEditandoId(obra.id); setNuevoTitulo(obra.titulo); }} className="admin-btn-edit">✏️ Editar</button>
-                                                <button onClick={() => handleEliminar(obra.id, obra.imagenSrc)} className="admin-btn-delete">🗑️ Eliminar</button>
+                                                <button onClick={() => handleEliminar(obra.id, obra.imagenSrc)} className="admin-btn-delete" disabled={esModoDemo}>
+                                                    {esModoDemo ? '🔒 Bloqueado' : '🗑️ Eliminar'}
+                                                </button>
                                             </div>
                                         </>
                                     )}
@@ -310,8 +262,12 @@ const AdminPage = () => {
             <section className="admin-quick-settings">
                 <div className="setting-item">
                     <span>Estado de Comisiones: </span>
-                    <button onClick={toggleComisiones} className={`btn-switch ${config.comisionesAbiertas ? 'active' : 'inactive'}`}>
-                        {config.comisionesAbiertas ? "ABIERTAS" : "CERRADAS"}
+                    <button 
+                        onClick={toggleComisiones} 
+                        className={`btn-switch ${config.comisionesAbiertas ? 'active' : 'inactive'}`}
+                        disabled={esModoDemo}
+                    >
+                        {esModoDemo ? "🔒 DEMO" : (config.comisionesAbiertas ? "ABIERTAS" : "CERRADAS")}
                     </button>
                 </div>
             </section>
@@ -328,10 +284,8 @@ const AdminPage = () => {
                     <div className="config-edit-form">
                         <label>Título Intro:</label>
                         <input type="text" value={tempConfig.ocTitulo} onChange={(e) => setTempConfig({...tempConfig, ocTitulo: e.target.value})} />
-                        
                         <label>Subtítulo Intro:</label>
                         <textarea value={tempConfig.ocSubtitulo} onChange={(e) => setTempConfig({...tempConfig, ocSubtitulo: e.target.value})} />
-
                         <label>Imagen de Fondo (Archivo):</label>
                         <div className="file-upload-wrapper">
                             <input type="file" accept="image/*" onChange={handleFileChange} className="admin-file-input" />
@@ -341,11 +295,12 @@ const AdminPage = () => {
                                     <img src={previewUrl || tempConfig.ocImagenUrl} alt="Vista previa fondo" />
                                 </div>
                             )}
-                            {archivoImagen && <p className="file-name">📷 Seleccionado: {archivoImagen.name}</p>}
                         </div>
                         <div className="edit-buttons">
-                            <button onClick={handleGuardarConfigOc} className="btn-save" disabled={subiendo}>{subiendo ? "Subiendo..." : "Guardar Cambios"}</button>
-                            <button onClick={() => { setEditConfig(false); setArchivoImagen(null); }} className="btn-cancel" disabled={subiendo}>Cancelar</button>
+                            <button onClick={handleGuardarConfigOc} className="btn-save" disabled={subiendo || esModoDemo}>
+                                {esModoDemo ? "🔒 Solo Lectura" : (subiendo ? "Subiendo..." : "Guardar Cambios")}
+                            </button>
+                            <button onClick={() => { setEditConfig(false); setArchivoImagen(null); }} className="btn-cancel">Cancelar</button>
                         </div>
                     </div>
                 )}
@@ -368,15 +323,17 @@ const AdminPage = () => {
                                         {tempServicio.incluye && tempServicio.incluye.map((item, index) => (
                                             <div key={index} className="incluye-item-row">
                                                 <input type="text" value={item} onChange={(e) => handleChangeIncluye(index, e.target.value)} />
-                                                <button onClick={() => handleRemoveIncluye(index)} className="btn-remove-item">🗑️</button>
+                                                <button onClick={() => handleRemoveIncluye(index)} className="btn-remove-item" disabled={esModoDemo}>🗑️</button>
                                             </div>
                                         ))}
-                                        <button onClick={handleAddIncluye} className="btn-add-item">+ Añadir Item</button>
+                                        <button onClick={handleAddIncluye} className="btn-add-item" disabled={esModoDemo}>+ Añadir Item</button>
                                     </div>
                                     <label>Descripción:</label>
                                     <textarea value={tempServicio.descripcion} onChange={(e) => setTempServicio({...tempServicio, descripcion: e.target.value})} />
                                     <div className="edit-buttons">
-                                        <button onClick={() => handleGuardarServicio(srv.id)} className="btn-save">Guardar</button>
+                                        <button onClick={() => handleGuardarServicio(srv.id)} className="btn-save" disabled={esModoDemo}>
+                                            {esModoDemo ? '🔒 Bloqueado' : 'Guardar'}
+                                        </button>
                                         <button onClick={() => setServicioEditando(null)} className="btn-cancel">Cancelar</button>
                                     </div>
                                 </div>
@@ -395,83 +352,72 @@ const AdminPage = () => {
                 </div>
             </section>
 
-            {/* ========================================== */}
-            {/* NUEVA SECCIÓN: GESTOR DE PERSONAJES (OCs)  */}
-            {/* ========================================== */}
+            {/* SECCIÓN: GESTOR DE PERSONAJES */}
             <section className="admin-management-section">
                 <h2 className="section-title">🎭 Gestor de Personajes (OCs)</h2>
-                
                 {!editandoOcId && (
                     <button onClick={handleNuevoOc} className="btn-add-item" style={{ marginBottom: '20px' }}>
                         + Añadir Nuevo Personaje
                     </button>
                 )}
-
                 {editandoOcId && (
                     <div className="edit-mode-vertical" style={{ marginBottom: '30px', border: '1px solid #ff7eb9', padding: '15px', borderRadius: '8px' }}>
                         <h3>{editandoOcId === 'nuevo' ? '✨ Creando Nuevo Personaje' : '✏️ Editando Personaje'}</h3>
-                        
-                        <input type="text" placeholder="Título visible (Ej: Selene)" value={tempOc.titulo} onChange={(e) => setTempOc({...tempOc, titulo: e.target.value})} />
-                        <input type="text" placeholder="Nombre Código (Ej: Brighella)" value={tempOc.nombreCodigo} onChange={(e) => setTempOc({...tempOc, nombreCodigo: e.target.value})} />
-                        <input type="text" placeholder="Clase (Ej: Ángel Caído)" value={tempOc.clase} onChange={(e) => setTempOc({...tempOc, clase: e.target.value})} />
-                        <textarea placeholder="Historia / Lore..." value={tempOc.descripcion} onChange={(e) => setTempOc({...tempOc, descripcion: e.target.value})} style={{ minHeight: '100px' }} />
+                        <input type="text" placeholder="Título" value={tempOc.titulo} onChange={(e) => setTempOc({...tempOc, titulo: e.target.value})} />
+                        <input type="text" placeholder="Nombre Código" value={tempOc.nombreCodigo} onChange={(e) => setTempOc({...tempOc, nombreCodigo: e.target.value})} />
+                        <input type="text" placeholder="Clase" value={tempOc.clase} onChange={(e) => setTempOc({...tempOc, clase: e.target.value})} />
+                        <textarea placeholder="Historia..." value={tempOc.descripcion} onChange={(e) => setTempOc({...tempOc, descripcion: e.target.value})} style={{ minHeight: '100px' }} />
 
-                        {/* SECCIÓN IMÁGENES */}
                         <div className="oc-image-upload-container">
                             <div className="oc-image-box pura">
-                                <label style={{ color: '#4A90E2', fontWeight: 'bold' }}>Fase Pura (Esencia):</label>
-                                <input type="file" accept="image/*" onChange={(e) => setImgPuraFile(e.target.files[0])} />
+                                <label style={{ color: '#4A90E2', fontWeight: 'bold' }}>Fase Pura:</label>
+                                <input type="file" accept="image/*" onChange={(e) => setImgPuraFile(e.target.files[0])} disabled={esModoDemo} />
                                 {tempOc.imgPuraUrl && !imgPuraFile && <img src={tempOc.imgPuraUrl} alt="Pura actual" className="oc-preview-img" />}
                             </div>
                             <div className="oc-image-box caida">
-                                <label style={{ color: '#ff7eb9', fontWeight: 'bold' }}>Fase Caída (Corrupta):</label>
-                                <input type="file" accept="image/*" onChange={(e) => setImgCaidaFile(e.target.files[0])} />
+                                <label style={{ color: '#ff7eb9', fontWeight: 'bold' }}>Fase Caída:</label>
+                                <input type="file" accept="image/*" onChange={(e) => setImgCaidaFile(e.target.files[0])} disabled={esModoDemo} />
                                 {tempOc.imgCaidaUrl && !imgCaidaFile && <img src={tempOc.imgCaidaUrl} alt="Caída actual" className="oc-preview-img" />}
                             </div>
                         </div>
 
-                        {/* SECCIÓN HABILIDADES */}
                         <label>Habilidades:</label>
                         <div className="incluye-edit-list">
                             {tempOc.habilidades && tempOc.habilidades.map((hab, index) => (
                                 <div key={index} className="incluye-item-row">
                                     <input type="text" value={hab} onChange={(e) => handleChangeHabOc(index, e.target.value)} />
-                                    <button onClick={() => handleRemoveHabOc(index)} className="btn-remove-item">🗑️</button>
+                                    <button onClick={() => handleRemoveHabOc(index)} className="btn-remove-item" disabled={esModoDemo}>🗑️</button>
                                 </div>
                             ))}
-                            <button onClick={handleAddHabOc} className="btn-add-item">+ Añadir Habilidad</button>
+                            <button onClick={handleAddHabOc} className="btn-add-item" disabled={esModoDemo}>+ Añadir Habilidad</button>
                         </div>
 
                         <div className="edit-buttons" style={{ marginTop: '20px' }}>
-                            <button onClick={handleGuardarOc} className="btn-save" disabled={guardandoOc}>
-                                {guardandoOc ? 'Guardando...' : 'Guardar Personaje'}
+                            <button onClick={handleGuardarOc} className="btn-save" disabled={guardandoOc || esModoDemo}>
+                                {esModoDemo ? '🔒 Solo Lectura' : (guardandoOc ? 'Guardando...' : 'Guardar Personaje')}
                             </button>
-                            <button onClick={() => setEditandoOcId(null)} className="btn-cancel" disabled={guardandoOc}>Cancelar</button>
+                            <button onClick={() => setEditandoOcId(null)} className="btn-cancel">Cancelar</button>
                         </div>
                     </div>
                 )}
 
-                {/* Lista de Personajes Actuales */}
                 <div className="admin-servicios-grid">
                     {personajesFirebase && personajesFirebase.map(oc => (
                         <div key={oc.id} className="admin-servicio-card">
                             <h4>{oc.titulo} <span style={{fontSize: '0.8rem', color: 'gray'}}>({oc.nombreCodigo})</span></h4>
                             <p className="desc-text">{oc.clase}</p>
                             <div className="edit-buttons" style={{marginTop: '15px'}}>
-                                <button onClick={() => { 
-                                    setEditandoOcId(oc.id); 
-                                    setTempOc(oc); 
-                                    setImgPuraFile(null); 
-                                    setImgCaidaFile(null); 
-                                }} className="admin-btn-edit">✏️ Editar</button>
-                                <button onClick={() => handleEliminarOc(oc.id)} className="btn-remove-item">🗑️ Borrar</button>
+                                <button onClick={() => { setEditandoOcId(oc.id); setTempOc(oc); setImgPuraFile(null); setImgCaidaFile(null); }} className="admin-btn-edit">✏️ Editar</button>
+                                <button onClick={() => handleEliminarOc(oc.id)} className="btn-remove-item" disabled={esModoDemo}>
+                                    {esModoDemo ? '🔒' : '🗑️'} Borrar
+                                </button>
                             </div>
                         </div>
                     ))}
                 </div>
             </section>
 
-            {/* SECCIÓN DE MENSAJES (Buzón Actualizado) */}
+            {/* SECCIÓN DE MENSAJES */}
             <section className="admin-messages-section">
                 <h2 className="section-title">Buzón de Mensajes</h2>
                 <div className="messages-container">
@@ -482,21 +428,17 @@ const AdminPage = () => {
                                     <div className="sender-info">
                                         <strong>{msg.nombre}</strong>
                                         <span className="sender-email">{msg.email}</span>
-                                        {msg.servicio && <span className="sender-servicio"> - {msg.servicio}</span>}
-                                        {msg.discordUser && <span className="discord-tag">🎮 {msg.discordUser}</span>}
                                     </div>
                                     <div className="message-actions">
-                                        <button onClick={() => toggleLeido(msg.id, msg.leido)} className="btn-icon" title={msg.leido ? "Marcar como no leído" : "Marcar como leído"}>
-                                            {msg.leido ? '👁️‍🗨️' : '👁️'}
+                                        <button onClick={() => toggleLeido(msg.id, msg.leido)} className="btn-icon" disabled={esModoDemo} title={esModoDemo ? "Bloqueado en Demo" : "Cambiar estado"}>
+                                            {esModoDemo ? '🔒' : (msg.leido ? '👁️‍🗨️' : '👁️')}
                                         </button>
-                                        <button onClick={() => eliminarMensaje(msg.id)} className="btn-icon btn-delete-msg" title="Eliminar mensaje">🗑️</button>
+                                        <button onClick={() => eliminarMensaje(msg.id)} className="btn-icon btn-delete-msg" disabled={esModoDemo} title="Eliminar">
+                                            {esModoDemo ? '🔒' : '🗑️'}
+                                        </button>
                                     </div>
                                 </div>
                                 <p className="message-body">{msg.mensaje}</p>
-                                <div className="message-footer">
-                                    <small>{msg.fecha?.toDate().toLocaleString()}</small>
-                                    {msg.leido && <span className="status-badge">Leído</span>}
-                                </div>
                             </div>
                         ))
                     ) : (
