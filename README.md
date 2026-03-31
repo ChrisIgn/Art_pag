@@ -49,4 +49,4 @@ Si deseas correr este proyecto en tu máquina local:
 
 Clona el repositorio:
    ```bash
-   git clone [https://github.com/tu-usuario/tu-repo.git](https://github.com/tu-usuario/tu-repo.git)
+   git clone [https://github.com/ChrisIgn/Art_pag.git)
